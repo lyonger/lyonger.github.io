@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://lyonger.cn/article/%E9%A1%BA%E5%BE%B7%E7%BE%8E%E9%A3%9F/</loc>
+        <lastmod>2019-11-30T09:33:33.193Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lyonger.cn/article/gitlab-repo%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D/</loc>
         <lastmod>2019-11-30T08:19:11.062Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -33,14 +41,6 @@
     <url>
         <loc>https://lyonger.cn/article/supervisor%E7%9A%84Listeners%E6%9C%BA%E5%88%B6/</loc>
         <lastmod>2019-11-30T08:17:51.222Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://lyonger.cn/article/shundefoods/</loc>
-        <lastmod>2019-11-30T08:17:19.918Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
