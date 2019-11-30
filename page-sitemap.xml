@@ -7,6 +7,13 @@
     </url>
     
     <url>
+        <loc>https://lyonger.cn/about/</loc>
+        <lastmod>2019-11-30T09:45:40.810Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>https://lyonger.cn/tags/</loc>
         <lastmod>2019-11-23T08:24:36.585Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -16,13 +23,6 @@
     <url>
         <loc>https://lyonger.cn/archive/</loc>
         <lastmod>2019-11-23T08:24:36.528Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
-        <loc>https://lyonger.cn/about/</loc>
-        <lastmod>2019-11-23T08:24:36.527Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
