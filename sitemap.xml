@@ -3,12 +3,17 @@
 
     <sitemap>
         <loc>https://lyonger.cn/post-sitemap.xml</loc>
-        <lastmod>2019-11-27T15:54:33.025Z</lastmod>
+        <lastmod>2019-11-30T08:19:11.062Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://lyonger.cn/page-sitemap.xml</loc>
         <lastmod>2019-11-23T08:24:36.585Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>https://lyonger.cn/tag-sitemap.xml</loc>
+        <lastmod>2019-11-30T07:49:29.483Z</lastmod>
     </sitemap>
 
 </sitemapindex>

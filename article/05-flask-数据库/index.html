@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录生活中的点滴~">
+    <meta name="keyword"  content="blog">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          05-flask-数据库 - 倚楼听风雨，淡看江湖路。
+        
+    </title>
+
+    <link rel="canonical" href="https://lyonger.cn/article/05-flask-数据库/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#后端" title="后端">后端</a>
+                            
+                        </div>
+                        <h1>05-flask-数据库</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 刘勇 on
+                            2019-11-30
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">刘勇的blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="mac和windows下数据库的安装">Mac和Windows下数据库的安装</h3>
+<ol>
+<li>
+<p>Mysql为例</p>
+</li>
+<li>
+<p><a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></p>
+</li>
+<li>
+<p>Mac上安装Mysql很简单，直接一顿下一步安装就可以了。</p>
+</li>
+<li>
+<p>设置初始化密码的命令是：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqladmin -uroot password [password]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>windows:<br>
+*. <a href="http://xn--bvs00cl5r1qaz4rbn1c.net" target="_blank" rel="noopener">如果没有安装.net</a> Framework 4，就在那个提示框中，找到下载的url，下载下来，安装即可。<br>
+*. 如果没有安装Microsoft Visual C++ x64，那么就需要谷歌或者百度下载这个软件进行安装即可。</p>
+</li>
+</ol>
+<h3 id="mysql-python中间件的介绍与安装">MySQL-python中间件的介绍与安装</h3>
+<ol>
+<li>如果是在类unix系统上，直接进入虚拟环境，输入<code>sudo pip install mysql-python</code>。</li>
+<li>如果是在windows系统上，那么在这里下载<code>http://www.lfd.uci.edu/~gohlke/pythonlibs/#mysql-python</code>下载<code>MySQL_python‑1.2.5‑cp27‑none‑win_amd64.whl</code>，然后在命令行中，进入到<code>MySQL_python‑1.2.5‑cp27‑none‑win_amd64.whl</code>所在的目录，输入以下命令进行安装： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install MySQL_python‑1.2.5‑cp27‑none‑win_amd64.whl</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="flask-sqlalchemy的介绍与安装">Flask-SQLAlchemy的介绍与安装</h3>
+<ol>
+<li>ORM：Object Relationship Mapping（模型关系映射）。</li>
+<li>flask-sqlalchemy是一套ORM框架。</li>
+<li>ORM的好处：可以让我们操作数据库跟操作对象是一样的，非常方便。因为一个表就抽象成一个类，一条数据就抽象成该类的一个对象。</li>
+<li>安装<code>flask-sqlalchemy</code>：<code>sudo pip install flask-sqlalchemy</code>。</li>
+</ol>
+<h3 id="flask-sqlalchemy的使用">Flask-SQLAlchemy的使用</h3>
+<ol>
+<li>
+<p>初始化和设置数据库配置信息：</p>
+<ul>
+<li>使用flask_sqlalchemy中的SQLAlchemy进行初始化：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from flask_sqlalchemy import SQLAlchemy</span><br><span class="line">app = Flask(__name__)</span><br><span class="line">db = SQLAlchemy(app)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>设置配置信息：在<code>config.py</code>文件中添加以下配置信息：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># dialect+driver://username:password@host:port/database</span><br><span class="line">DIALECT = &apos;mysql&apos;</span><br><span class="line">DRIVER = &apos;mysqldb&apos;</span><br><span class="line">USERNAME = &apos;root&apos;</span><br><span class="line">PASSWORD = &apos;root&apos;</span><br><span class="line">HOST = &apos;127.0.0.1&apos;</span><br><span class="line">PORT = &apos;3306&apos;</span><br><span class="line">DATABASE = &apos;db_demo1&apos;</span><br><span class="line">SQLALCHEMY_DATABASE_URI = &quot;&#123;&#125;+&#123;&#125;://&#123;&#125;:&#123;&#125;@&#123;&#125;:&#123;&#125;/&#123;&#125;?charset=utf8&quot;.format(DIALECT,DRIVER,USERNAME,PASSWORD,HOST</span><br><span class="line">                                             ,PORT,DATABASE)</span><br><span class="line">SQLALCHEMY_TRACK_MODIFICATIONS = False</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在主<code>app</code>文件中，添加配置文件：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br><span class="line">app.config.from_object(config)</span><br><span class="line">db = SQLAlchemy(app)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>做测试，看有没有问题：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.create_all()</span><br></pre></td></tr></table></figure>
+<p>如果没有报错，说明配置没有问题，如果有错误，可以根据错误进行修改。</p>
+</li>
+</ol>
+<h3 id="使用flask-sqlalchemy创建模型与表的映射">使用Flask-SQLAlchemy创建模型与表的映射</h3>
+<ol>
+<li>模型需要继承自<code>db.Model</code>，然后需要映射到表中的属性，必须写成<code>db.Column</code>的数据类型。</li>
+<li>数据类型：
+<ul>
+<li><code>db.Integer</code>代表的是整形.</li>
+<li><code>db.String</code>代表的是<code>varchar</code>，需要指定最长的长度。</li>
+<li><code>db.Text</code>代表的是<code>text</code>。</li>
+</ul>
+</li>
+<li>其他参数：
+<ul>
+<li><code>primary_key</code>：代表的是将这个字段设置为主键。</li>
+<li><code>autoincrement</code>：代表的是这个主键为自增长的。</li>
+<li><code>nullable</code>：代表的是这个字段是否可以为空，默认可以为空，可以将这个值设置为<code>False</code>，在数据库中，这个值就不能为空了。</li>
+</ul>
+</li>
+<li>最后需要调用<code>db.create_all</code>来将模型真正的创建到数据库中。</li>
+</ol>
+<h3 id="flask-sqlalchemy数据的增-删-改-查">Flask-SQLAlchemy数据的增、删、改、查</h3>
+<ol>
+<li>
+<p>增：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 增加：</span><br><span class="line">article1 = Article(title=&apos;aaa&apos;,content=&apos;bbb&apos;)</span><br><span class="line">db.session.add(article1)</span><br><span class="line"># 事务</span><br><span class="line">db.session.commit()</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 查</span><br><span class="line"># select * from article where article.title=&apos;aaa&apos;;</span><br><span class="line">article1 = Article.query.filter(Article.title == &apos;aaa&apos;).first()</span><br><span class="line">print &apos;title:%s&apos; % article1.title</span><br><span class="line">print &apos;content:%s&apos; % article1.content</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>改：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 改：</span><br><span class="line"># 1. 先把你要更改的数据查找出来</span><br><span class="line">article1 = Article.query.filter(Article.title == &apos;aaa&apos;).first()</span><br><span class="line"># 2. 把这条数据，你需要修改的地方进行修改</span><br><span class="line">article1.title = &apos;new title&apos;</span><br><span class="line"># 3. 做事务的提交</span><br><span class="line">db.session.commit()</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>删：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 删</span><br><span class="line"># 1. 把需要删除的数据查找出来</span><br><span class="line">article1 = Article.query.filter(Article.content == &apos;bbb&apos;).first()</span><br><span class="line"># 2. 把这条数据删除掉</span><br><span class="line">db.session.delete(article1)</span><br><span class="line"># 3. 做事务提交</span><br><span class="line">db.session.commit()</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="flask-sqlalchemy外键及其关系">Flask-SQLAlchemy外键及其关系</h3>
+<ol>
+<li>
+<p>外键：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class User(db.Model):</span><br><span class="line">    __tablename__ = &apos;user&apos;</span><br><span class="line">    id = db.Column(db.Integer,primary_key=True,autoincrement=True)</span><br><span class="line">    username = db.Column(db.String(100),nullable=False)</span><br><span class="line">class Article(db.Model):</span><br><span class="line">    __tablename__ = &apos;article&apos;</span><br><span class="line">    id = db.Column(db.Integer, primary_key=True, autoincrement=True)</span><br><span class="line">    title = db.Column(db.String(100),nullable=False)</span><br><span class="line">    content = db.Column(db.Text,nullable=False)</span><br><span class="line">    author_id = db.Column(db.Integer,db.ForeignKey(&apos;user.id&apos;))</span><br><span class="line">    author = db.relationship(&apos;User&apos;,backref=db.backref(&apos;articles&apos;))</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>author = db.relationship('User',backref=db.backref('articles'))</code>解释：</p>
+<ul>
+<li>给<code>Article</code>这个模型添加一个<code>author</code>属性，可以访问这篇文章的作者的数据，像访问普通模型一样。</li>
+<li><code>backref</code>是定义反向引用，可以通过<code>User.articles</code>访问这个模型所写的所有文章。</li>
+</ul>
+</li>
+<li>
+<p>多对多：</p>
+<ul>
+<li>多对多的关系，要通过一个中间表进行关联。</li>
+<li>中间表，不能通过<code>class</code>的方式实现，只能通过<code>db.Table</code>的方式实现。</li>
+<li>设置关联：<code>tags = db.relationship('Tag',secondary=article_tag,backref=db.backref('articles'))</code>需要使用一个关键字参数<code>secondary=中间表</code>来进行关联。</li>
+<li>访问和数据添加可以通过以下方式进行操作：
+<ul>
+<li>
+<p>添加数据：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">article1 = Article(title=&apos;aaa&apos;)</span><br><span class="line">article2 = Article(title=&apos;bbb&apos;)</span><br><span class="line">tag1 = Tag(name=&apos;111&apos;)</span><br><span class="line">tag2 = Tag(name=&apos;222&apos;)</span><br><span class="line">article1.tags.append(tag1)</span><br><span class="line">article1.tags.append(tag2)</span><br><span class="line">article2.tags.append(tag1)</span><br><span class="line">article2.tags.append(tag2)</span><br><span class="line">db.session.add(article1)</span><br><span class="line">db.session.add(article2)</span><br><span class="line">db.session.add(tag1)</span><br><span class="line">db.session.add(tag2)</span><br><span class="line">db.session.commit()</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>访问数据：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">article1 = Article.query.filter(Article.title == &apos;aaa&apos;).first()</span><br><span class="line">tags = article1.tags</span><br><span class="line">for tag in tags:</span><br><span class="line">    print tag.name</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="flask-script的介绍与安装">Flask-Script的介绍与安装</h3>
+<ol>
+<li>
+<p>Flask-Script：Flask-Script的作用是可以通过命令行的形式来操作Flask。例如通过命令跑一个开发版本的服务器、设置数据库，定时任务等。</p>
+</li>
+<li>
+<p>安装：首先进入到虚拟环境中，然后<code>pip install flask-script</code>来进行安装。</p>
+</li>
+<li>
+<p>如果直接在主<code>manage.py</code>中写命令，那么在终端就只需要<code>python manage.py command_name</code>就可以了。</p>
+</li>
+<li>
+<p>如果把一些命令集中在一个文件中，那么在终端就需要输入一个父命令，比如<code>python manage.py db init</code>。</p>
+</li>
+<li>
+<p>例子：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from flask_script import Manager</span><br><span class="line">from flask_script_demo import app</span><br><span class="line">from db_scripts import DBManager</span><br><span class="line">manager = Manager(app)</span><br><span class="line"># 和数据库相关的操作，我都放在一起</span><br><span class="line">@manager.command</span><br><span class="line">def runserver():</span><br><span class="line">    print &apos;服务器跑起来了!!!!!&apos;</span><br><span class="line">manager.add_command(&apos;db&apos;,DBManager)</span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    manager.run()</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>有子命令的例子：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#encoding: utf-8</span><br><span class="line">from flask_script import Manager</span><br><span class="line">DBManager = Manager()</span><br><span class="line">@DBManager.command</span><br><span class="line">def init():</span><br><span class="line">    print &apos;数据库初始化完成&apos;</span><br><span class="line">@DBManager.command</span><br><span class="line">def migrate():</span><br><span class="line">    print &apos;数据表迁移成功&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="分开models以及解决循环引用">分开<code>models</code>以及解决循环引用</h3>
+<ol>
+<li>分开models的目的：为了让代码更加方便的管理。</li>
+<li>如何解决循环引用：把<code>db</code>放在一个单独的文件中，切断循环引用的线条就可以了。</li>
+</ol>
+<h3 id="flask-migrate的介绍与安装">Flask-Migrate的介绍与安装</h3>
+<ol>
+<li>介绍：因为采用<code>db.create_all</code>在后期修改字段的时候，不会自动的映射到数据库中，必须删除表，然后重新运行<code>db.craete_all</code>才会重新映射，这样不符合我们的需求。因此flask-migrate就是为了解决这个问题，她可以在每次修改模型后，可以将修改的东西映射到数据库中。</li>
+<li>首先进入到你的虚拟环境中，然后使用<code>pip install flask-migrate</code>进行安装就可以了。</li>
+<li>使用<code>flask_migrate</code>必须借助<code>flask_scripts</code>，这个包的<code>MigrateCommand</code>中包含了所有和数据库相关的命令。</li>
+<li><code>flask_migrate</code>相关的命令：
+<ul>
+<li><code>python manage.py db init</code>：初始化一个迁移脚本的环境，只需要执行一次。</li>
+<li><code>python manage.py db migrate</code>：将模型生成迁移文件，只要模型更改了，就需要执行一遍这个命令。</li>
+<li><code>python manage.py db upgrade</code>：将迁移文件真正的映射到数据库中。每次运行了<code>migrate</code>命令后，就记得要运行这个命令。</li>
+</ul>
+</li>
+<li>注意点：需要将你想要映射到数据库中的模型，都要导入到<code>manage.py</code>文件中，如果没有导入进去，就不会映射到数据库中。</li>
+<li><code>manage.py</code>的相关代码： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from flask_script import Manager</span><br><span class="line">from migrate_demo import app</span><br><span class="line">from flask_migrate import Migrate,MigrateCommand</span><br><span class="line">from exts import db</span><br><span class="line">from models import Article</span><br><span class="line"># init</span><br><span class="line"># migrate</span><br><span class="line"># upgrade</span><br><span class="line"># 模型 -&gt; 迁移文件 -&gt; 表</span><br><span class="line">manager = Manager(app)</span><br><span class="line"># 1. 要使用flask_migrate，必须绑定app和db</span><br><span class="line">migrate = Migrate(app,db)</span><br><span class="line"># 2. 把MigrateCommand命令添加到manager中</span><br><span class="line">manager.add_command(&apos;db&apos;,MigrateCommand)</span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    manager.run()</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/06-flask-session和cookie/" data-toggle="tooltip" data-placement="top" title="06-flask-session和cookie">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/04CPU使用率分析-Linux性能优化/" data-toggle="tooltip" data-placement="top" title="04CPU使用率分析-Linux性能优化">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mac和windows下数据库的安装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Mac&#x548C;Windows&#x4E0B;&#x6570;&#x636E;&#x5E93;&#x7684;&#x5B89;&#x88C5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mysql-python中间件的介绍与安装"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MySQL-python&#x4E2D;&#x95F4;&#x4EF6;&#x7684;&#x4ECB;&#x7ECD;&#x4E0E;&#x5B89;&#x88C5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flask-sqlalchemy的介绍与安装"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Flask-SQLAlchemy&#x7684;&#x4ECB;&#x7ECD;&#x4E0E;&#x5B89;&#x88C5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flask-sqlalchemy的使用"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Flask-SQLAlchemy&#x7684;&#x4F7F;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用flask-sqlalchemy创建模型与表的映射"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;Flask-SQLAlchemy&#x521B;&#x5EFA;&#x6A21;&#x578B;&#x4E0E;&#x8868;&#x7684;&#x6620;&#x5C04;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flask-sqlalchemy数据的增-删-改-查"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Flask-SQLAlchemy&#x6570;&#x636E;&#x7684;&#x589E;&#x3001;&#x5220;&#x3001;&#x6539;&#x3001;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flask-sqlalchemy外键及其关系"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Flask-SQLAlchemy&#x5916;&#x952E;&#x53CA;&#x5176;&#x5173;&#x7CFB;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flask-script的介绍与安装"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Flask-Script&#x7684;&#x4ECB;&#x7ECD;&#x4E0E;&#x5B89;&#x88C5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分开models以及解决循环引用"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">&#x5206;&#x5F00;<code>models</code>&#x4EE5;&#x53CA;&#x89E3;&#x51B3;&#x5FAA;&#x73AF;&#x5F15;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flask-migrate的介绍与安装"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">Flask-Migrate&#x7684;&#x4ECB;&#x7ECD;&#x4E0E;&#x5B89;&#x88C5;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#后端" title="后端">后端</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://coolshell.cn" target="_blank">酷壳CoolShell</a></li>
+                    
+                        <li><a href="http://dockone.io/people/胡伟煌" target="_blank">DockOne 胡伟煌</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "lyonger-cn";
+    var disqus_identifier = "https://lyonger.cn/article/05-flask-数据库/";
+    var disqus_url = "https://lyonger.cn/article/05-flask-数据库/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lyonger">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 刘勇 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://lyonger.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://lyonger.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
