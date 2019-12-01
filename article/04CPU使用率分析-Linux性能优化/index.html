@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -212,7 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="节拍率">节拍率</h2>
+                <link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="节拍率">节拍率</h2>
 <ul>
 <li>为了维护CPU时间，Linux通过事先定义的节拍率(内核中表示HZ)来触发时间中断，并使用全局变量Jiffies来记录开机以后的节拍次数。每发生一次时间中断，jiffies的值就加1.</li>
 <li>节拍率HZ是内核的可配置参数，可以设置为100、250、1000等。而用户空间的节拍率USER_HZ固定为100，你可以通过/boot/config内核选项来查看。</li>

@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -212,7 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="安装samba">安装samba</h2>
+                <link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="安装samba">安装samba</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install samba –y</span><br></pre></td></tr></table></figure>
 <h2 id="创建用户">创建用户</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd admin     <span class="comment">#先创建系统用户</span></span><br><span class="line">smbpasswd  -a admin   <span class="comment">#第一次加入需要-a参数，把admin用户加入到samba中。 加的用户必须是系统用户，且真实存在。</span></span><br></pre></td></tr></table></figure>
