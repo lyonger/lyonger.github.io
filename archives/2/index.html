@@ -18,7 +18,7 @@
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/">
+    <link rel="canonical" href="https://lyonger.cn/archives/2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -211,111 +211,10 @@
 
 <div class="post-preview">
 
-    <a href="/article/送给未来孩子的一封信/">
+    <a href="/article/gitlab-repo数据恢复/">
         <h2 class="post-title">
                                  
-            送给未来孩子的一封信
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-             送给未来孩子的一封信
-* **爸爸很高兴，也很幸福，你会成为我们的孩子**。欢迎你来到这美好的人间，我们一家人彼此陪伴，一起走过一段很长很长的路。
-* **爸爸希望你是一个身体健康，充满活力的人**。身体是革命的本钱，没有好的体魄，你不能完成你的理想。没有好的体魄，你将来不能照顾好身边的人。所以希望你从小可以养成良好的生活习惯、卫生习惯。爸爸妈妈会努力的培养你、帮助你，让你成为一个更加健康......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-12-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/我们的孕妇照视频/">
-        <h2 class="post-title">
-                                 
-            我们的孕妇照视频
-        </h2>
-        <h3 class="post-subtitle">
-            美好时光
-        </h3>
-        <div class="post-content-preview">
-            记录美好瞬间
-
-从相识到相知，我们一路走来，终于有了我们的小天使。手工制作了一个小视频，记录我们爱的瞬间，谢谢欣赏～！
-
-(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","loop":true,"video":{"url":"http......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-12-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Windows下常用命令/">
-        <h2 class="post-title">
-                                 
-            Windows下常用命令
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            小技巧
-
-打开&quot;运行&quot;对话框（Win+R），输入cmd，打开控制台命令窗口, 也可以通过cmd/c命令和cmd/k命令的方式来直接运行命令。
-注：/c表示执行完命令后关闭cmd窗口；/k表示执行完命令后保留cmd窗口
-
-控制台命令窗口中一些技巧
-
-复制内容：右键弹出快捷菜单，选择“标记(K)”，然后选中所需复制的内容，然后右键即可
-粘贴内容：右键弹出快捷菜单，选择“粘贴§......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Windows" title="Windows">Windows</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/supervisor的Listeners机制/">
-        <h2 class="post-title">
-                                 
-            supervisor的Listeners机制
+            gitlab-repo数据恢复
         </h2>
         <h3 class="post-subtitle">
             
@@ -323,13 +222,58 @@
         <div class="post-content-preview">
             背景
 
-最近项目需要在容器里添加进程的监控。
+平时负责公司的gitlab平台，今天有一位同事不小心删除了几十个repo，要求恢复，泪奔，今天简单的整理一下恢复的思路。
 
-配置
+恢复方式
+人肉方式
 
-event listener的配置放置于配置文件中的[eventlistener:x]块中，x是listener的名称，command是执行listener脚本的命令，events是要监控的事件类型。
+此方式依赖于提交者本地有保存最新的所有代码，恢复方式简单, 关键是要找到最后一位提交者。多人协作到环境下，挨个去问也是挺蛋碎的。
 
- 123[eventlistener:mylistener]command=my_custom_listener.pyevents=P......
+
+创建同名repo
+最后一位提交者执行：
+
+1234# 推送本地所有分支到远端git push --all ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/dnsmasq小工具/">
+        <h2 class="post-title">
+                                 
+            dnsmasq小工具
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            介绍
+
+
+DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在内部网和Internet连接的时候的IP地址NAT转换，也可以用做小型网络的DNS服务,它可以提供如下几个实用的功能：
+
+提供dns服务
+优先使用本地自定义dns
+提供dhcp服务
+
+
+
+一般情况下，我们可以用bind解决dns的问题，dhcpd解决dhcp的问题，另外，还可以用ypbind解决自定义hostname......
         </div>
     </a>
     
@@ -349,34 +293,52 @@ event listener的配置放置于配置文件中的[eventlistener:x]块中，x是
 
 <div class="post-preview">
 
-    <a href="/article/顺德美食/">
+    <a href="/article/devops建设模型/">
         <h2 class="post-title">
                                  
-            顺德美食
+            devops建设模型
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            顺德介绍
+            devops建设模型
 
-顺德，别名凤城，故有“吃在广东，厨在凤城”的典故。央视纪录片叫：《寻味顺德》。
-元旦节终于可以带上她一起吃吃吃啦～，下面是临时做的一些攻略。
+现在我们越来越多的业务开始使用gitlab的构建服务并打通docker auto deployment，而整个devops的建设需要一个成熟度模型。
 
-出发时间
 
-出发时间: 12月30日 上午10:00
-出发地点-终点车站：广州市天河区东圃客运站-佛山市顺德大良汽车站
+...
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
+            
+        </div>
+    
 
-游玩时间
+</div>
+<hr>
 
-2天半
+<div class="post-preview">
 
-美食汇总
-仁信和民信老铺
+    <a href="/article/可持续发展策略/">
+        <h2 class="post-title">
+                                 
+            可持续发展策略
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            可持续发展策略
 
-地址：良华盖路119号，顺德的大良步行街上。
-双皮奶：水牛奶、椰子......
+...
         </div>
     </a>
     
@@ -396,23 +358,53 @@ event listener的配置放置于配置文件中的[eventlistener:x]块中，x是
 
 <div class="post-preview">
 
-    <a href="/article/Pycharm工具使用技巧汇总/">
+    <a href="/article/技术人的思考进阶/">
         <h2 class="post-title">
                                  
-            Pycharm工具使用技巧汇总
+            技术人的思考进阶
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            查看使用库源码
-Command+B，就可以很方便的跳转到源码里的类，方法，函数，变量的定义。
-让你的代码 PEP8
-Command+Option+L，一键 pep8 走起
-安装库
-1PyCharm-&gt;Preferences-&gt;Project:xxx-&gt;Project Interpreter-&gt;点击+
-查找文件，类， 方法
-查找文件：Command + Shift + ......
+            技术人的思考进阶
+
+互联网技术是一个很奇妙的世界，时不时探索未知领域，让你充满期待。打开你的谷歌浏览器，浏览着国外的官方英文文献，听着有旋律的键盘和鼠标声，瞬时觉得是一种美好的享受。
+我想做技术太久始终会有其瓶颈，就像瓶子里的水，始终会装满，难以突破它固有的容量。瓶子外的世界其实很广阔，有很多机会。当然，夯实的技术基础还是很必要的，所以先踏实的在大型互联网公司做几年，掌握一定的技术基础。在此......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/搭建Samba的简要过程/">
+        <h2 class="post-title">
+                                 
+            搭建Samba的简要过程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            安装samba
+1yum install samba –y
+创建用户
+12useradd admin     #先创建系统用户smbpasswd  -a admin   #第一次加入需要-a参数，把admin用户加入到samba中。 加的用户必须是系统用户，且真实存在。
+创建共享目录
+12mkdir  /data/web/adminchown –R  admin.admin /data/we......
         </div>
     </a>
     
@@ -432,27 +424,29 @@ Command+Option+L，一键 pep8 走起
 
 <div class="post-preview">
 
-    <a href="/article/nginx使用ip反解域名/">
+    <a href="/article/磁盘数据加密/">
         <h2 class="post-title">
                                  
-            nginx使用ip反解域名
+            磁盘数据加密
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            nginx使用ip反解域名
+            FreeBSD
+
+使用系统自带的geli命令对/home/test加密
+要将/mnt挂载点独立一个分区出来，以免手动调整分区
+如果是aws，则把数据盘EBS挂载到/home/test
+
+首次创建加密盘
+
+aws的话先创建分区，记得先umount原来分区
 
 
-下载nginx源码,可以按照自己想要的版本来下载，这里以1.10来举例
 
-
-下载rdns的源码
-1git clone https://github.com/flant/nginx-http-rdns.git
-
-
-编译,安装nginx，配置参考如下，会有一些依赖包问题，根据编译提示安装依赖包，最重要的是最后的add-module=指定rdns的源码目录
-1234......
+AWS：用gpart创建分区
+  1234# gpart create -s gpt xbd1xbd1 created# gpart ......
         </div>
     </a>
     
@@ -472,21 +466,19 @@ Command+Option+L，一键 pep8 走起
 
 <div class="post-preview">
 
-    <a href="/article/network-flow-conversion/">
+    <a href="/article/安装subversion1-10/">
         <h2 class="post-title">
                                  
-            network-flow-conversion
+            安装subversion1-10
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            B、M、G单位换算
-
-B是一个电脑存储的基本单位(字节),1个英文字符是1个字节,也就是1B，1个汉字为2个字符，也就是2B。
-K 是千的意思， KB也就是1000字节，但计算机的运算和数学有所不同，是1024字节为 1KB，所以说 1024B=1KB。
-M 是兆的意思，运算也是类似，以1024进一位，也就是说1024KB=1MB。接着G,依此类推,1024MB=1GB
-综上所述 1024B......
+            安装 apr
+1234567➜ wget -c http://mirrors.shu.edu.cn/apache//apr/apr-1.6.5.tar.gz➜ tar -zxvf apr-1.6.5.tar.gz➜ cd apr-1.6.5➜ ./configure --prefix=/usr/local/apr➜ make➜ make install
+安装 apr-util
+1234567......
         </div>
     </a>
     
@@ -506,20 +498,28 @@ M 是兆的意思，运算也是类似，以1024进一位，也就是说1024KB=1
 
 <div class="post-preview">
 
-    <a href="/article/Kernel-Samepage-Merging探索及监控/">
+    <a href="/article/安装kubernets集群/">
         <h2 class="post-title">
                                  
-            Kernel-Samepage-Merging探索及监控
+            安装kubernets集群
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            KSM介绍
+            准备工作(node/master机器均需操作)
 
-Kernel Samepage Merging 是Linux kernel 2.6.32 引入的新特性。原理是定期扫描内存页，将相同的内存页合并，并将其标示为 cow（当需要修改时，copy新的内存页，再做修改）。最终达到节省内存的目的。
-KSM最初是为KVM虚拟化技术开发的，对普通应用程序同样适用。可参考官方文档介绍
-KSM daemon ksmd 周期性的对内存页进行扫描，......
+机器配置，4核心8G内存。
+
+1234Distributor ID:	DebianDescription:	Debian GNU/Linux 9.2 (stretch)Release:	9.2Codename:	stretch
+
+关闭swap分区
+
+1swapoff -a
+
+关闭防火墙
+
+12systemctl stop firewallds......
         </div>
     </a>
     
@@ -539,49 +539,19 @@ KSM daemon ksmd 周期性的对内存页进行扫描，......
 
 <div class="post-preview">
 
-    <a href="/article/iptable数据流向/">
+    <a href="/article/安装Elasticsearch和Kibana/">
         <h2 class="post-title">
                                  
-            iptable数据流向
+            安装Elasticsearch和Kibana
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            
-关于防火墙的数据流向规则和概念老是忘，所谓好记性不如烂笔头。所以今天特此来记一记。
-
-iptable表与链
-
-链是规则或者策略的集合，一般默认有如下5种链：
-
-
-
-
-链名
-作用
-
-
-
-
-INPUT
-处理流入网卡的数据包
-
-
-OUTPUT
-处理流出网卡的数据包
-
-
-FORWARD
-处理转发的数据包
-
-
-POSTROUTING
-在进行路由选择后处理数据包
-
-
-PREROUTING
-在进行路由选......
+            系统环境
+1234Distributor ID:	DebianDescription:	Debian GNU/Linux 9.2 (stretch)Release:	9.2Codename:	stretch
+安装kibana
+1234567wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key ......
         </div>
     </a>
     
@@ -605,9 +575,13 @@ PREROUTING
 
 <ul class="pager">
     
+        <li class="previous">
+            <a href="/">&larr; Newer Posts</a>
+        </li>
+    
     
         <li class="next">
-            <a href="/archives/2/">Older Posts &rarr;</a>
+            <a href="/archives/3/">Older Posts &rarr;</a>
         </li>
     
 </ul>
