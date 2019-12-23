@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,40 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/04CPU使用率分析-Linux性能优化/">
+        <h2 class="post-title">
+                                 
+            04CPU使用率分析-Linux性能优化
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            节拍率
+
+为了维护CPU时间，Linux通过事先定义的节拍率(内核中表示HZ)来触发时间中断，并使用全局变量Jiffies来记录开机以后的节拍次数。每发生一次时间中断，jiffies的值就加1.
+节拍率HZ是内核的可配置参数，可以设置为100、250、1000等。而用户空间的节拍率USER_HZ固定为100，你可以通过/boot/config内核选项来查看。
+
+1grep &apos;CON......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -585,11 +619,11 @@ Testing tools (Jest …)
     <div class="tags">
         
             
-            <a href="/tags/#后端" title="后端" rel="7">后端</a>
+            <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
             
-            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+            <a href="/tags/#后端" title="后端" rel="7">后端</a>
             
         
             
@@ -674,6 +708,10 @@ Testing tools (Jest …)
     <ul>
       
         <li>
+          <a href="/article/思念在远方/">思念在远方</a>
+        </li>
+      
+        <li>
           <a href="/article/送给未来孩子的一封信/">送给未来孩子的一封信</a>
         </li>
       
@@ -687,10 +725,6 @@ Testing tools (Jest …)
       
         <li>
           <a href="/article/supervisor的Listeners机制/">supervisor的Listeners机制</a>
-        </li>
-      
-        <li>
-          <a href="/article/顺德美食/">顺德美食</a>
         </li>
       
     </ul>
@@ -715,7 +749,7 @@ Testing tools (Jest …)
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
