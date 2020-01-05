@@ -246,11 +246,12 @@
 </ul>
 <h2 id="ksm接入成本">KSM接入成本</h2>
 <ul>
-<li>对于需要接入的产品而言，主要的接入成本如下：</li>
-</ul>
+<li>对于需要接入的产品而言，主要的接入成本如下：
 <ul>
 <li>需改动代码做适配，主动标记希望合并的数据。</li>
 <li>启用后会常驻一个扫描进程ksmd，带来少量的额外CPU消耗。</li>
+</ul>
+</li>
 </ul>
 <h2 id="ksm收益与风险">KSM收益与风险</h2>
 <h3 id="收益">收益</h3>
@@ -266,15 +267,15 @@
 <ul>
 <li>KSM开关</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo 1 &gt; /sys/kernel/mm/ksm/run   #启动KSM</span><br><span class="line">echo 0 &gt; /sys/kernel/mm/ksm/run   #关闭KSM</span><br><span class="line">echo 2 &gt; /sys/kernel/mm/ksm/run   #停止运行态的KSM并取消合并所有合并页</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /sys/kernel/mm/ksm/run   <span class="comment">#启动KSM</span></span><br><span class="line"><span class="built_in">echo</span> 0 &gt; /sys/kernel/mm/ksm/run   <span class="comment">#关闭KSM</span></span><br><span class="line"><span class="built_in">echo</span> 2 &gt; /sys/kernel/mm/ksm/run   <span class="comment">#停止运行态的KSM并取消合并所有合并页</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>控制参数</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/mm/ksm/sleep_millisecs    #ksmd两次扫描之间的时间间隔，单位毫秒，默认20ms。</span><br><span class="line">/sys/kernel/mm/ksm/pages_to_scan      #控制一次扫描处理的页数，默认为100。</span><br><span class="line">/sys/kernel/mm/ksm/merge_across_nodes #控制是否允许不同的NUMA节点之间进行页合并，默认允许，写入0表示不允许。</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/mm/ksm/sleep_millisecs    <span class="comment">#ksmd两次扫描之间的时间间隔，单位毫秒，默认20ms。</span></span><br><span class="line">/sys/kernel/mm/ksm/pages_to_scan      <span class="comment">#控制一次扫描处理的页数，默认为100。</span></span><br><span class="line">/sys/kernel/mm/ksm/merge_across_nodes <span class="comment">#控制是否允许不同的NUMA节点之间进行页合并，默认允许，写入0表示不允许。</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>用于监控的参数</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/mm/ksm/full_scans        #记录已经执行的全区域扫描次数。</span><br><span class="line">/sys/kernel/mm/ksm/pages_shared      #记录稳定树节点数，即共享的物理页数。</span><br><span class="line">/sys/kernel/mm/ksm/pages_sharing     #记录被共享的物理页数，通过此可计算节省的物理内存。</span><br><span class="line">/sys/kernel/mm/ksm/pages_unshared    #记录不稳定树的节点树，即未共享的物理页数。</span><br><span class="line">/sys/kernel/mm/ksm/pages_volatile    #记录频繁改变的物理页数。</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/mm/ksm/full_scans        <span class="comment">#记录已经执行的全区域扫描次数。</span></span><br><span class="line">/sys/kernel/mm/ksm/pages_shared      <span class="comment">#记录稳定树节点数，即共享的物理页数。</span></span><br><span class="line">/sys/kernel/mm/ksm/pages_sharing     <span class="comment">#记录被共享的物理页数，通过此可计算节省的物理内存。</span></span><br><span class="line">/sys/kernel/mm/ksm/pages_unshared    <span class="comment">#记录不稳定树的节点树，即未共享的物理页数。</span></span><br><span class="line">/sys/kernel/mm/ksm/pages_volatile    <span class="comment">#记录频繁改变的物理页数。</span></span><br></pre></td></tr></table></figure>
 <h2 id="ksm应用实例">KSM应用实例</h2>
 <h3 id="空载实验">空载实验</h3>
 <ul>

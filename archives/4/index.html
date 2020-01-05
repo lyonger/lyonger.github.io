@@ -211,6 +211,126 @@
 
 <div class="post-preview">
 
+    <a href="/article/05-flask-数据库/">
+        <h2 class="post-title">
+                                 
+            05-flask-数据库
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Mac和Windows下数据库的安装
+
+
+Mysql为例
+
+
+https://dev.mysql.com/downloads/mysql/
+
+
+Mac上安装Mysql很简单，直接一顿下一步安装就可以了。
+
+
+设置初始化密码的命令是：
+ 1mysqladmin -uroot password [password]
+
+
+windows:
+*. 如果没有安装.net Framework 4，就在那......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后端" title="后端">后端</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/04CPU使用率分析-Linux性能优化/">
+        <h2 class="post-title">
+                                 
+            04CPU使用率分析-Linux性能优化
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            节拍率
+
+为了维护CPU时间，Linux通过事先定义的节拍率(内核中表示HZ)来触发时间中断，并使用全局变量Jiffies来记录开机以后的节拍次数。每发生一次时间中断，jiffies的值就加1.
+节拍率HZ是内核的可配置参数，可以设置为100、250、1000等。而用户空间的节拍率USER_HZ固定为100，你可以通过/boot/config内核选项来查看。
+
+1grep &apos;CON......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/04-flask-模版渲染/">
+        <h2 class="post-title">
+                                 
+            04-flask-模版渲染
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Flask渲染Jinja2模板和传参
+
+如何渲染模板：
+
+模板放在templates文件夹下
+从flask中导入render_template函数。
+在视图函数中，使用render_template函数，渲染模板。注意：只需要填写模板的名字，不需要填写templates这个文件夹的路径。
+
+
+模板传参：
+
+如果只有一个或者少量参数，直接在render_template函数中添加关键字参数就可......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后端" title="后端">后端</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/03CPU上下文切换-Linux性能优化/">
         <h2 class="post-title">
                                  
@@ -464,98 +584,6 @@ Python虚拟环境介绍与安装
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/01-前端学习-学习线路/">
-        <h2 class="post-title">
-                                 
-            01-前端学习-学习线路
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            基本概念
-
-前端 = HTML + CSS + JavaScript
-其中javaScrip包括：
-
-JavaScript 基础
-Package Manager (NPM, Yarn)
-Build tools (NPM Scripts, ESLint, Webpack…)
-Frameworks (React, Vue.js, Angular)
-Testing tools (Jest …)
-
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#前端" title="前端">前端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/记一次Gitlab-Runner卡顿的详情分析/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            记一次Gitlab-Runner卡顿的详情分析
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            记一次Gitlab Runner卡顿的详情分析
-
-该问题排查耗时数周，下面分享一下整体的排查过程，仅供大家参考。
-
-问题的背景
-
-
-最近Gitlab Runner服务偶尔接到用户反馈build超时和卡顿。下面是某个用户提供的问题截图。比如build超时：
-
-
-
-用户反馈卡顿，比如：
-
-
-
-
-由于该问题具有普遍性，不同的用户在不同的repo进行ci均会偶发性产生问题，于是着手做一次深入的排查。......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -566,6 +594,10 @@ Testing tools (Jest …)
             <a href="/archives/3/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/archives/5/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -597,19 +629,19 @@ Testing tools (Jest …)
     <div class="tags">
         
             
-            <a href="/tags/#前端" title="前端" rel="2">前端</a>
-            
-        
-            
             <a href="/tags/#后端" title="后端" rel="7">后端</a>
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="17">Linux</a>
+            <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
             
-            <a href="/tags/#生活" title="生活" rel="9">生活</a>
+            <a href="/tags/#Linux" title="Linux" rel="18">Linux</a>
+            
+        
+            
+            <a href="/tags/#生活" title="生活" rel="11">生活</a>
             
         
             
@@ -686,23 +718,23 @@ Testing tools (Jest …)
     <ul>
       
         <li>
+          <a href="/article/KSM应用实践/">KSM应用实践</a>
+        </li>
+      
+        <li>
+          <a href="/article/2019的那些事/">2019的那些事</a>
+        </li>
+      
+        <li>
+          <a href="/article/思念在远方/">思念在远方</a>
+        </li>
+      
+        <li>
           <a href="/article/送给未来孩子的一封信/">送给未来孩子的一封信</a>
         </li>
       
         <li>
           <a href="/article/我们的孕妇照视频/">我们的孕妇照视频</a>
-        </li>
-      
-        <li>
-          <a href="/article/Windows下常用命令/">Windows下常用命令</a>
-        </li>
-      
-        <li>
-          <a href="/article/supervisor的Listeners机制/">supervisor的Listeners机制</a>
-        </li>
-      
-        <li>
-          <a href="/article/顺德美食/">顺德美食</a>
         </li>
       
     </ul>
@@ -727,7 +759,7 @@ Testing tools (Jest …)
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
@@ -782,7 +814,7 @@ Testing tools (Jest …)
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; 刘勇 2019 
+                    Copyright &copy; 刘勇 2020 
                     <br>
                     Theme by <a href="http://beantech.org">BeanTech</a> 
                     <span style="display: inline-block; margin: 0 5px;">
