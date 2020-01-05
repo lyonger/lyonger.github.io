@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          2019的那些事 - 倚楼听风雨，淡看江湖路。
+          KSM应用实践 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/2019的那些事/">
+    <link rel="canonical" href="https://lyonger.cn/article/KSM应用实践/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#生活" title="生活">生活</a>
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
                             
                         </div>
-                        <h1>2019的那些事</h1>
+                        <h1>KSM应用实践</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-01-01
+                            2020-01-05
                         </span>
                     </div>
                 
@@ -212,55 +212,183 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <ul>
-<li>2019已然过去，有收获和成长的同时也有些伤感。相比往年来说，是多磨难的一年，也是进步比较缓慢的一年。给自己的总体评价为：<strong>75分</strong>。2019年中的大事记总结为如下：</li>
+                <h2 id="背景介绍">背景介绍</h2>
+<ul>
+<li>业务对于服务器成本的要求越来越高。有些服务进程（如场景进程）load完整的数据需要占用900多M内存，且会运行多个实例（几十个），有时也会使用多个容器共享宿主机内存使用会进一步加剧。此时内存成为了服务器的瓶颈。</li>
+</ul>
+<h2 id="ksm原理">KSM原理</h2>
+<ul>
+<li>
+<p><code>Kernel Samepage Merging</code>是<code>Linux kernel 2.6.32</code> 引入的新特性，最初时为KVM虚拟化技术开发的，但对于普通应用程序同样适用。具体参考<a href="https://www.kernel.org/doc/html/latest/admin-guide/mm/ksm.html" target="_blank" rel="noopener">官方文档</a>。基本原理是定期扫描内存页，将相同的内存页合并，并将其标示为 cow（当需要修改时，copy新的内存页，再做修改），最终达到节省内存的目的。</p>
+</li>
+<li>
+<p>我们先了解一下<code>Linux</code>的内存机制，方便理解<code>KSM</code>原理。</p>
+</li>
+</ul>
+<h3 id="linux内存机制">Linux内存机制</h3>
+<ul>
+<li>学过操作系统的同学应该知道<code>Linux</code>是采用分页的内存机制来管理物理内存。内核采用虚拟内存管理技术为每个进程分配独立的虚拟内存地址空间。而物理内存的分配是由进程去访问虚拟地址时产生缺页异常(Page Fault)来触发。</li>
+<li>一个进程的虚拟地址空间在内核中用内存描述符<code>struct mm_struct</code>进行表示，而进程的虚拟地址空间又被划分为多个虚拟内存区域<code>struct vm_area_struct</code>，简称<code>vma</code>。另外，进程描述符由<code>struct task_struct</code>中的<code>mm</code>域记录。</li>
+<li>我们来看一幅图详细了解一下内存的分配过程。<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/05/9946c20a6a416f311a954218cd2a6f95.jpg" alt="image"></li>
+</ul>
+<h3 id="ksm实现">KSM实现</h3>
+<ul>
+<li>
+<p><code>KSM</code>后常驻一个名叫<code>ksmd</code>非实时线程。它会执行<a href="https://elixir.bootlin.com/linux/latest/source/mm/ksm.c" target="_blank" rel="noopener">ksm.c</a>源码里的<code>ksm_do_scan</code>接口定时扫描被标记为<code>MMF_VM_MERGEABLE</code>的<code>mm_struct</code>[内存描述符]，调用<code>cmp_and_merge_page</code>识别并合并内容完全一样的物理页，扫描的间隔和每次扫描的页数分别由<code>/sys/kernel/mm/ksm/pages_to_scan</code>、<code>/sys/kernel/mm/ksm/sleep_millisecs</code>控制。</p>
+</li>
+<li>
+<p>用户层可以通过系统调用<code>madvise(addr,length,MADV_MERGEABLE)</code>对一块页对齐的内存标记为可用于KSM合并。此外由于<code>madvise</code>系统调用会通过内核源码<a href="https://elixir.bootlin.com/linux/latest/source/mm/madvise.c" target="_blank" rel="noopener">madvise.c</a>里的<code>madvise_behavior</code>接口对内存区域vma中的内存进行标记，如果该区间和周围的内存区间标记不同，那么会分配新的<code>vma</code>，而内核对进程持有的<code>vma</code>是有限制的，分配的vma数目必须小于<code>/proc/sys/vm/max_map_count</code>里的限制，一旦超出，那么会引发<code>OOM Killer</code>导致进程<code>crash</code>。<strong>如果调大<code>max_map_count</code>产生过多的<code>vma</code>会导致系统的性能下降，我们应该根据自身业务的规模进行合理调整，同时有必要加上监控预警。</strong></p>
+</li>
+<li>
+<p>我们来看一幅图详细了解一下KSM的扫描合并过程。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/05/3ff759739d9804d20925fffdb1d7f5a1.jpg" alt="image"></p>
+</li>
+</ul>
+<h2 id="ksm接入成本">KSM接入成本</h2>
+<ul>
+<li>对于需要接入的产品而言，主要的接入成本如下：</li>
+</ul>
+<ul>
+<li>需改动代码做适配，主动标记希望合并的数据。</li>
+<li>启用后会常驻一个扫描进程ksmd，带来少量的额外CPU消耗。</li>
+</ul>
+<h2 id="ksm收益与风险">KSM收益与风险</h2>
+<h3 id="收益">收益</h3>
+<ul>
+<li>对于普通进程，每个进程都要加载同样进程数据，一台机器同时打开几十个进程，有较多相同内存数据，<code>KSM</code>会取得良好效果。</li>
+<li>内存的节省，对公有云和容器能带来后续的成本收益。</li>
+</ul>
+<h3 id="风险">风险</h3>
+<ul>
+<li>系统的虚拟内存区域<code>vma</code>最大的<code>map</code>数量是有限制的，一旦超出，那么会引发<code>OOM Killer</code>导致进程<code>crash</code>。<strong>如果调大<code>max_map_count</code>生成过多的<code>vma</code>会产生碎片导致系统的性能下降，我们应该根据自身业务的规模进行合理调整并加上监控预警，具体监控的指标可以参考下面的KSM配置部分。</strong></li>
+</ul>
+<h2 id="ksm配置">KSM配置</h2>
+<ul>
+<li>KSM开关</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo 1 &gt; /sys/kernel/mm/ksm/run   #启动KSM</span><br><span class="line">echo 0 &gt; /sys/kernel/mm/ksm/run   #关闭KSM</span><br><span class="line">echo 2 &gt; /sys/kernel/mm/ksm/run   #停止运行态的KSM并取消合并所有合并页</span><br></pre></td></tr></table></figure>
+<ul>
+<li>控制参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/mm/ksm/sleep_millisecs    #ksmd两次扫描之间的时间间隔，单位毫秒，默认20ms。</span><br><span class="line">/sys/kernel/mm/ksm/pages_to_scan      #控制一次扫描处理的页数，默认为100。</span><br><span class="line">/sys/kernel/mm/ksm/merge_across_nodes #控制是否允许不同的NUMA节点之间进行页合并，默认允许，写入0表示不允许。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用于监控的参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/sys/kernel/mm/ksm/full_scans        #记录已经执行的全区域扫描次数。</span><br><span class="line">/sys/kernel/mm/ksm/pages_shared      #记录稳定树节点数，即共享的物理页数。</span><br><span class="line">/sys/kernel/mm/ksm/pages_sharing     #记录被共享的物理页数，通过此可计算节省的物理内存。</span><br><span class="line">/sys/kernel/mm/ksm/pages_unshared    #记录不稳定树的节点树，即未共享的物理页数。</span><br><span class="line">/sys/kernel/mm/ksm/pages_volatile    #记录频繁改变的物理页数。</span><br></pre></td></tr></table></figure>
+<h2 id="ksm应用实例">KSM应用实例</h2>
+<h3 id="空载实验">空载实验</h3>
+<ul>
+<li>在4台宿主上，共启动8个容器，每个容器部署32个进程，宿主机内存对比如下：</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>序号</th>
-<th>重要事项</th>
+<th style="text-align:left">机器IP</th>
+<th style="text-align:left">总内存大小</th>
+<th style="text-align:left">未启动KSM时内存占用</th>
+<th style="text-align:left">启动KSM时内存占用</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>晋升为准爸爸</td>
+<td style="text-align:left">10.203.10.183</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">35.4688G</td>
+<td style="text-align:left">20.6592G</td>
 </tr>
 <tr>
-<td>2</td>
-<td>入职网易一周年，稳固了业务知识。</td>
+<td style="text-align:left">10.203.10.185</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">35.4816G</td>
+<td style="text-align:left">20.6592G</td>
 </tr>
 <tr>
-<td>3</td>
-<td>偶遇极客时间APP，学习了几百个课时，开拓了视野。</td>
+<td style="text-align:left">10.203.10.184</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">35.4048G</td>
+<td style="text-align:left">20.4544G</td>
 </tr>
 <tr>
-<td>4</td>
-<td>老爸遭受工伤，首次处理劳动纠纷问题。</td>
+<td style="text-align:left">10.203.10.186</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">35.4432G</td>
+<td style="text-align:left">20.48G</td>
 </tr>
 <tr>
-<td>5</td>
-<td>首次创建属于自己域名的<a href="https://lyonger.cn">博客</a></td>
+<td style="text-align:left">10.203.10.165</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">34.8032G</td>
+<td style="text-align:left">19.5328G</td>
+</tr>
+<tr>
+<td style="text-align:left">10.203.10.167</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">34.8032G</td>
+<td style="text-align:left">19.5584G</td>
+</tr>
+<tr>
+<td style="text-align:left">10.203.10.164</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">34.816G</td>
+<td style="text-align:left">19.5456G</td>
+</tr>
+<tr>
+<td style="text-align:left">10.203.10.166</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">34.8032G</td>
+<td style="text-align:left">19.5328G</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>
-<p>入职网易的第一年，需要适用工作环境，为此不断努力，弥补自身短板。但却离规划的目标有点差距。时间总是需要挤一挤才有，需要减少不必要的加班，及时补充课外知识，给自己充电。</p>
-</li>
-<li>
-<p>这一年老爸的手出了工伤事故，险些留下后遗症。在老婆的帮助下，最后这个事情还算处理的顺利。通过这件事，让我意识到懂法和维权是多么的重要。</p>
-</li>
-<li>
-<p>这一年，互联网行业整体情况偏向冷清，许多公司裁员。居安思危的同时，也在思考如何走出自己的风格。毕竟这个行业，到了30岁以后，会存在一些职业瓶颈，大多数人需要面临去与留的问题。</p>
-</li>
-<li>
-<p>身体的锻炼几乎没有认真的坚持下来，真可谓知易行难。</p>
-</li>
-<li>
-<p>2020已经到来，这一年，需要更多的努力和自律。加油，越努力越幸运，有希望，才有更好的可能。</p>
-</li>
+<li>如上表格可知，启动KSM，内存使用减少了大概<code>15G</code>，减幅达到<code>23%</code>。</li>
+</ul>
+<h3 id="运行实验">运行实验</h3>
+<ul>
+<li>在一个宿主上，启动2个容器，每个容器部署32个进程，其中一个容器有9600个用户在不停的请求，一个容器有800个用户在不停的进行请求，请求人数较多的容器数据对比如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">机器IP</th>
+<th style="text-align:left">总内存大小</th>
+<th style="text-align:left">未启动KSM时内存占用</th>
+<th style="text-align:left">启动KSM时内存占用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">10.203.10.183</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">44.1856G</td>
+<td style="text-align:left">29.3632G</td>
+</tr>
+<tr>
+<td style="text-align:left">10.203.10.186</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">44.1472G</td>
+<td style="text-align:left">29.2864G</td>
+</tr>
+<tr>
+<td style="text-align:left">10.203.10.184</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">44.0832G</td>
+<td style="text-align:left">29.1584G</td>
+</tr>
+<tr>
+<td style="text-align:left">10.203.10.185</td>
+<td style="text-align:left">64G</td>
+<td style="text-align:left">44.1984G</td>
+<td style="text-align:left">29.1968G</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>如上表格可知，启动KSM，内存中战斗最终减低了大概<code>15G</code>，减幅达<code>23%</code>。</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li>使用<code>KSM</code>之前，需对此有一定的了解，对于单进程消耗内存比较大且进程数目集中在某一台机器上的业务建议考虑接入，实际上我们接入的成本换取的收益是可观的。</li>
 </ul>
 
                 
@@ -269,13 +397,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/KSM应用实践/" data-toggle="tooltip" data-placement="top" title="KSM应用实践">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/思念在远方/" data-toggle="tooltip" data-placement="top" title="思念在远方">Next Post &rarr;</a>
+                            <a href="/article/2019的那些事/" data-toggle="tooltip" data-placement="top" title="2019的那些事">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -343,7 +467,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="nav">none</ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景介绍"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ksm原理"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">KSM&#x539F;&#x7406;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#linux内存机制"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Linux&#x5185;&#x5B58;&#x673A;&#x5236;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ksm实现"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">KSM&#x5B9E;&#x73B0;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ksm接入成本"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">KSM&#x63A5;&#x5165;&#x6210;&#x672C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ksm收益与风险"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">KSM&#x6536;&#x76CA;&#x4E0E;&#x98CE;&#x9669;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#收益"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x6536;&#x76CA;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#风险"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">&#x98CE;&#x9669;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ksm配置"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">KSM&#x914D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ksm应用实例"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">KSM&#x5E94;&#x7528;&#x5B9E;&#x4F8B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#空载实验"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">&#x7A7A;&#x8F7D;&#x5B9E;&#x9A8C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#运行实验"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">&#x8FD0;&#x884C;&#x5B9E;&#x9A8C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li></ol>
         
         </div>
       </aside>
@@ -363,7 +487,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#生活" title="生活">生活</a>
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
                         
                     </div>
                 </section>
@@ -394,8 +518,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/2019的那些事/";
-    var disqus_url = "https://lyonger.cn/article/2019的那些事/";
+    var disqus_identifier = "https://lyonger.cn/article/KSM应用实践/";
+    var disqus_url = "https://lyonger.cn/article/KSM应用实践/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
