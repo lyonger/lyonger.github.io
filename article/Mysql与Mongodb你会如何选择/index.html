@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录生活中的点滴~">
+    <meta name="keyword"  content="blog">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Mysql与Mongodb你会如何选择 - 倚楼听风雨，淡看江湖路。
+        
+    </title>
+
+    <link rel="canonical" href="https://lyonger.cn/article/Mysql与Mongodb你会如何选择/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                            
+                        </div>
+                        <h1>Mysql与Mongodb你会如何选择</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 刘勇 on
+                            2020-01-16
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">刘勇的blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="概述">概述</h1>
+<h2 id="背景">背景</h2>
+<ul>
+<li>
+<p>数据库几乎是线上业务架构里的核心服务，在海量数据环境下，数据库的读写效率直接影响着一款产品的体验，因此从一开始就选择一款适合适的数据库就显得尤为重要。</p>
+</li>
+<li>
+<p>为了让大家在一开始选择数据库时有个参考数据，我们对<code>MongoDB 3.0.7</code>和<code>MySQL 5.5.40</code>分别在大数据（百万级～千万级）环境下的平均时延、吞吐量进行了研究对比。</p>
+</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/4014fe0fcd198e588b76e264e3b3fd53.jpg" alt="image"></p>
+<h2 id="工具简介">工具简介</h2>
+<ul>
+<li><code>sysbench</code>是一个模块化的、跨平台、多线程基准测试工具，主要用于评估测试各种不同系统参数下的数据库负载情况。而<code>ycsb（Yahoo! Cloud Serving Benchmark）</code>则是雅虎开源的一款通用的、针对各类NoSQL产品的性能测试工具。接下来我们简单的介绍一下用于本次研究对比的压测工具：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>工具名称</strong></th>
+<th><strong>适用数据库</strong></th>
+<th><strong>特点</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>sysbench</strong></td>
+<td>MySQL/Oracle/PostgreSQL等RDBMS</td>
+<td>(1)   测试类型可选；  (2)    定制的参数选择丰富；  (3)   多线程支持；</td>
+</tr>
+<tr>
+<td><strong>ycsb</strong></td>
+<td>MongoDB、HBase、Redis、等NoSQL</td>
+<td>(1)  多线程支持；  (2)  扩展性强；  (4)   数据请求支持随机分布；  (5)   可灵活定义场景文件；</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="安装说明">安装说明</h1>
+<h2 id="基础环境">基础环境</h2>
+<ul>
+<li><code>ycsb</code>工程依赖<code>Java</code>、<code>maven</code>，有<code>maven</code>环境后就可以直接在<code>ycsb</code>根目录下运行<code>package</code>任务。而<code>sysbench</code>编译安装需要<code>automake</code>，于是：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#yum -y install mysql-devel automake libtool git wget unzip python-setuptools  java-devel</span></span><br><span class="line"><span class="comment">#easy_install  argparse</span></span><br><span class="line"><span class="comment">#wget http://ftp.heanet.ie/mirrors/www.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz</span></span><br><span class="line"><span class="comment">#tar xf apache-maven-3.1.1-bin.tar.gz -C /usr/local/</span></span><br><span class="line"><span class="comment">#cd /usr/local &amp;&amp; ln -s apache-maven-* maven</span></span><br><span class="line"><span class="comment"># echo "export PATH=/usr/local/maven/bin:\$PATH" &gt;&gt; /etc/profile</span></span><br><span class="line"><span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
+<h2 id="下载并安装">下载并安装</h2>
+<h3 id="sysbench">sysbench</h3>
+<ul>
+<li>我们选择最新版的sysbench 0.5版本来测试数据库性能，该版本优化了oltp的lua脚本测试和实时显示功能。sysbench默认支持MySQL，如果需要测试Oracle/PostgreSQL，则在configure时需要加上–with-oracle或者–with-pgsql参数。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wget -O sysbench-0.5.zip  https://codeload.github.com/akopytov/sysbench/zip/0.5</span></span><br><span class="line"><span class="comment">#unzip sysbench-0.5.zip</span></span><br><span class="line"><span class="comment"># cd sysbench-0.5</span></span><br><span class="line"><span class="comment">#chmod +x autogen.sh</span></span><br><span class="line"><span class="comment">#./autogen.sh</span></span><br><span class="line"><span class="comment">#./configure --prefix=/usr/local/sysbench  --with-mysql --with-mysql-includes=/usr/local/mysql/include --with-mysql-libs=/usr/local/mysql/lib</span></span><br><span class="line"><span class="comment">#make &amp;&amp; make install</span></span><br><span class="line"><span class="comment"># echo "export PATH=/usr/local/maven/bin:/usr/local/sysbench/bin:\$PATH"  &gt;&gt; /etc/profile</span></span><br><span class="line"><span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查是否成功</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/71ec3acf214d3db9e039f451de93af26.jpg" alt="image"></p>
+<h3 id="ycsb">ycsb</h3>
+<ul>
+<li>我们同样选择最新版的ycsb来进行测试并使用mvn编译安装。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cd /usr/local/ &amp;&amp; git clone https://github.com/brianfrankcooper/YCSB.git</span></span><br><span class="line"><span class="comment"># ln -s YCSB ycsb</span></span><br><span class="line"><span class="comment">#cd ycsb &amp;&amp; mvn -pl com.yahoo.ycsb:mongodb-binding -am clean package</span></span><br><span class="line"><span class="comment">#echo "export PATH=/usr/local/ycsb/bin:/usr/local/maven/bin:/usr/local/sysbench/bin:\$PATH" &gt;&gt; /etc/profile</span></span><br><span class="line"><span class="comment">#source /etc/profile</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>检查是否成功。</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/00604f169f985b441dd8386b145a39d9.jpg" alt="image"></p>
+<h1 id="使用说明">使用说明</h1>
+<ul>
+<li>为了更好地理解后面的测试过程，我们先对sysbench和ycsb的使用参数进行详细说明。</li>
+</ul>
+<h2 id="sysbench">sysbench</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/sysbench --<span class="built_in">test</span>=&lt;<span class="built_in">test</span>-name&gt; [options]... &lt;<span class="built_in">command</span>&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>options参数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>参数名</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>–test=oltp.lua</td>
+<td>选用的lua测试脚本。</td>
+</tr>
+<tr>
+<td>–num-threads=15</td>
+<td>并发15个线程。</td>
+</tr>
+<tr>
+<td>–oltp_tables_count=1</td>
+<td>对1个表进行测试。</td>
+</tr>
+<tr>
+<td>–oltp-table-size=1000000</td>
+<td>每个表产生100w记录。</td>
+</tr>
+<tr>
+<td>–report-interval=10</td>
+<td>每10s输出一次测试进度报告。</td>
+</tr>
+<tr>
+<td>–oltp-dist-type=uniform</td>
+<td>指定随机取样类型，可选值有 uniform(均匀分布), Gaussian(高斯分布), special(空间分布)，默认是special。</td>
+</tr>
+<tr>
+<td>–rand-init=on</td>
+<td>是否随机初始化数据，on为开启。</td>
+</tr>
+<tr>
+<td>–max-requests=0</td>
+<td>压力测试产生请求的总数，如果以下面的max-time来记，这个值设为0。</td>
+</tr>
+<tr>
+<td>–oltp-test-mode=nontrx</td>
+<td>执行模式，这里是非事务式的。可选值有simple,complex,nontrx，默认complex。</td>
+</tr>
+<tr>
+<td>–oltp-nontrx-mode=select</td>
+<td>查询类型对于非事务执行模式，可选值有select, update_key,  update_nokey, insert, delete，默认select。</td>
+</tr>
+<tr>
+<td>–oltp-read-only=on</td>
+<td>表示不止产生只读sql，也就是使用oltp.lua时会采用读写混合模式。默认 off，如果设置为on，则不会产生update,delete,insert的sql。</td>
+</tr>
+<tr>
+<td>–oltp-skip-trx=off</td>
+<td>省略begin/commit语句，默认是off</td>
+</tr>
+<tr>
+<td>–mysql-table-engine=innodb</td>
+<td>指定MySQL引擎类型</td>
+</tr>
+<tr>
+<td>–mysql-db=sysbench_test</td>
+<td>指定测试时的数据库名</td>
+</tr>
+<tr>
+<td>–max-time=1800</td>
+<td>压力测试的最大时间，单位秒。</td>
+</tr>
+<tr>
+<td>–mysql-ignore-errors=all</td>
+<td>忽略所有错误类型</td>
+</tr>
+<tr>
+<td>–oltp-point-selects=N</td>
+<td>一个事务中简单select查询数量</td>
+</tr>
+<tr>
+<td>–oltp-index-updates=N</td>
+<td>一个事务中简单update更新数量</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>command参数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>参数名</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prepare</td>
+<td>数据预热阶段</td>
+</tr>
+<tr>
+<td>run</td>
+<td>数据测试阶段</td>
+</tr>
+<tr>
+<td>cleanup</td>
+<td>数据清理阶段</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ycsb">ycsb</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#./bin/ycsb command database [options]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>options参数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>参数名</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>recordcount=1000000</td>
+<td>测试数据集的记录条数</td>
+</tr>
+<tr>
+<td>operationcount=1000000</td>
+<td>测试过程中执行的操作总数</td>
+</tr>
+<tr>
+<td>fieldcount=4</td>
+<td>字段数目</td>
+</tr>
+<tr>
+<td>fieldlength=100</td>
+<td>每个字段的长度</td>
+</tr>
+<tr>
+<td>readallfields=true</td>
+<td>查询时是否读取记录的所有字段</td>
+</tr>
+<tr>
+<td>writeallfields =false</td>
+<td>写入时是否写入所有字段</td>
+</tr>
+<tr>
+<td>readproportion=0.7</td>
+<td>读操作的百分比</td>
+</tr>
+<tr>
+<td>updateproportion=0.1</td>
+<td>更新操作的百分比</td>
+</tr>
+<tr>
+<td>insertproportion=0.2</td>
+<td>插入操作的百分比</td>
+</tr>
+<tr>
+<td>insertorder=hashed</td>
+<td>数据插入是随机hash</td>
+</tr>
+<tr>
+<td>table=ycsb_test</td>
+<td>测试表名</td>
+</tr>
+<tr>
+<td>Maxexecutiontime=1800</td>
+<td>最长执行时间，单位秒。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>command参数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>参数名</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>load</td>
+<td>数据预热阶段</td>
+</tr>
+<tr>
+<td>run</td>
+<td>数据测试阶段</td>
+</tr>
+<tr>
+<td>shell</td>
+<td>交互模式</td>
+</tr>
+</tbody>
+</table>
+<h1 id="性能评估">性能评估</h1>
+<h2 id="测试目的">测试目的</h2>
+<ul>
+<li>在大数据环境下，对比MySQL 5.5.40与MongoDB 3.0.7的只读、只更新、只插入，混合模式(读:写=3:7)下的平均时延、吞吐量。</li>
+</ul>
+<h2 id="测试环境">测试环境</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Dell PowerEdge R410</span><br><span class="line">RAM：64G</span><br><span class="line">Kernel: 2.6.32</span><br><span class="line">MongoDB：3.0.7</span><br><span class="line">MySQL：5.5.40</span><br><span class="line">Linux OS：CentOS release 6.5 x86_64</span><br><span class="line">CPU：Intel(R) Xeon(R) CPU X5650 @2.67GHz / 24 cores</span><br></pre></td></tr></table></figure>
+<h2 id="测试过程">测试过程</h2>
+<ul>
+<li>测试的数据量变量名假定为size，分别取值为200w、400w、600w、800w、1000w。每次使用单进程对单个表压测，每个表均含有4个字段，每次压测时间不超过30分钟。为了让数据更加符合我们想要的结果，每轮测试完成后，我们都重启mysqld和mongodb实例，并且用下面的方法删除系统cache，释放swap。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#sync                   		   				# 将脏数据刷新到磁盘</span></span><br><span class="line"><span class="comment">#echo 3 &gt; /proc/sys/vm/drop_caches    # 清除OS Cache</span></span><br><span class="line"><span class="comment">#swapoff -a &amp;&amp; swapon -a</span></span><br></pre></td></tr></table></figure>
+<h3 id="sysbench">sysbench</h3>
+<h4 id="准备工作">准备工作</h4>
+<ol>
+<li>
+<p>创建测试列库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; drop database if exists sysbench_test;</span><br><span class="line">mysql&gt; create database if not exists sysbench_test character set utf8 collate utf8_general_ci;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看表结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `sbtest` (</span><br><span class="line">`id` int(10) unsigned NOT NULL auto_increment,</span><br><span class="line">`k` int(10) unsigned NOT NULL default &apos;0&apos;,</span><br><span class="line">`c` char(120) NOT NULL default &apos;&apos;,</span><br><span class="line">`pad` char(60) NOT NULL default &apos;&apos;,</span><br><span class="line">PRIMARY KEY  (`id`),</span><br><span class="line">KEY `k` (`k`));</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="只读测试">只读测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./bin/sysbench --db-driver=mysql --test=oltp.lua --num-threads=1 \</span></span><br><span class="line">--oltp_tables_count=1 --oltp-table-size=<span class="variable">$&#123;size&#125;</span> --report-interval=10 \</span><br><span class="line">--oltp-dist-type=uniform --rand-init=on --max-requests=0 \</span><br><span class="line">--oltp-test-mode=nontrx --oltp-nontrx-mode=select \</span><br><span class="line">--oltp-read-only=on --oltp-skip-trx=on --mysql-table-engine=innodb \</span><br><span class="line">--mysql-socket=/tmp/mysql.sock --mysql-user=root --mysql-host=localhost \</span><br><span class="line">--mysql-password=`cat /data/save/mysql_root` --mysql-port=3306 \</span><br><span class="line">--mysql-db=sysbench_test  [ prepare | run | cleanup ]</span><br></pre></td></tr></table></figure>
+<h4 id="只更新测试">只更新测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#./bin/sysbench --db-driver=mysql --test=./share/sysbench/update_index.lua \</span></span><br><span class="line">--num-threads=1 --oltp_tables_count=1 --oltp-table-size=<span class="variable">$&#123;size&#125;</span> --report-interval=10 \</span><br><span class="line">--oltp-dist-type=uniform --rand-init=on --max-requests=0  \</span><br><span class="line">--oltp-read-only=off --mysql-table-engine=innodb --mysql-socket=/tmp/mysql.sock \</span><br><span class="line">--mysql-user=root --mysql-host=localhost --mysql-password=`cat /data/save/mysql_root` \</span><br><span class="line">--mysql-port=3306 --mysql-db=sysbench_test [ prepare | --max-time=1800 run | cleanup ]</span><br></pre></td></tr></table></figure>
+<h4 id="只插入测试">只插入测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#./bin/sysbench --db-driver=mysql --test=./share/sysbench/insert.lua --num-threads=1 \</span></span><br><span class="line">--oltp_tables_count=1 --oltp-table-size=<span class="variable">$&#123;size&#125;</span> --report-interval=10 \</span><br><span class="line">--oltp-dist-type=uniform --rand-init=on --max-requests=0 --oltp-read-only=off \</span><br><span class="line">--mysql-table-engine=innodb --mysql-socket=/tmp/mysql.sock --mysql-user=root \</span><br><span class="line">--mysql-host=localhost --mysql-password=`cat /data/save/mysql_root` --mysql-port=3306 \</span><br><span class="line">--mysql-db=sysbench_test [ prepare | --max-time=1800 run | cleanup ]</span><br></pre></td></tr></table></figure>
+<h4 id="混合模式测试">混合模式测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#./bin/sysbench --test=./share/sysbench/oltp.lua --mysql-host=localhost --mysql-port=3306 \</span></span><br><span class="line">--mysql-user=root --mysql-password=`cat /data/save/mysql_root` \</span><br><span class="line">--mysql-db=sysbench_test --mysql-table-engine=innodb  \</span><br><span class="line">--oltp-table-size=<span class="variable">$&#123;size&#125;</span> --report-interval=10 --rand-init=on --max-requests=0 \</span><br><span class="line">--oltp-read-only=off --oltp-point-selects=$((size/3)) --oltp-point-inserts=$((size/3)) \</span><br><span class="line">--oltp-index-updates=$((size/3)) --num-threads=1 --mysql-ignore-errors=all \</span><br><span class="line">--oltp-skip-trx=off --oltp_tables_count=1 [ prepare | --max-time=1800 run | cleanup ]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数含义请参考上面的使用说明章节。</li>
+</ul>
+<h3 id="ycsb">ycsb</h3>
+<h4 id="准备工作">准备工作</h4>
+<ul>
+<li>编辑workload文件，分别修改readproportion、updateproportion、insertproportion为相应的值并分别命名为workload_select、workload_update、workload_insert、workload_complex比如只读测试workload_select文件内容。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">workload=com.yahoo.ycsb.workloads.CoreWorkload</span><br><span class="line">recordcount=$&#123;size&#125;</span><br><span class="line">operationcount=$&#123;size&#125;</span><br><span class="line">insertstart=0</span><br><span class="line">fieldcount=4</span><br><span class="line">fieldlength=100</span><br><span class="line">readallfields=true</span><br><span class="line">writeallfields=false</span><br><span class="line">fieldlengthdistribution=zipfian</span><br><span class="line">readproportion=1 </span><br><span class="line">updateproportion=0</span><br><span class="line">insertproportion=0</span><br><span class="line">requestdistribution=zipfian</span><br><span class="line">table=ycsb_test</span><br><span class="line">maxexecutiontime=1800</span><br></pre></td></tr></table></figure>
+<h4 id="只读测试">只读测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/ycsb load mongodb -s -threads 1 -P workloads/workload_select</span><br><span class="line">./bin/ycsb run mongodb -s -threads 1 -P workloads/workload_select</span><br></pre></td></tr></table></figure>
+<h4 id="只更新测试">只更新测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/ycsb load mongodb -s -threads 1 -P workloads/workload_update</span><br><span class="line">./bin/ycsb run mongodb -s -threads 1 -P workloads/workload_update</span><br></pre></td></tr></table></figure>
+<h4 id="只插入测试">只插入测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/ycsb load mongodb -s -threads 1 -P workloads/workload_insert</span><br><span class="line">./bin/ycsb run mongodb -s -threads 1 -P workloads/workload_insert</span><br></pre></td></tr></table></figure>
+<h4 id="混合模式测试">混合模式测试</h4>
+<ul>
+<li>测试命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/ycsb load mongodb -s -threads 1 -P workloads/workload_complex</span><br><span class="line">./bin/ycsb run mongodb -s -threads 1 -P workloads/workload_complex</span><br></pre></td></tr></table></figure>
+<h2 id="测试结果">测试结果</h2>
+<h3 id="吞吐量">吞吐量</h3>
+<ul>
+<li>吞吐量：单位时间内的操作数。</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/93873120b231f42fc680c7f44c9e38a9.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/abfbfbbb65dee03be5af733bd0a1b2b6.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/ee3e27ed0cd841380e1be311a33b5de3.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/c646ee0be74569b66551de554e1a2e8f.jpg" alt="image"></p>
+<h3 id="平均时延">平均时延</h3>
+<ul>
+<li>平均时延：每次操作所消耗的平均时间。</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/8300fcbc7a57dbd406e7c632879f16e2.jpg" alt="image"></p>
+<ul>
+<li><strong>PS：MongoDB在读取的场景有着天生的优势，每秒的Select操作数远远超越MySQL。</strong></li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/9642a3408adb83ce6ae7c20218c9db4a.jpg" alt="image"></p>
+<ul>
+<li><strong>PS：上图看出MongoDB在200W记录的时候，性能较接近MySQL，但是随着数据量越大性能剧降，而MySQL却相对较为稳定。同时MySQL的性能要好于MongoDB 2倍。</strong></li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/cd487764d38664112414cc0b443ae2d9.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/01/16/faf86254afa92eed348cbb790025f51e.jpg" alt="image"></p>
+<ul>
+<li><strong>PS：以上混合模式是主要模拟了游戏的实际场景（写为主），结合前面的分步测试结果，这里MongoDB比MySQL性能相差至少4倍，会不会感到理所当然？</strong></li>
+</ul>
+<h1 id="分析总结">分析总结</h1>
+<ul>
+<li>通过以上测试发现MySQL和MongoDB各有优势，因此我们给出如下建议作为参考，具体选择哪款数据库请根据自身业务场景来决定。</li>
+</ul>
+<ol>
+<li>相比较MySQL，MongoDB数据库更适合那些读作业较重的任务模型。MongoDB能充分利用机器的内存资源。如果机器的内存资源丰富的话，MongoDB的查询效率会快很多。</li>
+<li>相比MongoDB，MySQL数据库更适合插入、更新为主的任务模型，其效率相比于MongoDB优势非常明显。</li>
+<li>在带”_id”插入数据的时候，MongoDB的插入效率其实并不高。如果想充分利用MongoDB性能的话，推荐采取不带”_id”的插入方式，然后对相关字段作索引来查询。</li>
+<li>MongoDB适合那些对数据库具体数据格式不明确或者数据库数据格式经常变化的需求模型，而且对开发者十分友好。</li>
+<li>稳定性方面，MongoDB不如MySQL，MySQL不愧是一种非常稳定的数据库，无论在指定主键还是在不指定主键插入的情况下，其效率都差不了太多, 其稳定性还是毋庸置疑。</li>
+<li>事务支持方面，MySQL占绝对优势，MongoDB对事务关系支持薄弱，这也是所有NoSQL数据库共同的缺陷，不过NoSQL并不是为了事务关系而设计的，具体应用还是很需求。</li>
+</ol>
+<ul>
+<li><strong>结合我们的游戏业务场景来看，选用MySQL无疑是最理想的选择。但是有时候我们的游戏数据分析后台需要做很大量的统计、展示，这对读取性能要求较高，如果同时能够结合MongoDB的来提升读取性能可能更有利于业务的扩展性。主要是把用户主数据写到MySQL，用户日志类数据写到MongoDB，然后游戏数据分析后台直接读取MongoDB做统计分析工作</strong>。</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/websocket的几种测试方式/" data-toggle="tooltip" data-placement="top" title="websocket的几种测试方式">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="/images/ali_pay.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="/images/wechat_pay.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#概述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x6982;&#x8FF0;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#工具简介"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5DE5;&#x5177;&#x7B80;&#x4ECB;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#安装说明"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;&#x8BF4;&#x660E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基础环境"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">&#x57FA;&#x7840;&#x73AF;&#x5883;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#下载并安装"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">&#x4E0B;&#x8F7D;&#x5E76;&#x5B89;&#x88C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#sysbench"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">sysbench</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ycsb"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">ycsb</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#使用说明"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;&#x8BF4;&#x660E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#sysbench"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">sysbench</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ycsb"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">ycsb</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#性能评估"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x6027;&#x80FD;&#x8BC4;&#x4F30;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试目的"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">&#x6D4B;&#x8BD5;&#x76EE;&#x7684;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试环境"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">&#x6D4B;&#x8BD5;&#x73AF;&#x5883;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试过程"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">&#x6D4B;&#x8BD5;&#x8FC7;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#sysbench"><span class="toc-nav-number">4.3.1.</span> <span class="toc-nav-text">sysbench</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#准备工作"><span class="toc-nav-number">4.3.1.1.</span> <span class="toc-nav-text">&#x51C6;&#x5907;&#x5DE5;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#只读测试"><span class="toc-nav-number">4.3.1.2.</span> <span class="toc-nav-text">&#x53EA;&#x8BFB;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#只更新测试"><span class="toc-nav-number">4.3.1.3.</span> <span class="toc-nav-text">&#x53EA;&#x66F4;&#x65B0;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#只插入测试"><span class="toc-nav-number">4.3.1.4.</span> <span class="toc-nav-text">&#x53EA;&#x63D2;&#x5165;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#混合模式测试"><span class="toc-nav-number">4.3.1.5.</span> <span class="toc-nav-text">&#x6DF7;&#x5408;&#x6A21;&#x5F0F;&#x6D4B;&#x8BD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ycsb"><span class="toc-nav-number">4.3.2.</span> <span class="toc-nav-text">ycsb</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#准备工作"><span class="toc-nav-number">4.3.2.1.</span> <span class="toc-nav-text">&#x51C6;&#x5907;&#x5DE5;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#只读测试"><span class="toc-nav-number">4.3.2.2.</span> <span class="toc-nav-text">&#x53EA;&#x8BFB;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#只更新测试"><span class="toc-nav-number">4.3.2.3.</span> <span class="toc-nav-text">&#x53EA;&#x66F4;&#x65B0;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#只插入测试"><span class="toc-nav-number">4.3.2.4.</span> <span class="toc-nav-text">&#x53EA;&#x63D2;&#x5165;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#混合模式测试"><span class="toc-nav-number">4.3.2.5.</span> <span class="toc-nav-text">&#x6DF7;&#x5408;&#x6A21;&#x5F0F;&#x6D4B;&#x8BD5;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试结果"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">&#x6D4B;&#x8BD5;&#x7ED3;&#x679C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#吞吐量"><span class="toc-nav-number">4.4.1.</span> <span class="toc-nav-text">&#x541E;&#x5410;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#平均时延"><span class="toc-nav-number">4.4.2.</span> <span class="toc-nav-text">&#x5E73;&#x5747;&#x65F6;&#x5EF6;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#分析总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x5206;&#x6790;&#x603B;&#x7ED3;</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://coolshell.cn" target="_blank">酷壳CoolShell</a></li>
+                    
+                        <li><a href="http://www.ruanyifeng.com/blog" target="_blank">阮一峰的网络日志</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "lyonger-cn";
+    var disqus_identifier = "https://lyonger.cn/article/Mysql与Mongodb你会如何选择/";
+    var disqus_url = "https://lyonger.cn/article/Mysql与Mongodb你会如何选择/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lyonger">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 刘勇 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://lyonger.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://lyonger.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
