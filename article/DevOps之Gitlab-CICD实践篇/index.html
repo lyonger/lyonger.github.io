@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录生活中的点滴~">
+    <meta name="keyword"  content="blog">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          DevOps之Gitlab-CICD实践篇 - 倚楼听风雨，淡看江湖路。
+        
+    </title>
+
+    <link rel="canonical" href="https://lyonger.cn/article/DevOps之Gitlab-CICD实践篇/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+                            
+                        </div>
+                        <h1>DevOps之Gitlab-CICD实践篇</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 刘勇 on
+                            2020-02-03
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">刘勇的blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="devops之gitlab-cicd实践篇">DevOps之Gitlab-CICD实践篇</h1>
+<h2 id="背景">背景</h2>
+<ul>
+<li>随着公司项目使用<code>gitlab</code>越来越多，业务发布的次数越来越频繁，对于发布效率提出了更高的要求。从2012开始，Gitlab官方开始集成了<code>Continuous Integration (CI) &amp; Continuous Delivery (CD)</code>功能。本文主要针对该功能的实践做一个分享。</li>
+</ul>
+<h2 id="基础介绍">基础介绍</h2>
+<ul>
+<li>
+<p><code>GitLab CI/CD</code>可以做很多事情，下图展现了<code>GitLab CI/CD</code>工作流程中整个的服务能力，而无需使用外部工具来交付软件。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/5f6ca50d5d5e238b622b2cd9dec2864b.jpg" alt="image"></p>
+</li>
+<li>
+<p>在介绍实践方案之前，我们先简单的了解一下和<code>Continuous Integration (CI) &amp; Continuous Delivery (CD)</code>功能有关的相关知识。</p>
+</li>
+</ul>
+<h3 id="术语介绍">术语介绍</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">术语名</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">commit</td>
+<td style="text-align:left">就是一次git的提交，默认提交时会触发pipeline。</td>
+</tr>
+<tr>
+<td style="text-align:left">Job</td>
+<td style="text-align:left">Runner execute的内容</td>
+</tr>
+<tr>
+<td style="text-align:left">pipeline</td>
+<td style="text-align:left">不同stage下的不同job组成的集合，即一次流水线。</td>
+</tr>
+<tr>
+<td style="text-align:left">Runner</td>
+<td style="text-align:left">单独执行每个Job的agent或者服务器，一个job最终会分配到某个Runner执行。</td>
+</tr>
+<tr>
+<td style="text-align:left">Stage</td>
+<td style="text-align:left">一个阶段stage，里面可能包含很多个job，同一个阶段里面的job会并行执行。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gitlab-pipeline介绍">gitlab-pipeline介绍</h3>
+<ul>
+<li>
+<p>一次<code>pipeline</code>其实相当于一次任务构建，里面可以包含多个流程，如安装依赖、运行测试、编译代码、部署测试服务器、部署生产服务器等。 任何提交或者<code>Merge Request</code>的合并都可以触发<code>pipeline</code>，触发pipeline创建的方式主要有如下。如需详细了解，请<a href="https://about.gitlab.com/blog/2019/07/12/guide-to-ci-cd-pipelines/" target="_blank" rel="noopener">查阅官网</a>。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/d0108c6cfba2f06a284d801af925bb3f.jpg" alt="image"></p>
+</li>
+</ul>
+<h3 id="gitlab-stage介绍">gitlab-stage介绍</h3>
+<ul>
+<li>
+<p><code>Stage</code>表示一个构建阶段，我们可以在一个<code>Pipeline</code>中定义多个<code>Stage</code>，这些<code>Stage</code>会有以下特点：</p>
+<ul>
+<li>所有<code>Stage</code>会按照<code>Stages</code>参数里定义的顺序串行执行，即当一个<code>Stage</code>完成后，才会执行下一个<code>Stage</code>。</li>
+<li>默认情况下只有当所有<code>Stage</code>成功后，最终的<code>pipeline</code>构建任务才会成功。</li>
+<li>默认情况下任何一个<code>Stage</code>失败，那么后面的<code>Stage</code>不会执行，该构建任务最终会失败。</li>
+</ul>
+</li>
+<li>
+<p><code>pipeline</code>和<code>stage</code>的关系简单理解为下图。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/82362c5a577716a53334132390445d62.jpg" alt="image"></p>
+</li>
+</ul>
+<h3 id="gitlab-job介绍">gitlab-job介绍</h3>
+<ul>
+<li>
+<p><code>job</code>表示构建工作，即某个<code>Stage</code>里面执行的工作内容。我们可以在同一个<code>Stage</code>里面定义多个<code>Job</code>，这些<code>Jobs</code>会有以下特点：</p>
+<ul>
+<li>相同<code>Stage</code>中的<code>Job</code>会并行执行。</li>
+<li>相同<code>Stage</code>中的<code>Job</code>都执行成功时，该<code>Stage</code>才会成功。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>如果任何一个<code>Job</code>失败，那么该<code>Stage</code>失败，即该构建任务失败。</li>
+</ul>
+<ul>
+<li>
+<p><code>stage</code>和<code>jobs</code>的关系简单理解为下图。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/38cec5a535d72bee8142a02c088afae2.jpg" alt="image"></p>
+</li>
+<li>
+<p>我们以某个<code>pipeline</code>为例解释<code>pipeline</code>、<code>stage</code>、<code>job</code>的含义，具体请看下图。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/b7cc2cc7b2496d44d46f2c4d2b72dea8.jpg" alt="image"></p>
+</li>
+</ul>
+<h3 id="gitlab-ci-yaml介绍">gitlab-ci-yaml介绍</h3>
+<ul>
+<li><code>pipeline</code>执行的内容使用<code>ymal</code>语言进行描述，默认文件名为<code>.gitlab-ci.yml</code>，该文件默认放在仓库的根目录下即可生效。关于<code>ymal</code>语言的使用可<a href="https://www.ruanyifeng.com/blog/2016/07/yaml.html" target="_blank" rel="noopener">点击这里</a>。下表对<code>gitlab 11.11.4</code>版本中<code>.gitlab-ci.yml</code>文件里常用的关键字参数进行简单说明。如需深入了解可查阅<a href="https://docs.gitlab.com/ee/ci/yaml/" target="_blank" rel="noopener">官方文档</a>。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">关键字</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">script</td>
+<td style="text-align:left">runner中执行的shell语句内容</td>
+</tr>
+<tr>
+<td style="text-align:left">image</td>
+<td style="text-align:left">docker镜像，runner执行时会使用该镜像做为基础环境，执行对应job中的内容。</td>
+</tr>
+<tr>
+<td style="text-align:left">services</td>
+<td style="text-align:left">docker中的服务，runner执行时会关联该服务的镜像做为基础环境，执行对应job中的内容。</td>
+</tr>
+<tr>
+<td style="text-align:left">before_script</td>
+<td style="text-align:left">执行job之前执行的一组命令。</td>
+</tr>
+<tr>
+<td style="text-align:left">after_script</td>
+<td style="text-align:left">执行job后执行的一组命令。</td>
+</tr>
+<tr>
+<td style="text-align:left">stages</td>
+<td style="text-align:left">定义一个pipeline中所有阶段的执行顺序。</td>
+</tr>
+<tr>
+<td style="text-align:left">stage</td>
+<td style="text-align:left">定义job归属哪个stage，默认为test。</td>
+</tr>
+<tr>
+<td style="text-align:left">only</td>
+<td style="text-align:left">限制何时创建job，即限制触发job创建的条件，可用only：refs、only：kubernetes、only：variables和only：changes进行限制。</td>
+</tr>
+<tr>
+<td style="text-align:left">except</td>
+<td style="text-align:left">限制何时不创建job，即限制不会触发job创建的条件。和only关键字的作用相反。 可用except：refs、except：kubernetes、except：variables和except：changes进行限制。</td>
+</tr>
+<tr>
+<td style="text-align:left">tags</td>
+<td style="text-align:left">用于选择哪个Runner来执行job的标签列表，这个标签必须和注册runner时定义的tags一致。</td>
+</tr>
+<tr>
+<td style="text-align:left">allow_failure</td>
+<td style="text-align:left">允许失败的job可以正常提交状态。有时候一个完整的pipeline会有多个stage，有时候为了不阻塞该stage后面的stage执行，会设置该job允许失败。</td>
+</tr>
+<tr>
+<td style="text-align:left">when</td>
+<td style="text-align:left">限制什么时候执行job，注意它不是限制创建job的条件，限制创建job的条件参数是only或者except。 有时候某个job的执行你想手工点击确认才执行，可用该参数。</td>
+</tr>
+<tr>
+<td style="text-align:left">environment</td>
+<td style="text-align:left">用于定义作业部署到特定环境，比如部署到production正式环境或者testing测试环境。</td>
+</tr>
+<tr>
+<td style="text-align:left">cache</td>
+<td style="text-align:left">后续运行时应缓存的文件列表。<strong>主要用于存储project的依赖项</strong>，它可以在同个project中的不同pipelines或者jobs中共享使用。比如避免重复下载npm packages, Go vendor packages等，减少pipeline的执行时间。</td>
+</tr>
+<tr>
+<td style="text-align:left">artifacts</td>
+<td style="text-align:left">成功附加到job的文件和目录列表，<strong>主要用于同个pipeline中不同stages之间进行加速</strong>，比如后一个stage需要用到上一个stage中生成的image。它存储的内容不能在不同的pipeline中共享使用。关于cache和artifices的详细区别可参考<a href="https://docs.gitlab.com/ce/ci/caching/" target="_blank" rel="noopener">官网说明</a>。</td>
+</tr>
+<tr>
+<td style="text-align:left">dependencies</td>
+<td style="text-align:left">一个作业(job)所依赖的其他作业，以便您可以在它们之间传递artifacts。</td>
+</tr>
+<tr>
+<td style="text-align:left">coverage</td>
+<td style="text-align:left">对给定作业(job)的代码覆盖率进行设置。</td>
+</tr>
+<tr>
+<td style="text-align:left">retry</td>
+<td style="text-align:left">发生故障时可以自动重试jobs的次数。</td>
+</tr>
+<tr>
+<td style="text-align:left">trigger</td>
+<td style="text-align:left">定义下游管道触发器，比如在该stage中触发其他项目的pipeline。注意和triggers进行区分。</td>
+</tr>
+<tr>
+<td style="text-align:left">include</td>
+<td style="text-align:left">允许此作业(job)包括的外部YAML文件列表，可用include：local、include：file，include：template和include：remote关键字参数。类似nginx配置文件的include设置。</td>
+</tr>
+<tr>
+<td style="text-align:left">extends</td>
+<td style="text-align:left">此作业(job)将要继承的配置条目。</td>
+</tr>
+<tr>
+<td style="text-align:left">pages</td>
+<td style="text-align:left">上传作业(job)结果以用于GitLab的pages静态页面。</td>
+</tr>
+<tr>
+<td style="text-align:left">variables</td>
+<td style="text-align:left">定义作业(job)级别上的全局变量。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gitlab-runner介绍">gitlab-runner介绍</h3>
+<ul>
+<li>
+<p><code>.gitlab-ci.yml</code>文件里的内容由谁来执行呢，答案就是<code>gitlab-runnter</code>，一般<code>gitlab-runner</code>会和<code>gitlab</code>所在服务器进行隔离，因为一个任务的构建，往往会执行编译、测试、发布的过程，这个过程会大量消耗系统资源。<code>gitlab-runner</code>几乎可以安装在任何机器上。下面介绍<code>gitlab-runner</code>的官方仓库源安装方式。关于<code>gitlab-runner</code>的其他安装方式请查阅<a href="https://docs.gitlab.com/runner/install/" target="_blank" rel="noopener">官方文档</a>。</p>
+</li>
+<li>
+<p>添加仓库源</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># For Debian/Ubuntu/Mint</span><br><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash</span><br><span class="line"></span><br><span class="line"># For RHEL/CentOS/Fedora</span><br><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装指定的gitlab-runner版本，比如这里安装11.11.4版本。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># for DEB based systems</span><br><span class="line">sudo apt-get install gitlab-runner=11.11.4</span><br><span class="line"></span><br><span class="line"># for RPM based systems</span><br><span class="line">sudo yum install gitlab-runner-11.11.4</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>点击左侧栏<code>Settings-&gt;CI/CD-&gt;Runners-&gt;Collapse</code>获取runner的token，如下图。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/95a7b20ef4b335e4f6c26bfbc1545bd2.jpg" alt="image"></p>
+</li>
+<li>
+<p>注册gitlab-runner到gitlab实例。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/ac699c83637a8730fba8d64af3312603.jpg" alt="image"></p>
+</li>
+</ul>
+<h2 id="实践方案">实践方案</h2>
+<ul>
+<li>该实践方案主要介绍微服务项目使用<code>gitlab</code>自带的<code>GitLab Continuous Integration (CI) &amp; Continuous Delivery (CD)</code>功能，在<code>gitlab</code>提供的<code>runner</code>里面进行打包、测试、发布。</li>
+</ul>
+<h3 id="持续集成ci">持续集成CI</h3>
+<ul>
+<li>持续集成主要是代码编译和打包的过程，一般最终会集成一个适合业务场景的系统层docker镜像。</li>
+</ul>
+<h4 id="容器镜像集成">容器镜像集成</h4>
+<ul>
+<li>下面为集成系统层docker镜像<code>Dockerfile</code>的主要内容：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:stretch</span><br><span class="line"></span><br><span class="line"># 准备软件包文件</span><br><span class="line">ADD soft/ /data/soft/</span><br><span class="line"></span><br><span class="line"># 安装基本软件</span><br><span class="line">RUN DEBIAN_FRONTEND=noninteractive apt-get update \</span><br><span class="line">	&amp;&amp; DEBIAN_FRONTEND=noninteractive apt-get install -y vim htop wget dnsutils dmidecode ipmitool pciutils perl \</span><br><span class="line">	rsync screen less sysstat at stress tcpdump lsof curl telnet ntp rsyslog sudo locales logrotate cron supervisor \</span><br><span class="line">	numactl openssh-server-x509 openssh-client iptables gawk filebeat mongodb3.4.16 graphviz \</span><br><span class="line">   	&amp;&amp; apt-get clean</span><br><span class="line"></span><br><span class="line"># 安装开发环境</span><br><span class="line">RUN DEBIAN_FRONTEND=noninteractive apt-get update \</span><br><span class="line">	&amp;&amp; apt-get install -y python python-pip gcc g++ build-essential python-dev python-setuptools python-smbus \</span><br><span class="line">	build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl \</span><br><span class="line">	libffi-dev cmake automake python-setuptools libtcmalloc-minimal4 sockstat strace gdb graphviz \</span><br><span class="line">	&amp;&amp; apt-get clean</span><br><span class="line"></span><br><span class="line"># 安装python3.7</span><br><span class="line">RUN cd /data/soft/ &amp;&amp; tar xf /data/soft/Python-3.7.0.tgz &amp;&amp; cd Python-3.7.0 &amp;&amp; ./configure --enable-optimizations --with-ssl-default-suites=openssl --enable-shared \</span><br><span class="line">    &amp;&amp; make &amp;&amp; make install &amp;&amp; cp libpython3.7m.so.1.0 /lib64/  &amp;&amp; ldconfig &amp;&amp; rm -rf /data/soft</span><br><span class="line"></span><br><span class="line"># 业务启动脚本</span><br><span class="line">COPY entrypoint.sh /sbin/entrypoint.sh</span><br><span class="line">ENTRYPOINT [&quot;/bin/bash&quot;, &quot;-x&quot;, &quot;/sbin/entrypoint.sh&quot;]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>那么怎么把docker镜像推送到docker仓库呢？可在<code>.gitlab-ci.yml</code>文件中进行描述，把<code>build</code>好的镜像推送到<code>gitlab</code>内置的<code>registry</code>中。关于gitlab内置的<code>registry</code>部署可参考<a href="https://docs.gitlab.com/ce/user/packages/container_registry/index.html" target="_blank" rel="noopener">官网说明</a>。下面为打包并上传容器镜像stage的主要内容。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">build_push:</span><br><span class="line">  only:</span><br><span class="line">    refs:</span><br><span class="line">      - tags</span><br><span class="line">    variables:</span><br><span class="line">      - $CI_COMMIT_REF_NAME =~ /^rel_[0-9].*$/  # 规定必须通过打tag且名字为rel_xxx的格式才触发pipeline。</span><br><span class="line">  tags:</span><br><span class="line">    - docker</span><br><span class="line">  stage: ex_build</span><br><span class="line">  script:</span><br><span class="line">    # build docker image</span><br><span class="line">    - docker login $DOCKER_REGISTRY</span><br><span class="line">    - echo &quot;$ docker pull $BUILD_IMAGE&quot;</span><br><span class="line">    - docker pull $BUILD_IMAGE  # 防止$BUILD_IMAGE更新后，runner会缓存，故在build之前先pull一次。</span><br><span class="line">    - echo &quot;$ docker build -t $image&quot;</span><br><span class="line">    - docker build --no-cache -t $image .  </span><br><span class="line">    - echo &quot;$ docker tag  $image $latest&quot;</span><br><span class="line">    - docker tag  $image $latest</span><br><span class="line"></span><br><span class="line">    # push  docker image</span><br><span class="line">    - echo &quot;$ docker push $image&quot;</span><br><span class="line">    - docker push $image</span><br><span class="line">    - echo &quot;$ docker push $latest&quot;</span><br><span class="line">    - docker push $latest</span><br><span class="line">    - docker logout $DOCKER_REGISTRY</span><br><span class="line">  when: manual  # 手工确认</span><br><span class="line">  allow_failure: false</span><br><span class="line">  environment:</span><br><span class="line">    name: build</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>gitlab-runner中对应job的部分日志截图如下：</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/a68b351f1f39720211b23bb7c9ac271e.jpg" alt="image"></p>
+</li>
+</ul>
+<h3 id="持续交付cd">持续交付CD</h3>
+<ul>
+<li>持续交付或者持续发布的方式其实有很多种，理论上只要服务方提供了发布接口，你就可以封装在<code>.gitlab-ci.yml</code>文件里使用<code>gitlab-runner</code>调用<code>api</code>进行自动发布。下面主要介绍容器的发布方式。</li>
+</ul>
+<h4 id="发布容器">发布容器</h4>
+<ul>
+<li>发布容器时主要调用自建容器服务的发布接口，其中主要的stage内容如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">deployment_production:</span><br><span class="line">  only:</span><br><span class="line">    refs:</span><br><span class="line">      - tags</span><br><span class="line">    variables:</span><br><span class="line">      - $CI_COMMIT_REF_NAME =~ /^exrel_[0-9].*$/</span><br><span class="line">  tags:</span><br><span class="line">    - docker</span><br><span class="line">  stage: ex_deployment_production</span><br><span class="line">  script:</span><br><span class="line">    # 更新当前环境下指定渠道</span><br><span class="line">    - deploy_service $&#123;CI_ENVIRONMENT_NAME&#125; &quot;$image&quot;  #image为持续集成build后push到registry的docker镜像。deploy_service是封装容器发布过程的函数。该函数主要是根据传入的image，请求k8s的kube接口进行微服务发布。</span><br><span class="line">  when: manual</span><br><span class="line">  environment:</span><br><span class="line">    name: production</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>gitlab-runner中发布game微服务的job日志截图如下。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/ed8d62720c0d7cb26aa30cc1f2ceb3b1.jpg" alt="image"></p>
+</li>
+</ul>
+<h2 id="发布流程">发布流程</h2>
+<ul>
+<li>微服务的发布流程主要分2种类型：常规发布和热更发布。常规发布需要重建容器，热更发布无需重建容器。</li>
+</ul>
+<h3 id="常规发布">常规发布</h3>
+<ul>
+<li>
+<p>下面为常规发布场景下整体的发布流程。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/f665a4fb4413bc90d6b1d1ad5facbfbd.jpg" alt="image"></p>
+</li>
+</ul>
+<h3 id="热更发布">热更发布</h3>
+<ul>
+<li>核心思路是把需要热更的内容put到etcd集群，服务端集群自动获取内容进行热更，下面为热更发布场景下整体的发布流程。</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/d23d852434d8f0d9e397a5133b0e5d66.jpg" alt="image"></p>
+<h2 id="效果展示">效果展示</h2>
+<h3 id="常规发布下的pipeline">常规发布下的pipeline</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/3a86825055c88b7f0d7b65165bb5b3e7.jpg" alt="image"></p>
+<h3 id="热更发布下的pipeline">热更发布下的pipeline</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/03/6fb6a92c18833ed2635b2e0361ddb8c4.jpg" alt="image"></p>
+<h2 id="资料参考">资料参考</h2>
+<ul>
+<li><a href="https://about.gitlab.com/product/continuous-integration" target="_blank" rel="noopener">https://about.gitlab.com/product/continuous-integration</a></li>
+<li><a href="https://docs.gitlab.com/ce/ci/introduction/index.html" target="_blank" rel="noopener">https://docs.gitlab.com/ce/ci/introduction/index.html</a></li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/陪产的幸福体验/" data-toggle="tooltip" data-placement="top" title="陪产的幸福体验">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="/images/ali_pay.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="/images/wechat_pay.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#devops之gitlab-cicd实践篇"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">DevOps&#x4E4B;Gitlab-CICD&#x5B9E;&#x8DF5;&#x7BC7;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基础介绍"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x57FA;&#x7840;&#x4ECB;&#x7ECD;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#术语介绍"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">&#x672F;&#x8BED;&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#gitlab-pipeline介绍"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">gitlab-pipeline&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#gitlab-stage介绍"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">gitlab-stage&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#gitlab-job介绍"><span class="toc-nav-number">1.2.4.</span> <span class="toc-nav-text">gitlab-job&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#gitlab-ci-yaml介绍"><span class="toc-nav-number">1.2.5.</span> <span class="toc-nav-text">gitlab-ci-yaml&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#gitlab-runner介绍"><span class="toc-nav-number">1.2.6.</span> <span class="toc-nav-text">gitlab-runner&#x4ECB;&#x7ECD;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实践方案"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x5B9E;&#x8DF5;&#x65B9;&#x6848;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#持续集成ci"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x6301;&#x7EED;&#x96C6;&#x6210;CI</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#容器镜像集成"><span class="toc-nav-number">1.3.1.1.</span> <span class="toc-nav-text">&#x5BB9;&#x5668;&#x955C;&#x50CF;&#x96C6;&#x6210;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#持续交付cd"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x6301;&#x7EED;&#x4EA4;&#x4ED8;CD</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#发布容器"><span class="toc-nav-number">1.3.2.1.</span> <span class="toc-nav-text">&#x53D1;&#x5E03;&#x5BB9;&#x5668;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#发布流程"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x53D1;&#x5E03;&#x6D41;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常规发布"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">&#x5E38;&#x89C4;&#x53D1;&#x5E03;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#热更发布"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">&#x70ED;&#x66F4;&#x53D1;&#x5E03;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#效果展示"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x6548;&#x679C;&#x5C55;&#x793A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常规发布下的pipeline"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">&#x5E38;&#x89C4;&#x53D1;&#x5E03;&#x4E0B;&#x7684;pipeline</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#热更发布下的pipeline"><span class="toc-nav-number">1.5.2.</span> <span class="toc-nav-text">&#x70ED;&#x66F4;&#x53D1;&#x5E03;&#x4E0B;&#x7684;pipeline</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#资料参考"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">&#x8D44;&#x6599;&#x53C2;&#x8003;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://coolshell.cn" target="_blank">酷壳CoolShell</a></li>
+                    
+                        <li><a href="http://www.ruanyifeng.com/blog" target="_blank">阮一峰的网络日志</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "lyonger-cn";
+    var disqus_identifier = "https://lyonger.cn/article/DevOps之Gitlab-CICD实践篇/";
+    var disqus_url = "https://lyonger.cn/article/DevOps之Gitlab-CICD实践篇/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lyonger">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 刘勇 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://lyonger.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://lyonger.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
