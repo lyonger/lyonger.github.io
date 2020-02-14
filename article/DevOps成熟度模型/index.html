@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          磁盘数据加密 - 倚楼听风雨，淡看江湖路。
+          DevOps成熟度模型 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/磁盘数据加密/">
+    <link rel="canonical" href="https://lyonger.cn/article/DevOps成熟度模型/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                              <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
                             
                         </div>
-                        <h1>磁盘数据加密</h1>
+                        <h1>DevOps成熟度模型</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2019-11-30
+                            2020-02-14
                         </span>
                     </div>
                 
@@ -212,104 +212,21 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="freebsd">FreeBSD</h1>
+                <h2 id="devops成熟度模型">DevOps成熟度模型</h2>
 <ul>
-<li>使用系统自带的geli命令对/home/test加密</li>
-<li>要将/mnt挂载点独立一个分区出来，以免手动调整分区</li>
-<li>如果是aws，则把数据盘EBS挂载到/home/test</li>
+<li>对于中小企业落地DevOps，需有一个成熟度模型来进行考量，以下整理了DevOps成熟度模型所涉及的因素并汇整成脑图，具体如下：</li>
 </ul>
-<h2 id="首次创建加密盘">首次创建加密盘</h2>
-<ol>
-<li>aws的话先创建分区，记得先umount原来分区</li>
-</ol>
-<ul>
-<li>
-<p>AWS：用gpart创建分区</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># gpart create -s gpt xbd1</span><br><span class="line">xbd1 created</span><br><span class="line"># gpart add -t freebsd-ufs xbd1</span><br><span class="line">xbd1p1 added</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>安装： 先将原本的/mnt umount</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># df -ah</span><br><span class="line">/dev/mfid0p7        9.7G    164k    8.9G     0%    /home</span><br><span class="line">/dev/mfid0p8        518G     52k    477G     0%    /mnt</span><br><span class="line"></span><br><span class="line">   # umount /mnt</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ol start="2">
-<li>
-<p>创建口令</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#geli init -s 4096 /dev/mfid0p8</span><br><span class="line">Enter new passphrase:</span><br><span class="line">Reenter new passphrase:</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>将口令与分区关联</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#geli attach /dev/mfid0p8</span><br><span class="line">Enter passphrase:</span><br></pre></td></tr></table></figure>
-<p>完成后，将生成/dev/mfid0p8.eli设备</p>
-</li>
-<li>
-<p>创建新文件系统并挂载</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#newfs -b 16384 -U /dev/mfid0p8.eli</span><br><span class="line">#mkdir /home/test &amp;&amp; mount /dev/mfid0p8.eli /home/test</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="重启系统后恢复加密盘">重启系统后恢复加密盘</h2>
-<ol>
-<li>
-<p>将口令与分区关联</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#geli attach /dev/mfid0p8</span><br><span class="line">Enter passphrase:</span><br></pre></td></tr></table></figure>
-<p>完成后，将生成/dev/mfid0p8.eli设备</p>
-</li>
-<li>
-<p>挂载加密盘</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#mount /dev/mfid0p8.eli /home/test</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h1 id="debian">Debian</h1>
-<ul>
-<li>采用cryptsetup（可能需要aptitude install cryptsetup）对/home/test加密,注意要将/mnt挂载点独立一个分区出来.</li>
-</ul>
-<h2 id="首次创建加密盘">首次创建加密盘</h2>
-<ol>
-<li>
-<p>先将原本的/mnt umount</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#df -ah</span><br><span class="line">/dev/sda7             9.9G  151M  9.2G   2% /home</span><br><span class="line">/dev/sda8             177G  189M  168G   1% /mnt</span><br><span class="line">#umount /mnt</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>格式化加密盘</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#cryptsetup luksFormat /dev/sda8</span><br><span class="line">WARNING!</span><br><span class="line">========</span><br><span class="line">This will overwrite data on /dev/sdb1 irrevocably.</span><br><span class="line"></span><br><span class="line">Are you sure? (Type uppercase yes): YES</span><br><span class="line">Enter LUKS passphrase:</span><br><span class="line">Verify passphrase:</span><br><span class="line">Command successful.</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>使用cryptsetup luksOpen命令打开加密分区.</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cryptsetup luksOpen /dev/sda8 private</span><br><span class="line">Enter LUKS passphrase:</span><br><span class="line">key slot 0 unlocked.</span><br><span class="line">Command successful.</span><br></pre></td></tr></table></figure>
-<p>完成后，生成/dev/mapper/private 设备</p>
-</li>
-<li>
-<p>格式化设备并挂载</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkfs.ext4 /dev/mapper/private</span><br><span class="line">#mkdir /home/test</span><br><span class="line">#mount /dev/mapper/private /home/test</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>5.编辑｀/etc/fstab｀，去掉对应条目</p>
-<h2 id="重启系统后恢复加密盘">重启系统后恢复加密盘</h2>
-<ol>
-<li>
-<p>使用cryptsetup luksOpen命令打开加密分区.</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cryptsetup luksOpen /dev/sda8 private</span><br><span class="line">Enter LUKS passphrase:</span><br><span class="line">key slot 0 unlocked.</span><br><span class="line">Command successful.</span><br></pre></td></tr></table></figure>
-<p>完成后，生成/dev/mapper/private 设备</p>
-</li>
-<li>
-<p>挂载</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#mount /dev/mapper/private /home/test</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<div><h2 id="推荐阅读">推荐阅读<span style="font-size:0.45em; color:gray"></span></h2><ul><li><a href="https://lyonger.cn/article/websocket的几种测试方式/">websocket的几种测试方式</a></li><li><a href="https://lyonger.cn/article/KSM应用实践/">KSM应用实践</a></li><li><a href="https://lyonger.cn/article/supervisor的Listeners机制/">supervisor的Listeners机制</a></li></ul></div>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/14/098b09d78d45ebc587f5b12df548714d.jpg" alt="image"></p>
+
                 
 
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/搭建Samba的简要过程/" data-toggle="tooltip" data-placement="top" title="搭建Samba的简要过程">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/安装subversion1-10/" data-toggle="tooltip" data-placement="top" title="安装subversion1-10">Next Post &rarr;</a>
+                            <a href="/article/努力工作-共战疫情/" data-toggle="tooltip" data-placement="top" title="努力工作,共战疫情">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -377,7 +294,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#freebsd"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">FreeBSD</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#首次创建加密盘"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x9996;&#x6B21;&#x521B;&#x5EFA;&#x52A0;&#x5BC6;&#x76D8;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重启系统后恢复加密盘"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x91CD;&#x542F;&#x7CFB;&#x7EDF;&#x540E;&#x6062;&#x590D;&#x52A0;&#x5BC6;&#x76D8;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#debian"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Debian</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#首次创建加密盘"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">&#x9996;&#x6B21;&#x521B;&#x5EFA;&#x52A0;&#x5BC6;&#x76D8;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重启系统后恢复加密盘"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">&#x91CD;&#x542F;&#x7CFB;&#x7EDF;&#x540E;&#x6062;&#x590D;&#x52A0;&#x5BC6;&#x76D8;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#推荐阅读"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">&#x63A8;&#x8350;&#x9605;&#x8BFB;<span style="font-size:0.45em; color:gray"></span></span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#devops成熟度模型"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">DevOps&#x6210;&#x719F;&#x5EA6;&#x6A21;&#x578B;</span></a></li></ol>
         
         </div>
       </aside>
@@ -397,7 +314,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                          <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
                         
                     </div>
                 </section>
@@ -428,8 +345,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/磁盘数据加密/";
-    var disqus_url = "https://lyonger.cn/article/磁盘数据加密/";
+    var disqus_identifier = "https://lyonger.cn/article/DevOps成熟度模型/";
+    var disqus_url = "https://lyonger.cn/article/DevOps成熟度模型/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
