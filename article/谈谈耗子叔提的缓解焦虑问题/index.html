@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          记一次Gitlab-Runner卡顿的详情分析 - 倚楼听风雨，淡看江湖路。
+          谈谈耗子叔提的缓解焦虑问题 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/记一次Gitlab-Runner卡顿的详情分析/">
+    <link rel="canonical" href="https://lyonger.cn/article/谈谈耗子叔提的缓解焦虑问题/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+                              <a class="tag" href="/tags/#生活" title="生活">生活</a>
                             
                         </div>
-                        <h1>记一次Gitlab-Runner卡顿的详情分析</h1>
+                        <h1>谈谈耗子叔提的缓解焦虑问题</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2019-11-27
+                            2020-02-25
                         </span>
                     </div>
                 
@@ -212,171 +212,62 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="记一次gitlab-runner卡顿的详情分析">记一次Gitlab Runner卡顿的详情分析</h2>
-<ul>
-<li>该问题排查耗时数周，下面分享一下整体的排查过程，仅供大家参考。</li>
-</ul>
-<h3 id="问题的背景">问题的背景</h3>
+                <h1 id="谈谈耗子叔提的缓解焦虑问题">谈谈耗子叔提的缓解焦虑问题</h1>
 <ul>
 <li>
-<p>最近<code>Gitlab Runner</code>服务偶尔接到用户反馈<code>build</code>超时和卡顿。下面是某个用户提供的问题截图。比如<code>build</code>超时：</p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/fed6fbe6fae246931a3e706ec92c9fec.png" alt="20190906103356"></p>
+<p>上个星期参加了耗子叔开的在线直播，主要谈《如何解决焦虑问题》，其实在计算机行业里，焦虑无时不有。因为技术发展的速度远超单人的学习速度。而且随着年龄的增长，记忆力会有所下降。每天面临这么多新技术，一会儿这个工具，一会儿那个技术，手忙脚乱。所以啊，焦虑显而易见，总是和我们相伴。</p>
 </li>
 <li>
-<p>用户反馈卡顿，比如：</p>
+<p>刚毕业那2年，自己都看不起这个运维岗位，总觉得比纯开发人员低一个等级。随着工作年限的增加，接触的东西越来越多，视野也越来越开阔。任何一个领域都有它的学问所在，都有属于这个领域的专家，关键是成为专家的人永远是少数。</p>
 </li>
 </ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/067bc47786b9b54af8b5ae5f4d9c1c98.png" alt="20190711170145"></p>
-<ul>
-<li>由于该问题具有普遍性，不同的用户在不同的<code>repo</code>进行<code>ci</code>均会偶发性产生问题，于是着手做一次深入的排查。</li>
-</ul>
-<h2 id="故障机器的配置说明">故障机器的配置说明</h2>
-<ul>
-<li>机器为<code>KVM</code>虚拟机，配置如下。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">系统版本：Debian9.7</span><br><span class="line">内核版本：4.9.0-8-amd64</span><br><span class="line">CPU核数：16</span><br><span class="line">内存大小：16GB</span><br><span class="line">磁盘大小：300G sas</span><br></pre></td></tr></table></figure>
-<h2 id="故障的分析详情">故障的分析详情</h2>
-<h3 id="第一次排查">第一次排查</h3>
+<h2 id="如何衡量自身技术水平">如何衡量自身技术水平</h2>
 <ul>
 <li>
-<p>在初次遇到这个问题结合用户反馈的截图，怀疑看<code>docker.sock</code>不响应。所以，当时尝试在事故发生现场，努力的<code>strace</code>追踪<code>docker.sock</code>的系统调用情况，下面是某次现场分析的截图，发现请求<code>socket</code>确实会有卡住的现象。然而这一次过了以后，没有深入找到原因，因为现场没有保存。下面是故障时的<code>strace</code>截图。</p>
-<p><img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/98977ecf2b44750b9cbd505346bb6873.png" alt="20190711162549"></p>
-</li>
-</ul>
-<h3 id="第二次排查">第二次排查</h3>
-<ul>
-<li>接着某天再此收到用户报障，这次又深入了一点，找到了系统层的<code>CPU</code>异常，且<code>IO</code>使用率高。在这里看到<code>cpu</code>的<code>st</code>占用高，就怀疑是虚拟机的资源复用太严重，所以就让同事把这台机器迁移到了独占宿主机，目的是排除CPU的影响。<strong>其实这里忽略了io高的原因，当时被st高的现象给迷惑了</strong>。
-<ul>
-<li>
-<p>系统<code>top</code>分析截图<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/0975a9ed225523d2c2e8e35dec996728.png" alt="20190711162549"></p>
+<p>在耗子叔的直播里，提到了如何衡量程序员的技术能力。在谷歌面试时，HR会提供一张评分卡，名叫<code>Google评分卡</code>。如下所示：<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/26/d8fccb734955809958bbedbcd8ac6f3c.jpg" alt="image"></p>
 </li>
 <li>
-<p><code>io</code>监控图数据<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/fd7a140ce6ed0cb7eb63679e4e0c5bb9.png" alt="20190711162750"></p>
+<p>参加工作3年左右，一般是到了2。5年左右应该到了5。而我今年正好是第5年，还有不少差距啊。6、7、8都是少数，一般都是专家了。9、10就更少了，估计得拼DNA了，哈哈哈。</p>
 </li>
 </ul>
-</li>
-</ul>
-<h3 id="第三次排查">第三次排查</h3>
+<h2 id="如何缓解焦虑">如何缓解焦虑</h2>
 <ul>
-<li>迁移了宿主以后，发现没过几天又接到用户的报障。由于已经排除了<code>CPU</code>的影响。思路就集中在了其他资源上，这次定位发现系统<code>io</code>存在可疑，如下图：
+<li>其实，你之所以会焦虑，是因为你无法掌握未知。这个未知就是“变化”，比如层出不穷的新技术、新理念、新产品。那么如何能以不变应万变呢？关键就在于“修炼内功心法”，内功心法修好了，五花八门的招式顺手拈来。而要修好计算机领域的“内功心法”，着实不易啊。耗子叔说他花了至少8年的时间来修炼，一直在走自己的路，不断的看书、啃论文。对于一般人，估计一见到RFC就怕。那么这些内功心法包含哪些呢，具体如下：</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/26/fd7313ba58acbb8a34eeee2757039fd2.jpg" alt="image"></p>
 <ul>
-<li>
-<p>系统整体使用情况<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/7a7a2f3942dae15fceb0ccba6030200c.png" alt="20190711163615"></p>
-</li>
-<li>
-<p><code>iotop</code>定位到<code>loop</code>内核线程<code>io</code>高，其实内核线程的祖先是<code>pid</code>为2的<code>kthreadd</code>进程。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/bf23d28f4feecb6462f21cb85791da11.png" alt="20190711163639"></p>
-</li>
-<li>
-<p><code>loop</code>内核线程确实有读发生，且在进程分布中读的量最大。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/562f1573197a97b85de431a811ed1f97.png" alt="20190711163653"></p>
-</li>
+<li>卧槽，咋一看，每个知识点都有好几本厚的书等着我。现在来看，专家可真不是吹的啊。</li>
 </ul>
-</li>
-</ul>
+<h2 id="如何识别新技术">如何识别新技术</h2>
 <ul>
-<li>到了第三次排查，大概定位到了瓶颈为<code>loop</code>内核线程，但是<code>loop</code>内核线程到底在做什么事情呢，这个问题值得思考，读到这里，您会有哪些思考呢？其实要知道内核线程具体的内部调用栈情况，需要使用到动态追踪工具，那业界优秀的动态追踪工具有哪些呢？下文就为你揭晓答案。</li>
+<li>如何判断一个新技术是否值得追随，其实我也比较茫然。总之随大流总没错吧，但是偏偏一个人的时间总是有限。在同一个时间点你做了A，就不可能去尝试B，所以要在有限的时间里做正确的事情，这就涉及到一种选择和舍取。耗子叔提到：有大公司做背书、有杀手级应用、有强大社区这三点的技术，应该会成为前沿。比如<code>docker</code>和<code>kubernetes</code>。其实，我们以后看一个新技术，也可以参考这三点。</li>
 </ul>
-<h3 id="第四次排查">第四次排查</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/26/30e198fbb98cc825863317481d5a74d4.jpg" alt="image"></p>
+<h2 id="学习方法">学习方法</h2>
 <ul>
-<li>这一次排查使用<code>perf</code>工具保存了现场，并利用<code>perf</code>保存的数据生成了火焰图，定位到热点函数是<code>loop_queue_work</code>，其对应的内核源码定义如下<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/9743bcf06201e8dcb590ef3ed3fb82cd.png" alt="20190711164039"></li>
+<li>耗子叔把学习方法分为主动学习和被动学习，如下图：</li>
 </ul>
-<ul>
-<li>从<code>perf</code>火焰图可知，热点函数是<code>loop_queue_work</code>。这里普及一下火焰图的查看技巧，<strong><span style="color:#FF0000">火焰图一般是从下往上看，横轴表示采样数和采样比例，一个函数占用的横轴越宽就代表它的执行时间越长。纵轴表示调用栈，上下相邻的2个函数中，下面的函数是上面函数的父函数。</span></strong><br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/52d840a11c715e38396a3ed36fee6ca1.png" alt="20190711164058"></li>
-</ul>
-<ul>
-<li>从热点函数名中可知，含有队列(queue)2个字，于是想到了磁盘调度算法，接着尝试调整虚拟机的磁盘调度算法。发现虚拟机使用了<code>Ceph RBD</code>磁盘，不支持修改磁盘调度算法。于是这里卡住了继续下一步的线索。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/230a24850248f451281bb9f2a71df657.png" alt="20190906104158"></li>
-</ul>
-<h3 id="第五次排查">第五次排查</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/26/ab90cf751827ded55ed0a647f861bd4a.jpg" alt="image"></p>
 <ul>
 <li>
-<p>在这一次排查中，终于拨开了迷雾。在一次偶然的机会，有一个用户提供了一个和前几次不一样的报错截图，如下图：<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/b87b77d69169466d25a8058a711b9fbe.png" alt="20190906104312"></p>
+<p>比如带新人、和别人讨论、写博客，这些是主动学习。听别人的演讲、音频、视频等是被动学习。学习永无止境，成功的道路总是那么的相似，学习的方法也有不少值得注意的地方。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/02/26/2a12eef37cc2c10d781a894b3668289d.jpg" alt="image"></p>
 </li>
 <li>
-<p>排查到<code>gitlab runner</code>机器上的<code>devmapper</code>存储驱动目录确实挺大，但是为啥镜像清理了以后，空间依旧没释放呢。于是网上查了一番，发现这个存储驱动已经不推荐使用了，有性能问题。关于<code>Docker</code>如何选择存储驱动，请<a href="https://docs.docker.com/v17.09/engine/userguide/storagedriver/selectadriver/" target="_blank" rel="noopener">参考这里</a>。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/1c53730d0270d6331ee3009fd702aed7.png" alt="20190906104436"></p>
-</li>
-<li>
-<p>至于我们这里为什么有使用<code>devmapper</code>这个驱动，是因为在一次升级系统内核时做的变更导致。我们查看到线上<code>docker</code>运行到存储驱动正是<code>devmapper</code>。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/ef9823901d403e734e8754d0c2a358f5.png" alt="20190906104813"></p>
+<p>所谓“书山有路勤为径，学好无涯苦作舟”。还是踏实啃知识、看书吧。Just do it ~!</p>
 </li>
 </ul>
-<ul>
-<li>
-<p>这一次机智的用<code>perf</code>保存了现场，再次分析热点函数，看到和<code>xfs</code>文件系统相关。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/b3335ddcb4bf2856e4bc2df06c5efb09.png" alt="20190711164939"></p>
-</li>
-<li>
-<p>在2个月前升级系统内核时，由于在xfs文件系统下没有打开下面这个选项（<code>ftype=1</code>才代表打开）导致只能使用<code>devmapper</code>驱动。<strong>从这里再联想到热点函数也是显示xfs文件系统相关，不得不考虑是存储驱动导致的性能问题了</strong>。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/982348b5b9f6134c08acf233113f7c0a.png" alt="20190906104929"></p>
-</li>
-</ul>
-<ul>
-<li>在没有打开这个选项(ftype=1）的情况下使用overlay存储驱动会报错如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">could not use snapshotter overlayfs in metadata plugin&quot; error=&quot;/home/gitlab/var/lib/docker/containerd/daemon/io.containerd.snapshotter.v1.overlayfs does not support d_type. If the backing filesystem is xfs, please reformat with ftype=1 to enable d_type support</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<p>而<code>Docker</code>有在<a href="https://github.com/docker/docker-ce/blob/18.06/components/engine/daemon/graphdriver/driver_linux.go" target="_blank" rel="noopener">源码</a>里面也有定义使用的存储驱动优先级。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/bf18c704e8b7d668ce2af594b65b1a46.png" alt="20190711165321"></p>
-</li>
-<li>
-<p>于是备份数据后使用<code>mkfs.xfs -n ftype=1 /dev/vdc1</code>命令重新格式化磁盘，打开<code>ftype</code>选项。接着强制配置<code>Docker</code>进程使用<code>overlay2</code>的存储驱动，再次模拟用户触发<code>ci</code>任务，观察发现<code>loop</code>内核线程不会有<code>io</code>产生。整个系统的<code>io</code>也降低了。再更改回<code>devmapper</code>以后，<code>loop</code>内核线程又变高了，由此定位到了最终问题。</p>
-</li>
-</ul>
-<h2 id="自测结果">自测结果</h2>
-<ul>
-<li>下面是使用同一个<code>repo</code>，在同一个<code>gitlab</code>站点测试使用<code>devmapper</code>和<code>overlay2</code>不同存储驱动的表现情况。
-<ul>
-<li>
-<p>使用<code>overlay2</code>存储驱动的<code>io</code>数据<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/b5e4d5aec336949fd19e705ee61e693f.png" alt="20190711171200"><br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/6c5f0614a0704f4351beabd699ab74a3.png" alt="20190711195249"></p>
-</li>
-<li>
-<p>使用<code>iotop</code>看不到<code>loop</code>内核线程有io情况，更不会排在首位。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/5e270e92110fbfb45b8e63622ee62654.png" alt="20190711171422"></p>
-</li>
-<li>
-<p>使用<code>devmapper</code>存储驱动的<code>io</code>数据<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/c3f9f893da0a036f4b02e748fd5fdeff.png" alt="20190711171308"><br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/f33ad1ba78a77c8727d45b6618a5c813.png" alt="20190711195347"></p>
-</li>
-<li>
-<p>使用<code>iotop</code>查看到<code>loop</code>内核线程<code>io</code>消耗且排在了首位。<br>
-<img src="http://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2019/11/27/1c10cae0835799e92e9524694a58048e.png" alt="20190711171435"></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="思路总结">思路总结</h2>
-<ul>
-<li>从这一次的故障诊断分析来看，耗时较久，从一开始的现象到最终的分析，都是逐步进行的。故障发生的时刻往往短暂，所以想办法保存现场数据或者复现故障显得尤为重要。对于性能优化，基本是长期跟踪，动态调整，<strong><span style="color:#FF0000">大部分的分析是从系统到进程或者线程，再到内核热点函数，再到操作系统原理。</span></strong> 最后期待本文能对你以后的故障排查提供帮助，知识在于分享，更希望你可以把此文分享给你的朋友。</li>
-</ul>
-<h2 id="资料参考">资料参考</h2>
-<ul>
-<li>优秀的动态追踪工具参考：<a href="https://zhuanlan.zhihu.com/p/24124082" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/24124082</a></li>
-<li>火焰图使用参考：<a href="https://github.com/brendangregg/FlameGraph" target="_blank" rel="noopener">https://github.com/brendangregg/FlameGraph</a></li>
-<li>perf工具使用参考：<a href="http://www.brendangregg.com/perf.html" target="_blank" rel="noopener">http://www.brendangregg.com/perf.html</a></li>
-</ul>
-<div><h2 id="推荐阅读">推荐阅读<span style="font-size:0.45em; color:gray"></span></h2><ul><li><a href="https://lyonger.cn/article/gitlab-repo数据恢复/">gitlab-repo数据恢复</a></li></ul></div>
+
                 
 
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/01-前端学习-学习线路/" data-toggle="tooltip" data-placement="top" title="01-前端学习-学习线路">&larr; Previous Post</a>
-                        </li>
                     
+                        <li class="next">
+                            <a href="/article/DevOps成熟度模型/" data-toggle="tooltip" data-placement="top" title="DevOps成熟度模型">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -443,7 +334,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#记一次gitlab-runner卡顿的详情分析"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x8BB0;&#x4E00;&#x6B21;Gitlab Runner&#x5361;&#x987F;&#x7684;&#x8BE6;&#x60C5;&#x5206;&#x6790;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#问题的背景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x95EE;&#x9898;&#x7684;&#x80CC;&#x666F;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#故障机器的配置说明"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x6545;&#x969C;&#x673A;&#x5668;&#x7684;&#x914D;&#x7F6E;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#故障的分析详情"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">&#x6545;&#x969C;&#x7684;&#x5206;&#x6790;&#x8BE6;&#x60C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第一次排查"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x7B2C;&#x4E00;&#x6B21;&#x6392;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第二次排查"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x7B2C;&#x4E8C;&#x6B21;&#x6392;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第三次排查"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">&#x7B2C;&#x4E09;&#x6B21;&#x6392;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第四次排查"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">&#x7B2C;&#x56DB;&#x6B21;&#x6392;&#x67E5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第五次排查"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">&#x7B2C;&#x4E94;&#x6B21;&#x6392;&#x67E5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#自测结果"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x81EA;&#x6D4B;&#x7ED3;&#x679C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#思路总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x601D;&#x8DEF;&#x603B;&#x7ED3;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#资料参考"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">&#x8D44;&#x6599;&#x53C2;&#x8003;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#推荐阅读"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">&#x63A8;&#x8350;&#x9605;&#x8BFB;<span style="font-size:0.45em; color:gray"></span></span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#谈谈耗子叔提的缓解焦虑问题"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x8C08;&#x8C08;&#x8017;&#x5B50;&#x53D4;&#x63D0;&#x7684;&#x7F13;&#x89E3;&#x7126;&#x8651;&#x95EE;&#x9898;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何衡量自身技术水平"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x5982;&#x4F55;&#x8861;&#x91CF;&#x81EA;&#x8EAB;&#x6280;&#x672F;&#x6C34;&#x5E73;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何缓解焦虑"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5982;&#x4F55;&#x7F13;&#x89E3;&#x7126;&#x8651;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何识别新技术"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x5982;&#x4F55;&#x8BC6;&#x522B;&#x65B0;&#x6280;&#x672F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#学习方法"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x5B66;&#x4E60;&#x65B9;&#x6CD5;</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -463,7 +354,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+                          <a class="tag" href="/tags/#生活" title="生活">生活</a>
                         
                     </div>
                 </section>
@@ -494,8 +385,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/记一次Gitlab-Runner卡顿的详情分析/";
-    var disqus_url = "https://lyonger.cn/article/记一次Gitlab-Runner卡顿的详情分析/";
+    var disqus_identifier = "https://lyonger.cn/article/谈谈耗子叔提的缓解焦虑问题/";
+    var disqus_url = "https://lyonger.cn/article/谈谈耗子叔提的缓解焦虑问题/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
