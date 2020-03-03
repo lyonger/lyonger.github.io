@@ -134,7 +134,7 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -148,7 +148,7 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,47 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/安装kubernets集群/">
+        <h2 class="post-title">
+                                 
+            安装kubernets集群
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            准备工作(node/master机器均需操作)
+
+机器配置，4核心8G内存。
+
+1234Distributor ID:	DebianDescription:	Debian GNU/Linux 9.2 (stretch)Release:	9.2Codename:	stretch
+
+关闭swap分区
+
+1swapoff -a
+
+关闭防火墙
+
+12systemctl stop firewallds......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -552,40 +593,6 @@ windows:
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/04CPU使用率分析-Linux性能优化/">
-        <h2 class="post-title">
-                                 
-            04CPU使用率分析-Linux性能优化
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            节拍率
-
-为了维护CPU时间，Linux通过事先定义的节拍率(内核中表示HZ)来触发时间中断，并使用全局变量Jiffies来记录开机以后的节拍次数。每发生一次时间中断，jiffies的值就加1.
-节拍率HZ是内核的可配置参数，可以设置为100、250、1000等。而用户空间的节拍率USER_HZ固定为100，你可以通过/boot/config内核选项来查看。
-
-1grep &apos;CON......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -631,6 +638,10 @@ windows:
     <div class="tags">
         
             
+            <a href="/tags/#Linux" title="Linux" rel="19">Linux</a>
+            
+        
+            
             <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
@@ -639,15 +650,19 @@ windows:
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="19">Linux</a>
-            
-        
-            
             <a href="/tags/#生活" title="生活" rel="15">生活</a>
             
         
             
+            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
+            
+        
+            
             <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
+            
+        
+            
+            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
@@ -656,10 +671,6 @@ windows:
         
             
             <a href="/tags/#数据库" title="数据库" rel="1">数据库</a>
-            
-        
-            
-            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
     </div>
@@ -724,6 +735,10 @@ windows:
     <ul>
       
         <li>
+          <a href="/article/freebsd的memory简介/">freebsd的memory简介</a>
+        </li>
+      
+        <li>
           <a href="/article/谈谈耗子叔提的缓解焦虑问题/">谈谈耗子叔提的缓解焦虑问题</a>
         </li>
       
@@ -737,10 +752,6 @@ windows:
       
         <li>
           <a href="/article/DevOps之Gitlab-CICD实践篇/">DevOps之Gitlab-CICD实践篇</a>
-        </li>
-      
-        <li>
-          <a href="/article/陪产的幸福体验/">陪产的幸福体验</a>
         </li>
       
     </ul>
@@ -765,7 +776,7 @@ windows:
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
