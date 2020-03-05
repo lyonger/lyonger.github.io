@@ -30,13 +30,6 @@
     </url>
 
     <url>
-        <loc>https://lyonger.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-        <lastmod>2020-01-16T15:38:01.753Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lyonger.cn/tags/Gitlab/</loc>
         <lastmod>2020-02-03T10:09:24.968Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -59,7 +52,14 @@
 
     <url>
         <loc>https://lyonger.cn/tags/FreeBSD/</loc>
-        <lastmod>2020-03-03T14:10:19.977Z</lastmod>
+        <lastmod>2020-03-03T14:10:38.233Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lyonger.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+        <lastmod>2020-03-05T06:21:02.055Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

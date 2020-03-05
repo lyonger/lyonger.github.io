@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -248,6 +248,47 @@
         <div class="tags">
             
               <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/mysql5-0升级mysql5-7方案调研/">
+        <h2 class="post-title">
+                                 
+            mysql5.0升级mysql5.7方案调研
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            mysql5.0 upgrade mysql5.7方案调研
+背景
+
+window mysql5.0升级到centos7下的mysql5.7
+需升级的数据量：120G
+
+风险评估
+
+mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移到centos问题应该不大，但需测试。
+120G数据对一个mysql来说还不算非常大，中等的样子，所以数据量没问题，会消耗一点时间。
+
+方案调研
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据库" title="数据库">数据库</a>
             
         </div>
     
@@ -541,42 +582,6 @@ curl测试
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/KSM应用实践/">
-        <h2 class="post-title">
-                                 
-            KSM应用实践
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            背景介绍
-
-业务对于服务器成本的要求越来越高。有些服务进程（如场景进程）load完整的数据需要占用900多M内存，且会运行多个实例（几十个），有时也会使用多个容器共享宿主机内存使用会进一步加剧。此时内存成为了服务器的瓶颈。
-
-KSM原理
-
-
-Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为KVM虚拟化技术开发的，但对于普通应用程序......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -618,7 +623,7 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
     <div class="tags">
         
             
-            <a href="/tags/#Linux" title="Linux" rel="19">Linux</a>
+            <a href="/tags/#后端" title="后端" rel="7">后端</a>
             
         
             
@@ -626,7 +631,7 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
             
         
             
-            <a href="/tags/#后端" title="后端" rel="7">后端</a>
+            <a href="/tags/#Linux" title="Linux" rel="19">Linux</a>
             
         
             
@@ -634,15 +639,7 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
             
         
             
-            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
-            
-        
-            
             <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
-            
-        
-            
-            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
@@ -650,7 +647,15 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
             
         
             
-            <a href="/tags/#数据库" title="数据库" rel="1">数据库</a>
+            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
+            
+        
+            
+            <a href="/tags/#数据库" title="数据库" rel="2">数据库</a>
+            
+        
+            
+            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
             
         
     </div>
@@ -715,6 +720,10 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
     <ul>
       
         <li>
+          <a href="/article/mysql5-0升级mysql5-7方案调研/">mysql5.0升级mysql5.7方案调研</a>
+        </li>
+      
+        <li>
           <a href="/article/freebsd的memory简介/">freebsd的memory简介</a>
         </li>
       
@@ -728,10 +737,6 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
       
         <li>
           <a href="/article/努力工作-共战疫情/">努力工作,共战疫情</a>
-        </li>
-      
-        <li>
-          <a href="/article/DevOps之Gitlab-CICD实践篇/">DevOps之Gitlab-CICD实践篇</a>
         </li>
       
     </ul>
@@ -756,7 +761,7 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
