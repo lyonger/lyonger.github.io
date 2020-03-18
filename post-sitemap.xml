@@ -7,6 +7,22 @@
     </url>
 
     <url>
+        <loc>https://lyonger.cn/article/%E8%AE%B0%E4%B8%80%E6%AC%A1Gitlab-Runner%E5%8D%A1%E9%A1%BF%E7%9A%84%E8%AF%A6%E6%83%85%E5%88%86%E6%9E%90/</loc>
+        <lastmod>2020-03-18T14:43:14.839Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://lyonger.cn/article/%E9%83%A8%E7%BD%B2openvpn%E6%9C%8D%E5%8A%A1/</loc>
+        <lastmod>2020-03-18T14:41:59.074Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lyonger.cn/article/%E5%A6%82%E4%BD%95%E5%AF%B9%E4%B8%8D%E5%90%8C%E6%9C%BA%E5%99%A8%E4%B8%8A%E7%9B%AE%E5%BD%95%E8%BF%9B%E8%A1%8C%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5/</loc>
         <lastmod>2020-03-17T10:50:45.947Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -73,14 +89,6 @@
     <url>
         <loc>https://lyonger.cn/article/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E8%A6%81%E5%9D%9A%E6%8C%81%E5%8D%9A%E5%AE%A2/</loc>
         <lastmod>2020-01-18T07:13:13.516Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://lyonger.cn/article/%E8%AE%B0%E4%B8%80%E6%AC%A1Gitlab-Runner%E5%8D%A1%E9%A1%BF%E7%9A%84%E8%AF%A6%E6%83%85%E5%88%86%E6%9E%90/</loc>
-        <lastmod>2020-01-18T07:05:04.734Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
