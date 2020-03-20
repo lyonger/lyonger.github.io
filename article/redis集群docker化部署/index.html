@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          mysql5.0升级mysql5.7方案调研 - 倚楼听风雨，淡看江湖路。
+          redis集群docker化部署 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/mysql5-0升级mysql5-7方案调研/">
+    <link rel="canonical" href="https://lyonger.cn/article/redis集群docker化部署/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
                             
                         </div>
-                        <h1>mysql5.0升级mysql5.7方案调研</h1>
+                        <h1>redis集群docker化部署</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-03-05
+                            2020-03-20
                         </span>
                     </div>
                 
@@ -212,52 +212,30 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="mysql50-upgrade-mysql57方案调研">mysql5.0 upgrade mysql5.7方案调研</h1>
-<h2 id="背景">背景</h2>
+                <h1 id="redis集群docker化部署">redis集群docker化部署</h1>
 <ul>
-<li>window mysql5.0升级到centos7下的mysql5.7</li>
-<li>需升级的数据量：<code>120G</code></li>
+<li>使用场景：单台机器使用容器部署。</li>
 </ul>
-<h2 id="风险评估">风险评估</h2>
+<h2 id="机器环境">机器环境</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Distributor ID:	Debian</span><br><span class="line">Description:	Debian GNU/Linux 8.11 (jessie)</span><br><span class="line">Release:	8.11</span><br><span class="line">Codename:	jessie</span><br></pre></td></tr></table></figure>
+<h2 id="安装docker-compose">安装docker-compose</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">chmod +x /usr/local/bin/docker-compose</span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+<h2 id="创建redis数据目录">创建redis数据目录</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /home/liuyong/redis-cluster/&#123;8001,8002,8003,8004,8005,8006&#125;/data</span><br></pre></td></tr></table></figure>
+<h2 id="准备docker-compose文件">准备docker-compose文件</h2>
 <ul>
-<li>mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移到centos问题应该不大，但需测试。</li>
-<li><code>120G</code>数据对一个mysql来说还不算非常大，中等的样子，所以数据量没问题，会消耗一点时间。</li>
+<li>部署时使用了人家已经做好的镜像<code>publicisworldwide/redis-cluster</code></li>
 </ul>
-<h2 id="方案调研">方案调研</h2>
-<h3 id="顺序升级">顺序升级</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;3&apos;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"> redis1:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8001/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8001</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8001:8001&apos;       #服务端口</span><br><span class="line">    - &apos;18001:18001&apos;     #集群端口</span><br><span class="line"></span><br><span class="line"> redis2:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8002/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8002</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8002:8002&apos;</span><br><span class="line">    - &apos;18002:18002&apos;</span><br><span class="line"></span><br><span class="line"> redis3:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8003/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8003</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8003:8003&apos;</span><br><span class="line">    - &apos;18003:18003&apos;</span><br><span class="line"></span><br><span class="line"> redis4:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8004/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8004</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8004:8004&apos;</span><br><span class="line">    - &apos;18004:18004&apos;</span><br><span class="line"></span><br><span class="line"> redis5:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8005/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8005</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8005:8005&apos;</span><br><span class="line">    - &apos;18005:18005&apos;</span><br><span class="line"></span><br><span class="line"> redis6:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8006/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8006</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8006:8006&apos;</span><br><span class="line">    - &apos;18006:18006&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="启动redis集群">启动redis集群</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#启动redis实例</span><br><span class="line">docker-compose -f docker-compose-redis-cluster.yml up -d</span><br><span class="line">#初始化redis集群, inem0o/redis-trib为docker镜像名称</span><br><span class="line">docker run --rm -it inem0o/redis-trib create --replicas 1 eth0_ip:8001 eth0_ip:8002 eth0_ip:8003 eth0_ip:8004 eth0_ip:8005 eth0_ip:8006</span><br></pre></td></tr></table></figure>
 <ul>
-<li>顺序升级是指：参考官方的版本升级次序，每次升级一个<code>major release</code>版本，比如5.0升级到5.5。</li>
-<li>5.7官方升级指引<a href="https://dev.mysql.com/doc/refman/5.7/en/upgrading.html" target="_blank" rel="noopener">参考这里</a>。</li>
+<li>看到类似如下信息代表成功<br>
+<img src="https://sawiki2.nie.netease.com/media/image/liuyong03/20191106203515.png" alt="请在这里输入图片描述"></li>
 </ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/05/bdfc80d716ad8f49ec3bedb44269ce43.jpg" alt="image"></p>
+<h2 id="参考资料">参考资料</h2>
 <ul>
-<li>官方建议每次升级一个<code>major release</code>版本，比如从5.0升级到5.7时，推荐的升级方式是<code>5.9-&gt;5.5-&gt;5.6-&gt;5.7</code>。该方法虽然安全稳定，但是会给业务带来更多时间成本和人力成本，<code>120G</code>的数据需做3次升级操作。那么我们试试探索直接从<code>5.0-&gt;5.7，</code>是否有比较可行的方案。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/05/27e628cbec0348cf05c4d3e9ccd01a4e.jpg" alt="image"></p>
-<h3 id="跳跃升级">跳跃升级</h3>
-<ul>
-<li>
-<p>跳跃升级是指：一次性跨越多个一个<code>major release</code>版本，比如5.0直接升级到5.7。从官方博客中，有收集到2种升级方式：<code>mysqldump方式</code>和<code>in place原地升级方式</code>。</p>
-<ul>
-<li><code>mysqldump方式</code>：简单的说就是先停止业务读写后，先完整dump出当前数据。然后创建一个新版本实例，初始化以后把dump出的备份load进来，即需要先导出再导入。数据量大时，不管是导出还是导入都是比较耗时的操作。</li>
-<li><code>原地升级方式(in place)</code>：简单的说就是先停止业务读写后，直接备份当前数据库，直接在当前实例进行upgrade，不需要先导入再导入。速度比较快，但是风险较高，因为直接在原环境操作，有问题时回滚也比较耗时。</li>
-</ul>
-</li>
-<li>
-<p><strong>mysqldump方式</strong>可以参考官方博客的指引说明：<a href="http://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-with-mysqldump/" target="_blank" rel="noopener">http://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-with-mysqldump/</a></p>
-</li>
-<li>
-<p><strong>原地升级方式</strong>可以参考官方博客的指引说明：<a href="https://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-using-an-in-place-upgrade/" target="_blank" rel="noopener">https://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-using-an-in-place-upgrade/</a></p>
-</li>
-</ul>
-<h2 id="总结">总结</h2>
-<ul>
-<li>如果升级的业务数据非常之重要，是核心业务数据。建议使用顺序升级方式，比较稳定，回退也方便。</li>
-<li>如果升级的业务数据不那么重要，可以尝试使用跳跃升级方式。</li>
-</ul>
-<h2 id="附加说明">附加说明</h2>
-<ul>
-<li><font color="red"><strong>注意，每种方式均需结合自身业务，搭建与业务相同的测试环境进行多次测试。测试稳定以后再找一个时间点对线上业务进行变更。</strong></font></li>
+<li><a href="https://www.jianshu.com/p/b7dea62bcd8b" target="_blank" rel="noopener">https://www.jianshu.com/p/b7dea62bcd8b</a></li>
 </ul>
 
                 
@@ -266,13 +244,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/如何对不同机器上目录进行实时同步/" data-toggle="tooltip" data-placement="top" title="如何对不同机器上目录进行实时同步">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/freebsd的memory简介/" data-toggle="tooltip" data-placement="top" title="freebsd的memory简介">Next Post &rarr;</a>
+                            <a href="/article/部署openvpn服务/" data-toggle="tooltip" data-placement="top" title="部署openvpn服务">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -340,7 +314,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#mysql50-upgrade-mysql57方案调研"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">mysql5.0 upgrade mysql5.7&#x65B9;&#x6848;&#x8C03;&#x7814;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#风险评估"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x98CE;&#x9669;&#x8BC4;&#x4F30;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方案调研"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x65B9;&#x6848;&#x8C03;&#x7814;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#顺序升级"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x987A;&#x5E8F;&#x5347;&#x7EA7;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#跳跃升级"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x8DF3;&#x8DC3;&#x5347;&#x7EA7;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#附加说明"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x9644;&#x52A0;&#x8BF4;&#x660E;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#redis集群docker化部署"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">redis&#x96C6;&#x7FA4;docker&#x5316;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#机器环境"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x673A;&#x5668;&#x73AF;&#x5883;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装docker-compose"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;docker-compose</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建redis数据目录"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;redis&#x6570;&#x636E;&#x76EE;&#x5F55;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#准备docker-compose文件"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x51C6;&#x5907;docker-compose&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#启动redis集群"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x542F;&#x52A8;redis&#x96C6;&#x7FA4;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -391,8 +365,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/mysql5-0升级mysql5-7方案调研/";
-    var disqus_url = "https://lyonger.cn/article/mysql5-0升级mysql5-7方案调研/";
+    var disqus_identifier = "https://lyonger.cn/article/redis集群docker化部署/";
+    var disqus_url = "https://lyonger.cn/article/redis集群docker化部署/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
