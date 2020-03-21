@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -300,6 +300,43 @@
         <div class="tags">
             
               <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Docker目录解析与清理/">
+        <h2 class="post-title">
+                                 
+            Docker目录解析与清理
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Docker目录解析与清理
+背景
+
+gitlab-runner服务提供的docker executor经常会出现docker lib目录空间占用大等问题。本文主要分享一下docker目录的解析与清理，尽量在清理后不影响原服务的情况下进行。
+
+目录解析
+
+docker的数据默认存放在/var/lib/docker下，容易导致导致根分区空间大，所以需要转移到数据盘。转移方式参考下文。
+不同存储驱......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Docker" title="Docker">Docker</a>
             
         </div>
     
@@ -561,39 +598,6 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/努力工作-共战疫情/">
-        <h2 class="post-title">
-                                 
-            努力工作,共战疫情
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            努力工作，共战疫情
-
-2020年，发生了很多事。全国人民齐心协力，期待战胜疫情。
-许许多多的一线工作人员，他们的无私奉献换取了我们现在的健康生活。尤其是那些医疗人员，当我们都在家躲避病毒的时候，他们向我们敞开了大门，迎接那些需要帮助的病人。他们让这疫情下的人间充满温暖和关怀。当然还有其他许许多多的普通的人，比如快递员、公交司机、环卫工人…，他们都在坚守岗位，感谢你们的辛勤付出。
-20多年以来......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-02-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -635,10 +639,6 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
     <div class="tags">
         
             
-            <a href="/tags/#Linux" title="Linux" rel="21">Linux</a>
-            
-        
-            
             <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
@@ -647,11 +647,15 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
             
         
             
+            <a href="/tags/#Linux" title="Linux" rel="21">Linux</a>
+            
+        
+            
             <a href="/tags/#生活" title="生活" rel="15">生活</a>
             
         
             
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
             
         
             
@@ -659,15 +663,19 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
             
         
             
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            
+        
+            
             <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
-            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
+            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
             
         
             
-            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
+            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
             
         
     </div>
@@ -732,6 +740,10 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
     <ul>
       
         <li>
+          <a href="/article/Docker目录解析与清理/">Docker目录解析与清理</a>
+        </li>
+      
+        <li>
           <a href="/article/redis集群docker化部署/">redis集群docker化部署</a>
         </li>
       
@@ -745,10 +757,6 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
       
         <li>
           <a href="/article/mysql5-0升级mysql5-7方案调研/">mysql5.0升级mysql5.7方案调研</a>
-        </li>
-      
-        <li>
-          <a href="/article/freebsd的memory简介/">freebsd的memory简介</a>
         </li>
       
     </ul>
@@ -773,7 +781,7 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
