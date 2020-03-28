@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          redis集群docker化部署 - 倚楼听风雨，淡看江湖路。
+          极客时间专栏-从0开始学架构的收获 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/redis集群docker化部署/">
+    <link rel="canonical" href="https://lyonger.cn/article/极客时间专栏-从0开始学架构的收获/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
                             
                         </div>
-                        <h1>redis集群docker化部署</h1>
+                        <h1>极客时间专栏-从0开始学架构的收获</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-03-20
+                            2020-03-28
                         </span>
                     </div>
                 
@@ -212,30 +212,23 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="redis集群docker化部署">redis集群docker化部署</h1>
+                <h2 id="极客时间专栏-从0开始学架构的收获">极客时间专栏-从0开始学架构的收获</h2>
 <ul>
-<li>使用场景：单台机器使用容器部署。</li>
+<li>作者是阿里的技术资深专家，文章内容简单朴实，但真的是0基础来学的话，个人感觉理解起来还是有点吃力的。</li>
+<li>作者的专栏主要分为了5个部分：基础架构、高性能架构模式、高可用架构模式、可扩展架构模式、架构实战。</li>
+<li>基础架构部分，我认为是精华，很多资料网上根本没法找，比如设计架构的三原则、架构设计的流程和方案。架构实质就是解决各种复杂度问题，那么复杂度的来源，主要是哪些呢？其实主要是出自业务的需求，比如高性能、高可用、可扩展。试想要解决好这些问题，架构师的功力要有多深厚。</li>
+<li>在进行设计架构时，一般遵循三个原则：“合适原则”、“简单原则”、“演化原则”。
+<ul>
+<li>合适原则：没有最牛逼的架构，只有最适合业务的架构。</li>
+<li>简单原则：理论上架构越简单，后面越容易维护和扩展。</li>
+<li>演化原则：架构设计本身是一个随着业务发展，需要不断迭代的工程，没有一劳永逸的架构。</li>
 </ul>
-<h2 id="机器环境">机器环境</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Distributor ID:	Debian</span><br><span class="line">Description:	Debian GNU/Linux 8.11 (jessie)</span><br><span class="line">Release:	8.11</span><br><span class="line">Codename:	jessie</span><br></pre></td></tr></table></figure>
-<h2 id="安装docker-compose">安装docker-compose</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br><span class="line">chmod +x /usr/local/bin/docker-compose</span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
-<h2 id="创建redis数据目录">创建redis数据目录</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /home/liuyong/redis-cluster/&#123;8001,8002,8003,8004,8005,8006&#125;/data</span><br></pre></td></tr></table></figure>
-<h2 id="准备docker-compose文件">准备docker-compose文件</h2>
-<ul>
-<li>部署时使用了人家已经做好的镜像<code>publicisworldwide/redis-cluster</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;3&apos;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"> redis1:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8001/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8001</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8001:8001&apos;       #服务端口</span><br><span class="line">    - &apos;18001:18001&apos;     #集群端口</span><br><span class="line"></span><br><span class="line"> redis2:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8002/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8002</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8002:8002&apos;</span><br><span class="line">    - &apos;18002:18002&apos;</span><br><span class="line"></span><br><span class="line"> redis3:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8003/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8003</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8003:8003&apos;</span><br><span class="line">    - &apos;18003:18003&apos;</span><br><span class="line"></span><br><span class="line"> redis4:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8004/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8004</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8004:8004&apos;</span><br><span class="line">    - &apos;18004:18004&apos;</span><br><span class="line"></span><br><span class="line"> redis5:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8005/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8005</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8005:8005&apos;</span><br><span class="line">    - &apos;18005:18005&apos;</span><br><span class="line"></span><br><span class="line"> redis6:</span><br><span class="line">  image: publicisworldwide/redis-cluster</span><br><span class="line">  restart: always</span><br><span class="line">  volumes:</span><br><span class="line">   - /home/liuyong/redis-cluster/8006/data:/data</span><br><span class="line">  environment:</span><br><span class="line">   - REDIS_PORT=8006</span><br><span class="line">  ports:</span><br><span class="line">    - &apos;8006:8006&apos;</span><br><span class="line">    - &apos;18006:18006&apos;</span><br></pre></td></tr></table></figure>
-<h2 id="启动redis集群">启动redis集群</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#启动redis实例</span><br><span class="line">docker-compose -f docker-compose-redis-cluster.yml up -d</span><br><span class="line">#初始化redis集群, inem0o/redis-trib为docker镜像名称</span><br><span class="line">docker run --rm -it inem0o/redis-trib create --replicas 1 eth0_ip:8001 eth0_ip:8002 eth0_ip:8003 eth0_ip:8004 eth0_ip:8005 eth0_ip:8006</span><br></pre></td></tr></table></figure>
-<ul>
-<li>看到类似如下信息代表成功<br>
-<img src="https://sawiki2.nie.netease.com/media/image/liuyong03/20191106203515.png" alt="请在这里输入图片描述"></li>
-</ul>
-<h2 id="参考资料">参考资料</h2>
-<ul>
-<li><a href="https://www.jianshu.com/p/b7dea62bcd8b" target="_blank" rel="noopener">https://www.jianshu.com/p/b7dea62bcd8b</a></li>
+</li>
+<li>谈到高性能，有数据库机器的读写分离、分库分表，缓存架构。有单服务器的<code>PPC(Process Per Connection)</code>、<code>TPC(Thread Per Connection)</code>、<code>Reactor</code>、<code>Proactor</code>高性能模式。有高性能的负载均衡和算法。</li>
+<li>谈到高可用，你需要知道<code>CAP</code>理论，因为分布式系统一定存在P(比如网络分区的存在导致数据非强一致性而是最终一致性)，所以理论上只能做到<code>CP</code>或<code>AP</code>。在设计高可用架构时，为了避免思考不全面，应采用<code>FMEA</code>方法，即<code>Failure mode and effects analysis</code>（故障模式与影响分析），又称为失效模式与后果分析、失效模式与效应分析、故障模式与后果分析。相比计算型高可用，存储型高可用相对复杂。存储型高可用我们一般采用双机架构(主备、主从、主备 / 主从切换和主主)，集群和分区，分区又涉及异地多活。而面对业务级别的接口故障，要有降级、限流、熔断、排队等手段。</li>
+<li>谈到可扩展，核心就是“拆”，面向流程拆分就是分层架构，面向服务拆分就有SOA和微服务，面向功能拆分就有微内核架构(插件化架构)。</li>
+<li>学会上面这些，就很牛逼了？肯定不是，到后面你会发现，软技能也很重要。每个架构由于每个人理解的不同和业务背景的不同，就会产生许多的说法甚至是争论。面对这样场景，作为架构师，你应该拿出数据和业界理论说话。同时言辞也不应太激烈，尽量让你的合作伙伴能欣然接受。有时架构师会提出架构重构的需求，这时架构师不仅要保证当前业务的发布进度，还得承担架构重构或者变动带来的风险，最后还得说服项目经理。</li>
+<li>最后，既没有最好的架构，也没有一劳永逸的架构。架构师的牛逼之处就在于<strong>可以在成本和业务稳定性之间找到一个最佳的平衡点，让架构产生的价值对业务最大化。</strong></li>
 </ul>
 
                 
@@ -244,13 +237,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/Docker目录解析与清理/" data-toggle="tooltip" data-placement="top" title="Docker目录解析与清理">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/部署openvpn服务/" data-toggle="tooltip" data-placement="top" title="部署openvpn服务">Next Post &rarr;</a>
+                            <a href="/article/Docker目录解析与清理/" data-toggle="tooltip" data-placement="top" title="Docker目录解析与清理">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -318,7 +307,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#redis集群docker化部署"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">redis&#x96C6;&#x7FA4;docker&#x5316;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#机器环境"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x673A;&#x5668;&#x73AF;&#x5883;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装docker-compose"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;docker-compose</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建redis数据目录"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;redis&#x6570;&#x636E;&#x76EE;&#x5F55;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#准备docker-compose文件"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x51C6;&#x5907;docker-compose&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#启动redis集群"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x542F;&#x52A8;redis&#x96C6;&#x7FA4;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考资料"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">&#x53C2;&#x8003;&#x8D44;&#x6599;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#极客时间专栏-从0开始学架构的收获"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x6781;&#x5BA2;&#x65F6;&#x95F4;&#x4E13;&#x680F;-&#x4ECE;0&#x5F00;&#x59CB;&#x5B66;&#x67B6;&#x6784;&#x7684;&#x6536;&#x83B7;</span></a></li></ol>
         
         </div>
       </aside>
@@ -338,7 +327,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
                         
                     </div>
                 </section>
@@ -369,8 +358,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/redis集群docker化部署/";
-    var disqus_url = "https://lyonger.cn/article/redis集群docker化部署/";
+    var disqus_identifier = "https://lyonger.cn/article/极客时间专栏-从0开始学架构的收获/";
+    var disqus_url = "https://lyonger.cn/article/极客时间专栏-从0开始学架构的收获/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

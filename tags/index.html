@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -202,21 +202,21 @@
                 
                     <a href="#后端" title="后端" rel="7">后端</a>
                 
-                    <a href="#Linux" title="Linux" rel="21">Linux</a>
+                    <a href="#Linux" title="Linux" rel="22">Linux</a>
                 
                     <a href="#生活" title="生活" rel="15">生活</a>
                 
-                    <a href="#Docker" title="Docker" rel="1">Docker</a>
-                
                     <a href="#Gitlab" title="Gitlab" rel="3">Gitlab</a>
                 
+                    <a href="#Docker" title="Docker" rel="1">Docker</a>
+                
                     <a href="#DevOps" title="DevOps" rel="2">DevOps</a>
+                
+                    <a href="#数据库" title="数据库" rel="3">数据库</a>
                 
                     <a href="#Windows" title="Windows" rel="1">Windows</a>
                 
                     <a href="#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
-                
-                    <a href="#数据库" title="数据库" rel="3">数据库</a>
                 
             </div>
 
@@ -376,6 +376,21 @@
                 <span class="fa fa-tag listing-seperator" id="Linux">
                     <span class="tag-text">Linux</span>
                 </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/极客时间专栏-从0开始学架构的收获/">
+                        <h2 class="post-title">
+                            极客时间专栏-从0开始学架构的收获
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
                 
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -931,28 +946,6 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="Docker">
-                    <span class="tag-text">Docker</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Docker目录解析与清理/">
-                        <h2 class="post-title">
-                            Docker目录解析与清理
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="Gitlab">
                     <span class="tag-text">Gitlab</span>
                 </span>
@@ -1005,6 +998,28 @@
             </div>
             
             <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Docker">
+                    <span class="tag-text">Docker</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Docker目录解析与清理/">
+                        <h2 class="post-title">
+                            Docker目录解析与清理
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="DevOps">
                     <span class="tag-text">DevOps</span>
                 </span>
@@ -1032,50 +1047,6 @@
                      <a href="/article/devops建设模型/">
                         <h2 class="post-title">
                             devops建设模型
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="Windows">
-                    <span class="tag-text">Windows</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Windows下常用命令/">
-                        <h2 class="post-title">
-                            Windows下常用命令
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="FreeBSD">
-                    <span class="tag-text">FreeBSD</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/freebsd的memory简介/">
-                        <h2 class="post-title">
-                            freebsd的memory简介
                         </h2>
                         
                     </a>
@@ -1128,6 +1099,50 @@
                      <a href="/article/Mysql与Mongodb你会如何选择/">
                         <h2 class="post-title">
                             Mysql与Mongodb你会如何选择
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Windows">
+                    <span class="tag-text">Windows</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Windows下常用命令/">
+                        <h2 class="post-title">
+                            Windows下常用命令
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="FreeBSD">
+                    <span class="tag-text">FreeBSD</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/freebsd的memory简介/">
+                        <h2 class="post-title">
+                            freebsd的memory简介
                         </h2>
                         
                     </a>
