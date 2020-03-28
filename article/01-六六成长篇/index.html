@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          极客时间专栏-从0开始学架构的收获 - 倚楼听风雨，淡看江湖路。
+          01-六六成长篇 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/极客时间专栏-从0开始学架构的收获/">
+    <link rel="canonical" href="https://lyonger.cn/article/01-六六成长篇/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -61,7 +61,7 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<link rel="stylesheet" type="text/css" href="/assets/css/DPlayer.min.css"><script src="/assets/js/DPlayer.min.js"></script></head>
 
 
 <!-- hack iOS CSS :active style -->
@@ -88,10 +88,10 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                              <a class="tag" href="/tags/#生活" title="生活">生活</a>
                             
                         </div>
-                        <h1>极客时间专栏-从0开始学架构的收获</h1>
+                        <h1>01-六六成长篇</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
@@ -212,24 +212,13 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="从0开始学架构的收获">《从0开始学架构》的收获</h2>
-<ul>
-<li>作者是阿里的技术资深专家，文章内容简单朴实，但真的是0基础来学的话，个人感觉理解起来还是有点吃力的。</li>
-<li>作者的专栏主要分为了5个部分：基础架构、高性能架构模式、高可用架构模式、可扩展架构模式、架构实战。</li>
-<li>基础架构部分，我认为是精华，很多资料网上根本没法找，比如设计架构的三原则、架构设计的流程和方案。架构实质就是解决各种复杂度问题，那么复杂度的来源，主要是哪些呢？其实主要是出自业务的需求，比如高性能、高可用、可扩展。试想要解决好这些问题，架构师的功力要有多深厚。</li>
-<li>在进行设计架构时，一般遵循三个原则：“合适原则”、“简单原则”、“演化原则”。
-<ul>
-<li>合适原则：没有最牛逼的架构，只有最适合业务的架构。</li>
-<li>简单原则：理论上架构越简单，后面越容易维护和扩展。</li>
-<li>演化原则：架构设计本身是一个随着业务发展，需要不断迭代的工程，没有一劳永逸的架构。</li>
+                <ul>
+<li>在你出生之前，<a href="https://g.126.fm/04iD20M" target="_blank" rel="noopener">爸爸给你写了一封信</a>，如今你已经来到爸爸身旁，爸爸能听到你的哭声和笑声，此时爸爸感到很幸福。</li>
+<li>爸爸妈妈给你取名<strong>刘昱臻</strong>，希望你的人生如太阳升起时，富有希望和能量，人生的每一步都会走的约来越好。你的乳名为<strong>六六</strong>，都说你的名字很好听，你妈妈取名很有水平，哈哈～。</li>
+<li>爸爸很想陪你成长每一天，能够看到你的点滴成长。你妈妈确实很不容易，几个月以来，没有睡过一个饱觉。日复一日，小心翼翼的抚养你，无论多么辛苦和麻烦，始终坚持母乳喂养，目的就是希望你有一个健康的身体。在你哭闹时，爸爸妈妈会心疼。你哭声越激烈，爸爸妈妈就会着急。每当你的哭声来临之时，爸爸妈妈觉到你在和我们沟通，爸爸妈妈也在努力的去听懂你的“语言”，希望能迅速的了解你，能够以最好的方式来满足你。</li>
+<li>今天爸爸想给你唱首歌《听我说谢谢你》：<strong>听我说，谢谢你，因为有你，温暖了四季～</strong></li>
 </ul>
-</li>
-<li>谈到高性能，有数据库机器的读写分离、分库分表，缓存架构。有单服务器的<code>PPC(Process Per Connection)</code>、<code>TPC(Thread Per Connection)</code>、<code>Reactor</code>、<code>Proactor</code>高性能模式。有高性能的负载均衡和算法。</li>
-<li>谈到高可用，你需要知道<code>CAP</code>理论，因为分布式系统一定存在P(比如网络分区的存在导致数据非强一致性而是最终一致性)，所以理论上只能做到<code>CP</code>或<code>AP</code>。在设计高可用架构时，为了避免思考不全面，应采用<code>FMEA</code>方法，即<code>Failure mode and effects analysis</code>（故障模式与影响分析），又称为失效模式与后果分析、失效模式与效应分析、故障模式与后果分析。相比计算型高可用，存储型高可用相对复杂。存储型高可用我们一般采用双机架构(主备、主从、主备 / 主从切换和主主)，集群和分区，分区又涉及异地多活。而面对业务级别的接口故障，要有降级、限流、熔断、排队等手段。</li>
-<li>谈到可扩展，核心就是“拆”，面向流程拆分就是分层架构，面向服务拆分就有SOA和微服务，面向功能拆分就有微内核架构(插件化架构)。</li>
-<li>学会上面这些，就很牛逼了？肯定不是，到后面你会发现，软技能也很重要。每个架构由于每个人理解的不同和业务背景的不同，就会产生许多的说法甚至是争论。面对这样场景，作为架构师，你应该拿出数据和业界理论说话。同时言辞也不应太激烈，尽量让你的合作伙伴能欣然接受。有时架构师会提出架构重构的需求，这时架构师不仅要保证当前业务的发布进度，还得承担架构重构或者变动带来的风险，最后还得说服项目经理。</li>
-<li>最后，既没有最好的架构，也没有一劳永逸的架构。架构师的牛逼之处就在于<strong>可以在成本和业务稳定性之间找到一个最佳的平衡点，让架构产生的价值对业务最大化。</strong></li>
-</ul>
+<div id="dplayer0" class="dplayer hexo-tag-dplayer-mark" style="margin-bottom: 20px; width:80; height:80;"></div><script>(function(){var player = new DPlayer({"container":document.getElementById("dplayer0"),"theme":"#FADFA3","loop":true,"video":{"url":"https://res-lyonger-1258401640.file.myqcloud.com/video/20190328.mp4","pic":"https://res-lyonger-1258401640.file.myqcloud.com/video_images/20200318_66.png"}});window.dplayers||(window.dplayers=[]);window.dplayers.push(player);})()</script>
 
                 
 
@@ -237,13 +226,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/01-六六成长篇/" data-toggle="tooltip" data-placement="top" title="01-六六成长篇">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/Docker目录解析与清理/" data-toggle="tooltip" data-placement="top" title="Docker目录解析与清理">Next Post &rarr;</a>
+                            <a href="/article/极客时间专栏-从0开始学架构的收获/" data-toggle="tooltip" data-placement="top" title="极客时间专栏-从0开始学架构的收获">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -311,7 +296,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#从0开始学架构的收获"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x300A;&#x4ECE;0&#x5F00;&#x59CB;&#x5B66;&#x67B6;&#x6784;&#x300B;&#x7684;&#x6536;&#x83B7;</span></a></li></ol>
+          <ol class="nav">none</ol>
         
         </div>
       </aside>
@@ -331,7 +316,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                          <a class="tag" href="/tags/#生活" title="生活">生活</a>
                         
                     </div>
                 </section>
@@ -362,8 +347,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/极客时间专栏-从0开始学架构的收获/";
-    var disqus_url = "https://lyonger.cn/article/极客时间专栏-从0开始学架构的收获/";
+    var disqus_identifier = "https://lyonger.cn/article/01-六六成长篇/";
+    var disqus_url = "https://lyonger.cn/article/01-六六成长篇/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

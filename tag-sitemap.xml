@@ -44,13 +44,6 @@
     </url>
 
     <url>
-        <loc>https://lyonger.cn/tags/%E7%94%9F%E6%B4%BB/</loc>
-        <lastmod>2020-03-18T14:48:25.860Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lyonger.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
         <lastmod>2020-03-20T11:20:03.502Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -66,7 +59,14 @@
 
     <url>
         <loc>https://lyonger.cn/tags/Linux/</loc>
-        <lastmod>2020-03-28T13:35:31.313Z</lastmod>
+        <lastmod>2020-03-28T14:17:44.952Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lyonger.cn/tags/%E7%94%9F%E6%B4%BB/</loc>
+        <lastmod>2020-03-28T15:08:52.041Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
