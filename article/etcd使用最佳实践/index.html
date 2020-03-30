@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -382,8 +382,8 @@
 </table>
 <p></p><h4 id="总结"><span class="label label-success">总结</span></h4><p></p>
 <ul>
-<li>一个<code>namespace</code>下<code>4000个</code>进程并发时，云机器vpc出口流量已到上限<code>1G</code>，此时客户端出错报<code>timeout</code>，但<code>etcd</code>服务端无<code>timeout</code>日志，此时瓶颈为客户端，如下为该云机器vpc流量图：<br>
-<img src="https://sawiki2.nie.netease.com/media/image/liuyong03/20181128203438.png" alt="小小云vpc出口流量上限1G"></li>
+<li>一个<code>namespace</code>下<code>4000个</code>进程并发时，云机器vpc出口流量已到上限<code>1G</code>，此时客户端出错报<code>timeout</code>，但<code>etcd</code>服务端无<code>timeout</code>日志，此时瓶颈为客户端，如下为该云机器vpc流量图：</li>
+<li><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/59b49206b0aa4bc2e61d7b8d694e47a3.jpg" alt="image"></li>
 <li>一个<code>namespace</code>下<code>5000</code>个进程并发，<code>etcd</code>集群的物理机<code>io</code>出现延迟几十到数百毫秒，<code>etcd</code>服务端报<code>timeout</code>，此时已经到达该物理机配置下<code>etcd</code>集群的承载上线。此时客户端、服务端均出现瓶颈。</li>
 <li><code>8</code>个机器人，<code>8</code>个不同的<code>namespace</code>，每个机器人<code>1000</code>进程同时并发，<code>etcd</code>集群的<code>cpu 10%</code>不到，客户端、服务端日志均无<code>timeout</code>，可见不集中在一个<code>namespace</code>时，<code>etcd</code>集群还是挺强大的。</li>
 </ul>
@@ -434,15 +434,15 @@
 <ul>
 <li>
 <p>停掉leader节点以后，可以看到7d46结尾的节点被选择为leader。</p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/4d35a8dd6f2478a4713b00926eda4479.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/4d35a8dd6f2478a4713b00926eda4479.jpg" alt="image"></p>
 </li>
 <li>
 <p>下面是7d46节点所在机器选举过程的日志。<br>
-<img src="https://sawiki2.nie.netease.com/media/image/liuyong03/20181102153221.png" alt="请在这里输入图片描述"></p>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/8fd70d7bad93df452eff3533571843ee.jpg" alt="image"></p>
 </li>
 <li>
 <p>说明3台节点down一台时，可以通过etcd-proxy继续读写，对业务是透明的。</p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/52a631629b7a6164d1e3cbdae2d11045.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/52a631629b7a6164d1e3cbdae2d11045.jpg" alt="image"></p>
 </li>
 <li>
 <p><font color="red">但在leader选举期间，集群不能处理任何写入操作。在选举期间发送的写入请求排队等待处理，直到选出新的leader。已经发送给old leader但尚未提交的文字可能会丢失。新leader有权重写old leader的任何未提交的条目。从用户的角度来看，一些写入请求可能会超时，但是，没有提交的写入会丢失</font>。</p>
@@ -452,11 +452,11 @@
 <ul>
 <li>
 <p>假设3台情况下，挂一台时，集群状态为degraded，但通过etcd-proxy仍可读写。</p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/1324fe6051c8cee13213527527d98d1a.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/1324fe6051c8cee13213527527d98d1a.jpg" alt="image"></p>
 </li>
 <li>
 <p>挂2台时，集群状态为<code>unavailable</code>，可读不可写。</p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/61aa9e21144542a2209416ff177d9313.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/61aa9e21144542a2209416ff177d9313.jpg" alt="image"></p>
 </li>
 </ul>
 <hr>
@@ -464,9 +464,9 @@
 <ul>
 <li>下面引入阿里巴巴技术专家<code>陈星宇</code>的云原生技术公开课分享资料，觉得总结的很不错，就直接贴图了。</li>
 </ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/60a5f573fe1b2c625ac161ffb6b8b566.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/c1c302982990c35e0885c5debaac79f8.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/30/122e191f96015002be695e04faa86903.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/60a5f573fe1b2c625ac161ffb6b8b566.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/c1c302982990c35e0885c5debaac79f8.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/03/30/122e191f96015002be695e04faa86903.jpg" alt="image"></p>
 <h2 id="参考资料">参考资料</h2>
 <ul>
 <li>
