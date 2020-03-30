@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -300,6 +300,60 @@
         <div class="tags">
             
               <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/etcd使用最佳实践/">
+        <h2 class="post-title">
+                                 
+            etcd使用最佳实践
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            etcd使用最佳实践
+etcd业务压测
+背景
+
+目前业务使用到etcd集群，需对etcd集群基于业务层进行压测，以观察是否达到业务需求。
+业务方想使用代理方式，可以通过本地proxy请求服务，把业务业务和etcd集群进行隔离。
+
+
+机器角色
+
+
+
+IP
+用途
+配置
+
+
+
+
+10.202.18.173
+压测客户端
+云机器 16core/32g/200G SSD
+
+
+10.202.18.174
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#云原生" title="云原生">云原生</a>
             
         </div>
     
@@ -558,43 +612,6 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/freebsd的memory简介/">
-        <h2 class="post-title">
-                                 
-            freebsd的memory简介
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            FreeBSD的memory简介
-
-线上很多业务还跑在了freebsd这个古老的系统上，而freebsd系统上的内存指标和Linux的有些不同。此文主要对freebsd下的内存指标分类、含义和查看做一些简单的说明。
-
-基本指标
-
-我们man一下top查看一下具体的内容如下:
-
-123456789101112131415Physical Memory Stats    Active:     ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-03-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#FreeBSD" title="FreeBSD">FreeBSD</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -636,14 +653,6 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
     <div class="tags">
         
             
-            <a href="/tags/#后端" title="后端" rel="7">后端</a>
-            
-        
-            
-            <a href="/tags/#生活" title="生活" rel="16">生活</a>
-            
-        
-            
             <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
@@ -652,7 +661,11 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
             
         
             
-            <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
+            <a href="/tags/#后端" title="后端" rel="7">后端</a>
+            
+        
+            
+            <a href="/tags/#生活" title="生活" rel="16">生活</a>
             
         
             
@@ -660,15 +673,23 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
             
         
             
+            <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
+            
+        
+            
+            <a href="/tags/#云原生" title="云原生" rel="1">云原生</a>
+            
+        
+            
             <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
             
         
             
-            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
+            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
-            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
+            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
             
         
             
@@ -737,6 +758,10 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
     <ul>
       
         <li>
+          <a href="/article/etcd使用最佳实践/">etcd使用最佳实践</a>
+        </li>
+      
+        <li>
           <a href="/article/01-六六成长篇/">01-六六成长篇</a>
         </li>
       
@@ -750,10 +775,6 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
       
         <li>
           <a href="/article/redis集群docker化部署/">redis集群docker化部署</a>
-        </li>
-      
-        <li>
-          <a href="/article/部署openvpn服务/">部署openvpn服务</a>
         </li>
       
     </ul>
@@ -778,7 +799,7 @@ mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
