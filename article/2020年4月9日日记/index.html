@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          mysql5.0升级mysql5.7方案调研 - 倚楼听风雨，淡看江湖路。
+          2020年4月9日日记 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/mysql5-0升级mysql5-7方案调研/">
+    <link rel="canonical" href="https://lyonger.cn/article/2020年4月9日日记/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                              <a class="tag" href="/tags/#生活" title="生活">生活</a>
                             
                         </div>
-                        <h1>mysql5.0升级mysql5.7方案调研</h1>
+                        <h1>2020年4月9日日记</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-03-05
+                            2020-04-09
                         </span>
                     </div>
                 
@@ -212,53 +212,15 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="mysql50-upgrade-mysql57方案调研">mysql5.0 upgrade mysql5.7方案调研</h1>
-<h2 id="背景">背景</h2>
-<ul>
-<li>window mysql5.0升级到centos7下的mysql5.7</li>
-<li>需升级的数据量：<code>120G</code></li>
+                <ul>
+<li>今天来聊聊4月份以来的一些事情，就不更新技术博客了。</li>
+<li>最近在调研业务上如何实践DevOps，打算在二级部门开个沙龙。主要对比<code>Jenkins+k8s</code>和<code>gitlab+k8s</code>这2种模式在自身业务场景下的优缺点，同时也会对比介绍阿里的<code>codepipline</code>和云效产品使用场景，后续打算写一篇专门的博客来分析一下。</li>
+<li>今天对极客时间专栏的学习情况做了一个小统计，发现还只拿到4个证书，今天发出来晒晒太阳吧。主要是鼓励自己，多努力学习，加油！</li>
 </ul>
-<h2 id="风险评估">风险评估</h2>
-<ul>
-<li>mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移到centos问题应该不大，但需测试。</li>
-<li><code>120G</code>数据对一个mysql来说还不算非常大，中等的样子，所以数据量没问题，会消耗一点时间。</li>
-</ul>
-<h2 id="方案调研">方案调研</h2>
-<h3 id="顺序升级">顺序升级</h3>
-<ul>
-<li>顺序升级是指：参考官方的版本升级次序，每次升级一个<code>major release</code>版本，比如5.0升级到5.5。</li>
-<li>5.7官方升级指引<a href="https://dev.mysql.com/doc/refman/5.7/en/upgrading.html" target="_blank" rel="noopener">参考这里</a>。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/05/bdfc80d716ad8f49ec3bedb44269ce43.jpg" alt="image"></p>
-<ul>
-<li>官方建议每次升级一个<code>major release</code>版本，比如从5.0升级到5.7时，推荐的升级方式是<code>5.9-&gt;5.5-&gt;5.6-&gt;5.7</code>。该方法虽然安全稳定，但是会给业务带来更多时间成本和人力成本，<code>120G</code>的数据需做3次升级操作。那么我们试试探索直接从<code>5.0-&gt;5.7，</code>是否有比较可行的方案。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/03/05/27e628cbec0348cf05c4d3e9ccd01a4e.jpg" alt="image"></p>
-<h3 id="跳跃升级">跳跃升级</h3>
-<ul>
-<li>
-<p>跳跃升级是指：一次性跨越多个一个<code>major release</code>版本，比如5.0直接升级到5.7。从官方博客中，有收集到2种升级方式：<code>mysqldump方式</code>和<code>in place原地升级方式</code>。</p>
-<ul>
-<li><code>mysqldump方式</code>：简单的说就是先停止业务读写后，先完整dump出当前数据。然后创建一个新版本实例，初始化以后把dump出的备份load进来，即需要先导出再导入。数据量大时，不管是导出还是导入都是比较耗时的操作。</li>
-<li><code>原地升级方式(in place)</code>：简单的说就是先停止业务读写后，直接备份当前数据库，直接在当前实例进行upgrade，不需要先导入再导入。速度比较快，但是风险较高，因为直接在原环境操作，有问题时回滚也比较耗时。</li>
-</ul>
-</li>
-<li>
-<p><strong>mysqldump方式</strong>可以参考官方博客的指引说明：<a href="http://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-with-mysqldump/" target="_blank" rel="noopener">http://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-with-mysqldump/</a></p>
-</li>
-<li>
-<p><strong>原地升级方式</strong>可以参考官方博客的指引说明：<a href="https://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-using-an-in-place-upgrade/" target="_blank" rel="noopener">https://mysqlserverteam.com/upgrading-directly-from-mysql-5-0-to-5-7-using-an-in-place-upgrade/</a></p>
-</li>
-</ul>
-<h2 id="总结">总结</h2>
-<ul>
-<li>如果升级的业务数据非常之重要，是核心业务数据。建议使用顺序升级方式，比较稳定，回退也方便。</li>
-<li>如果升级的业务数据不那么重要，可以尝试使用跳跃升级方式。</li>
-</ul>
-<h2 id="附加说明">附加说明</h2>
-<ul>
-<li><font color="red"><strong>注意，每种方式均需结合自身业务，搭建与业务相同的测试环境进行多次测试。测试稳定以后再找一个时间点对线上业务进行变更。</strong></font></li>
-</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/04/09/210375da11d8fabfe0f6388bac70c8a3.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/04/09/d6ae809c8c00c8c6290f38c6c64480ae.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/04/09/d57210dfbcd889ce58e972bf7e8e4720.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2020/04/09/9d9252d70dea725f666ad502be0454d3.jpg" alt="image"></p>
 
                 
 
@@ -266,13 +228,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/如何对不同机器上目录进行实时同步/" data-toggle="tooltip" data-placement="top" title="如何对不同机器上目录进行实时同步">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/freebsd的memory简介/" data-toggle="tooltip" data-placement="top" title="freebsd的memory简介">Next Post &rarr;</a>
+                            <a href="/article/etcd使用最佳实践/" data-toggle="tooltip" data-placement="top" title="etcd使用最佳实践">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -340,7 +298,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#mysql50-upgrade-mysql57方案调研"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">mysql5.0 upgrade mysql5.7&#x65B9;&#x6848;&#x8C03;&#x7814;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#风险评估"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x98CE;&#x9669;&#x8BC4;&#x4F30;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方案调研"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x65B9;&#x6848;&#x8C03;&#x7814;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#顺序升级"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x987A;&#x5E8F;&#x5347;&#x7EA7;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#跳跃升级"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x8DF3;&#x8DC3;&#x5347;&#x7EA7;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#附加说明"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x9644;&#x52A0;&#x8BF4;&#x660E;</span></a></li></ol></li></ol>
+          <ol class="nav">none</ol>
         
         </div>
       </aside>
@@ -360,7 +318,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                          <a class="tag" href="/tags/#生活" title="生活">生活</a>
                         
                     </div>
                 </section>
@@ -391,8 +349,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/mysql5-0升级mysql5-7方案调研/";
-    var disqus_url = "https://lyonger.cn/article/mysql5-0升级mysql5-7方案调研/";
+    var disqus_identifier = "https://lyonger.cn/article/2020年4月9日日记/";
+    var disqus_url = "https://lyonger.cn/article/2020年4月9日日记/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
