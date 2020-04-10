@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://lyonger.cn/article/%E8%AE%B0%E4%B8%80%E6%AC%A1Gitlab-Runner%E5%8D%A1%E9%A1%BF%E7%9A%84%E8%AF%A6%E6%83%85%E5%88%86%E6%9E%90/</loc>
+        <lastmod>2020-04-10T01:06:42.115Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lyonger.cn/article/2020%E5%B9%B44%E6%9C%889%E6%97%A5%E6%97%A5%E8%AE%B0/</loc>
         <lastmod>2020-04-09T15:29:05.363Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -57,14 +65,6 @@
     <url>
         <loc>https://lyonger.cn/article/redis%E9%9B%86%E7%BE%A4docker%E5%8C%96%E9%83%A8%E7%BD%B2/</loc>
         <lastmod>2020-03-20T11:20:03.502Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://lyonger.cn/article/%E8%AE%B0%E4%B8%80%E6%AC%A1Gitlab-Runner%E5%8D%A1%E9%A1%BF%E7%9A%84%E8%AF%A6%E6%83%85%E5%88%86%E6%9E%90/</loc>
-        <lastmod>2020-03-18T14:48:18.723Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
