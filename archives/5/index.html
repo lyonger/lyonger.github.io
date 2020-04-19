@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -211,19 +211,28 @@
 
 <div class="post-preview">
 
-    <a href="/article/03CPU上下文切换-Linux性能优化/">
+    <a href="/article/安装kubernets集群/">
         <h2 class="post-title">
                                  
-            03CPU上下文切换-Linux性能优化
+            安装kubernets集群
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            基本概念
+            准备工作(node/master机器均需操作)
 
-CPU上下文：即CPU在运行任何程序前所必须依赖的环境，即CPU寄存器和程序计数器。其中CPU寄存器是CPU内置的容量小、但速度极快的内存。而程序计数器则是用来存储CPU正在执行的指令位置、或者即将执行的下一条指令位置。
-CPU上下文切换：即把前一个任务的CPU上下文（CPU寄存器和程序计数器）保存起来，然后加载新任务的上下文到这些寄存器和程序计数器，最后再跳转到程序计数器所指的......
+机器配置，4核心8G内存。
+
+1234Distributor ID:	DebianDescription:	Debian GNU/Linux 9.2 (stretch)Release:	9.2Codename:	stretch
+
+关闭swap分区
+
+1swapoff -a
+
+关闭防火墙
+
+12systemctl stop firewallds......
         </div>
     </a>
     
@@ -243,58 +252,19 @@ CPU上下文切换：即把前一个任务的CPU上下文（CPU寄存器和程�
 
 <div class="post-preview">
 
-    <a href="/article/03-flask-基础/">
+    <a href="/article/安装Elasticsearch和Kibana/">
         <h2 class="post-title">
                                  
-            03-flask-基础
+            安装Elasticsearch和Kibana
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            第一个flask程序讲解
-
-
-第一次创建项目的时候，要添加flask的虚拟环境。添加虚拟环境的时候，一定要选择到python这个执行文件。比如你的flask的虚拟环境的目录在/User/Virtualenv/flask-env/bin/python。
-
-
-flask程序代码的详细解释：
- 123456789# 从flask这个框架中导入Flask这个类from flask import Fl......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后端" title="后端">后端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/02平均负载-Linux性能优化/">
-        <h2 class="post-title">
-                                 
-            02平均负载-Linux性能优化
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            概念
-
-
-平均负载是指单位时间内，系统处于可运行状态和不可中断状态(等待CPU或者等待I/O)的平均进程数，也就是平均活跃进程数，它和CPU使用率并没有直接关系,直观上理解就是单位时间内的活跃进程数，但它实际上是活跃进程数的指数衰减平均值。下面解释一下可运行状态和不可中断状态。
-
-可运行状态的进程，是指正在使用CPU或者正在等待CPU的进程，也就是PS命令中看到的R状态的进程。
-不可中断状态......
+            系统环境
+1234Distributor ID:	DebianDescription:	Debian GNU/Linux 9.2 (stretch)Release:	9.2Codename:	stretch
+安装kibana
+1234567wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key ......
         </div>
     </a>
     
@@ -314,25 +284,178 @@ flask程序代码的详细解释：
 
 <div class="post-preview">
 
-    <a href="/article/02-flask-认识web/">
+    <a href="/article/2019年对自己的一些期望/">
         <h2 class="post-title">
                                  
-            02-flask-认识web
+            2019年对自己的一些期望
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            认识url
+            
 
-如果使用的是http协议，那么浏览器就会使用80端口去请求这个服务器的资源。
-如果使用的是https协议，那么浏览器会使用443端口去请求这个服务器的资源。
+2018年悄然远去，2019如期而至，在2018年里，发生了很多有意义的故事，其中值得回味的事情有：
 
-URL详解
+顺利完成了婚姻大事，找到了家庭的归宿，提升了幸福感。
+换了一家公司，相信仔细选择后的结果都是好的。
 
-URL是Uniform Resource Locator的简写，统一资源定位符。一个URL由以下几部分组成：
 
-1234567scheme://host:port/path/?query-string=xx......
+
+对于2019年，对自己有如下期望：
+
+提升恒心和毅力，对一件事要善始善终，不要总半途而废。
+凡事预则立，不预则废。
+强身健体，这需要长久的坚持。
+技术需更加专注于某个方面，切莫瞎折......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019年11月18日日记/">
+        <h2 class="post-title">
+                                 
+            2019年11月18日日记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+最近正处职级晋升期间，不管结果如何，这半年学了很多的东西，很多东西值得拿出来总结，做了一些技术分享，获得了一些收获。
+想谈谈期间负责的一个python项目，这个项目一开始是兴趣爱好使然。由于一开始欠缺对这款产品的整体规划，导致如今的“夭折”。虽然当前这个项目没有继续维护，没能顺利的应用到线上业务。但参与其中的每位小伙伴都是有收获的。从折腾开发流程与规范，到最后自己写代码、调试、收集需求再持......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019年11月13日日记/">
+        <h2 class="post-title">
+                                 
+            2019年11月13日日记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+今天是2019年11月13日，双十一过去了。今天收到了期待已久的极客时间书包，同时也购买了刘超老师的《趣谈Linux操作系统》课程。趁着双十一活动，在有不少优惠力度的情况下果断买下，很开心～。
+最新手头的项目要陆续上线，时间上有点紧张。不过作为一个老司机，业务上还是比较游刃有余，而对于专业外的其他知识，就显得很薄弱了。以前总想着自己可以看完x x x书籍，会涉猎一些互联网领域外的其他书籍，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2019年11月10日日记/">
+        <h2 class="post-title">
+                                 
+            2019年11月10日日记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+一晃半年已过，在这半年的时间里，有来自家庭的温暖和收获，有工作上的积累和喜悦。热爱生活，就从写日记开始。
+
+
+最近看了一部电视剧《在远方》，主要讲述了快递行业的创业故事，同时夹带着爱情、友情等主题。在这个电视剧里主要有2方面内容有些感悟。
+
+
+第一点：创业真的很艰难，迈出这一步都需要很大的勇气，因为你要经历嘲笑、冷骂、背叛、孤独，甚至是1-3年没收入且家人质疑等问题，听起来是不是很惨。在......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/07-flask-请求与钩子函数/">
+        <h2 class="post-title">
+                                 
+            07-flask-请求与钩子函数
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            get请求和post请求：
+
+
+get请求：
+
+
+使用场景：如果只对服务器获取数据，并没有对服务器产生任何影响，那么这时候使用get请求。
+
+
+传参：get请求传参是放在url中，并且是通过?的形式来指定key和value的。
+
+
+
+
+post请求：
+
+
+使用场景：如果要对服务器产生影响，那么使用post请求。
+
+
+传参：post请求传参不是放在url中，是通过form data的形式发送给......
         </div>
     </a>
     
@@ -352,56 +475,27 @@ URL是Uniform Resource Locator的简写，统一资源定位符。一个URL由�
 
 <div class="post-preview">
 
-    <a href="/article/02-前端学习-html/">
+    <a href="/article/06CPU性能指标分析-Linux性能优化/">
         <h2 class="post-title">
                                  
-            02-前端学习-html
+            06CPU性能指标分析-Linux性能优化
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            HTML文档
+            CPU性能指标
 
-所有的HTML文档必须使用文档类型声明开始：。
-HTML文档本身开头和结尾。
-HTML文档的可见部分之间和。
+性能工具
 
-1234567&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;&lt;h1&gt;My First Heading&lt;/h1&gt;&lt;p&gt;My first paragraph.&lt;/p&gt;&lt;/b......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#前端" title="前端">前端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/01基础-Linux性能优化/">
-        <h2 class="post-title">
-                                 
-            01基础-Linux性能优化
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Linux性能优化工具集
-
-Linux性能优化图谱
+从CPU性能指标出发，当你查看到性能指标时，可以明确知道使用哪个性能工具。
 
 
-努力吧，骚年～
+
+如果已经安装性能工具，要知道工具可以提供哪些指标。
+
+
+快速定位CPU问题
 
 推荐阅读websocket的几种测试方式KSM应用实践supervisor的Listeners机制...
         </div>
@@ -423,30 +517,19 @@ Linux性能优化图谱
 
 <div class="post-preview">
 
-    <a href="/article/01-flask-环境准备/">
+    <a href="/article/06-flask-session和cookie/">
         <h2 class="post-title">
                                  
-            01-flask-环境准备
+            06-flask-session和cookie
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            安装Python2.7
-
-Mac下使用Python2.7.
-Windows下安装Python2.7.
-
-从python官网下载python2.7的版本。
-双击python2.7，然后选择安装路径，一顿下一步就可以了。
-设置环境变量，把python的安装路径添加到PATH变量中。
-还需要设置一个环境变量，一定要设置，不然后面就不能正常安装flask了。
+            cookie
 
 
-
-Python虚拟环境介绍与安装
-
-......
+cookie出现的原因：在网站中，http请求是无状态的。也就是说即使第一次和服务器连接后并且登录成功后，第二次请求服务器依然不能知道当前请求是哪个用户。cookie的出现就是为了解决这个问题，第一次登录后服务器返回一些数据（cookie）给浏览器，然后浏览器保存在本地，当该用户发送第二次请求的时候，就会自动的把上次请求存储的cookie数据自动的携带给服务器，服务器通过浏......
         </div>
     </a>
     
@@ -466,27 +549,33 @@ Python虚拟环境介绍与安装
 
 <div class="post-preview">
 
-    <a href="/article/01-前端学习-学习线路/">
+    <a href="/article/05-flask-数据库/">
         <h2 class="post-title">
                                  
-            01-前端学习-学习线路
+            05-flask-数据库
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            基本概念
+            Mac和Windows下数据库的安装
 
-前端 = HTML + CSS + JavaScript
-其中javaScrip包括：
 
-JavaScript 基础
-Package Manager (NPM, Yarn)
-Build tools (NPM Scripts, ESLint, Webpack…)
-Frameworks (React, Vue.js, Angular)
-Testing tools (Jest …)
+Mysql为例
 
-......
+
+https://dev.mysql.com/downloads/mysql/
+
+
+Mac上安装Mysql很简单，直接一顿下一步安装就可以了。
+
+
+设置初始化密码的命令是：
+ 1mysqladmin -uroot password [password]
+
+
+windows:
+*. 如果没有安装.net Framework 4，就在那......
         </div>
     </a>
     
@@ -496,52 +585,7 @@ Testing tools (Jest …)
         </p>
         <div class="tags">
             
-              <a href="/tags/#前端" title="前端">前端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/记一次Gitlab-Runner卡顿的详情分析/">
-        <h2 class="post-title">
-                                 
-            记一次Gitlab-Runner卡顿的详情分析
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            记一次Gitlab Runner卡顿的详情分析
-
-该问题排查耗时数周，下面分享一下整体的排查过程，仅供大家参考。
-
-问题的背景
-
-
-最近Gitlab Runner服务偶尔接到用户反馈build超时和卡顿。下面是某个用户提供的问题截图。比如build超时：
-
-
-
-用户反馈卡顿，比如：
-
-
-
-
-由于该问题具有普遍性，不同的用户在不同的repo进行ci均会偶发性产生问题，于是着手做一次深入的排查。......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
+              <a href="/tags/#后端" title="后端">后端</a>
             
         </div>
     
@@ -559,6 +603,10 @@ Testing tools (Jest …)
             <a href="/archives/4/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/archives/6/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -590,6 +638,10 @@ Testing tools (Jest …)
     <div class="tags">
         
             
+            <a href="/tags/#生活" title="生活" rel="18">生活</a>
+            
+        
+            
             <a href="/tags/#后端" title="后端" rel="7">后端</a>
             
         
@@ -598,11 +650,7 @@ Testing tools (Jest …)
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="19">Linux</a>
-            
-        
-            
-            <a href="/tags/#生活" title="生活" rel="14">生活</a>
+            <a href="/tags/#Linux" title="Linux" rel="22">Linux</a>
             
         
             
@@ -614,11 +662,23 @@ Testing tools (Jest …)
             
         
             
+            <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
+            
+        
+            
+            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
+            
+        
+            
             <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
-            <a href="/tags/#数据库" title="数据库" rel="1">数据库</a>
+            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
+            
+        
+            
+            <a href="/tags/#云原生" title="云原生" rel="1">云原生</a>
             
         
     </div>
@@ -683,23 +743,23 @@ Testing tools (Jest …)
     <ul>
       
         <li>
-          <a href="/article/DevOps成熟度模型/">DevOps成熟度模型</a>
+          <a href="/article/2020年4月19日疫情日记/">2020年4月19日疫情日记</a>
         </li>
       
         <li>
-          <a href="/article/努力工作-共战疫情/">努力工作,共战疫情</a>
+          <a href="/article/2020年4月9日日记/">2020年4月9日日记</a>
         </li>
       
         <li>
-          <a href="/article/DevOps之Gitlab-CICD实践篇/">DevOps之Gitlab-CICD实践篇</a>
+          <a href="/article/etcd使用最佳实践/">etcd使用最佳实践</a>
         </li>
       
         <li>
-          <a href="/article/陪产的幸福体验/">陪产的幸福体验</a>
+          <a href="/article/01-六六成长篇/">01-六六成长篇</a>
         </li>
       
         <li>
-          <a href="/article/为什么我要坚持博客/">为什么我要坚持写博客</a>
+          <a href="/article/极客时间专栏-从0开始学架构的收获/">极客时间专栏-从0开始学架构的收获</a>
         </li>
       
     </ul>
@@ -724,7 +784,7 @@ Testing tools (Jest …)
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
