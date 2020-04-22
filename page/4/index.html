@@ -211,6 +211,80 @@
 
 <div class="post-preview">
 
+    <a href="/article/nginx使用ip反解域名/">
+        <h2 class="post-title">
+                                 
+            nginx使用ip反解域名
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            nginx使用ip反解域名
+
+
+下载nginx源码,可以按照自己想要的版本来下载，这里以1.10来举例
+
+
+下载rdns的源码
+1git clone https://github.com/flant/nginx-http-rdns.git
+
+
+编译,安装nginx，配置参考如下，会有一些依赖包问题，根据编译提示安装依赖包，最重要的是最后的add-module=指定rdns的源码目录
+1234......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/network-flow-conversion/">
+        <h2 class="post-title">
+                                 
+            network-flow-conversion
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            B、M、G单位换算
+
+B是一个电脑存储的基本单位(字节),1个英文字符是1个字节,也就是1B，1个汉字为2个字符，也就是2B。
+K 是千的意思， KB也就是1000字节，但计算机的运算和数学有所不同，是1024字节为 1KB，所以说 1024B=1KB。
+M 是兆的意思，运算也是类似，以1024进一位，也就是说1024KB=1MB。接着G,依此类推,1024MB=1GB
+综上所述 1024B......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/Kernel-Samepage-Merging探索及监控/">
         <h2 class="post-title">
                                  
@@ -517,80 +591,6 @@ DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/磁盘数据加密/">
-        <h2 class="post-title">
-                                 
-            磁盘数据加密
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            FreeBSD
-
-使用系统自带的geli命令对/home/test加密
-要将/mnt挂载点独立一个分区出来，以免手动调整分区
-如果是aws，则把数据盘EBS挂载到/home/test
-
-首次创建加密盘
-
-aws的话先创建分区，记得先umount原来分区
-
-
-
-AWS：用gpart创建分区
-  1234# gpart create -s gpt xbd1xbd1 created# gpart ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/安装subversion1-10/">
-        <h2 class="post-title">
-                                 
-            安装subversion1-10
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            安装 apr
-1234567➜ wget -c http://mirrors.shu.edu.cn/apache//apr/apr-1.6.5.tar.gz➜ tar -zxvf apr-1.6.5.tar.gz➜ cd apr-1.6.5➜ ./configure --prefix=/usr/local/apr➜ make➜ make install
-安装 apr-util
-1234567......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -636,7 +636,7 @@ AWS：用gpart创建分区
     <div class="tags">
         
             
-            <a href="/tags/#生活" title="生活" rel="17">生活</a>
+            <a href="/tags/#生活" title="生活" rel="18">生活</a>
             
         
             
@@ -644,11 +644,11 @@ AWS：用gpart创建分区
             
         
             
-            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+            <a href="/tags/#Linux" title="Linux" rel="23">Linux</a>
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="22">Linux</a>
+            <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
             
@@ -657,6 +657,10 @@ AWS：用gpart创建分区
         
             
             <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
+            
+        
+            
+            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
             
         
             
@@ -669,10 +673,6 @@ AWS：用gpart创建分区
         
             
             <a href="/tags/#云原生" title="云原生" rel="1">云原生</a>
-            
-        
-            
-            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
             
         
             
@@ -741,6 +741,14 @@ AWS：用gpart创建分区
     <ul>
       
         <li>
+          <a href="/article/Linux命令行下的科学上网方式/">Linux命令行下的科学上网方式</a>
+        </li>
+      
+        <li>
+          <a href="/article/2020年4月19日疫情日记/">2020年4月19日疫情日记</a>
+        </li>
+      
+        <li>
           <a href="/article/2020年4月9日日记/">2020年4月9日日记</a>
         </li>
       
@@ -750,14 +758,6 @@ AWS：用gpart创建分区
       
         <li>
           <a href="/article/01-六六成长篇/">01-六六成长篇</a>
-        </li>
-      
-        <li>
-          <a href="/article/极客时间专栏-从0开始学架构的收获/">极客时间专栏-从0开始学架构的收获</a>
-        </li>
-      
-        <li>
-          <a href="/article/Docker目录解析与清理/">Docker目录解析与清理</a>
         </li>
       
     </ul>
@@ -782,7 +782,7 @@ AWS：用gpart创建分区
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
