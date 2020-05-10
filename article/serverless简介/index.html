@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Linux命令行下的科学上网方式 - 倚楼听风雨，淡看江湖路。
+          serverless简介 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/Linux命令行下的科学上网方式/">
+    <link rel="canonical" href="https://lyonger.cn/article/serverless简介/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                              <a class="tag" href="/tags/#云原生" title="云原生">云原生</a>
                             
                         </div>
-                        <h1>Linux命令行下的科学上网方式</h1>
+                        <h1>serverless简介</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-04-22
+                            2020-05-10
                         </span>
                     </div>
                 
@@ -212,85 +212,112 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="linux命令行下的科学上网方式">Linux命令行下的科学上网方式</h1>
-<h2 id="机器说明">机器说明</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Debian/Ubuntu</span><br><span class="line">AWS海外机器(ssserver)ip：10.69.30.11</span><br><span class="line">客户端机器（需科学上网的机器）ip：10.63.108.13</span><br></pre></td></tr></table></figure>
-<h2 id="服务端操作">服务端操作</h2>
+                <h2 id="什么是云原生">什么是云原生</h2>
 <ul>
-<li>安装<code>shadowsocks</code>服务</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install shadowsocks -y</span><br></pre></td></tr></table></figure>
+<li>
+<p><code>Pivotal</code>是云原生应用的提出者，并推出了 <code>Pivotal Cloud Foundry</code>云原生应用平台和<code>Spring</code>开源<code>Java</code>开发框架，成为云原生应用架构中先驱者和探路者。</p>
+</li>
+<li>
+<p>最初云原生应用架构主要有下面几个特征：</p>
 <ul>
-<li>设置ss服务端配置文件<code>/etc/shadowsocks/shadowsocks.json</code>，内容如下：</li>
+<li>符合12因素应用</li>
+<li>面向微服务架构</li>
+<li>自服务敏捷架构</li>
+<li>基于API的协作</li>
+<li>抗脆弱性</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"server"</span>:<span class="string">"10.69.30.11"</span>,         <span class="comment">#ss服务端机器IP</span></span><br><span class="line">    <span class="string">"server_port"</span>:9889,	            <span class="comment">#ss服务端port</span></span><br><span class="line">    <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,   <span class="comment">#ss客户端机器ip</span></span><br><span class="line">    <span class="string">"local_port"</span>:9888,              <span class="comment">#ss客户端机器port</span></span><br><span class="line">    <span class="string">"password"</span>:<span class="string">"Bfadfx"</span>,            <span class="comment">#客户端连接密码</span></span><br><span class="line">    <span class="string">"timeout"</span>:300,</span><br><span class="line">    <span class="string">"method"</span>:<span class="string">"aes-256-cfb"</span>,         <span class="comment">#加密算法</span></span><br><span class="line">    <span class="string">"fast_open"</span>: <span class="literal">false</span>,             <span class="comment">#快速连接模式</span></span><br><span class="line">    <span class="string">"workers"</span>: 4                    <span class="comment">#线程数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>2015年<code>Google</code>主导成立了<code>云原生计算基金会（CNCF）</code>，起初CNCF对云原生（Cloud Native）的定义主要有下面三个方面。</p>
 <ul>
-<li>启动ss服务端</li>
+<li>应用容器化</li>
+<li>面向微服务架构</li>
+<li>应用支持容器的编排调度</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssserver -c /etc/shadowsocks/shadowsocks.json -d start</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>随着近期云原生的不断壮大和火爆，到了2018年，很多主流的云厂商加入了CNCF，又重新定义了一版。如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Cloud native technologies empower organizations to build and run scalable applications in modern, dynamic environments such as public, private, and hybrid clouds. Containers, service meshes, microservices, immutable infrastructure, and declarative APIs exemplify this approach.</span><br><span class="line"></span><br><span class="line">云原生技术有利于各组织在公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用。云原生的代表技术包括容器、服务网格、微服务、不可变基础设施和声明式API。</span><br><span class="line"></span><br><span class="line">These techniques enable loosely coupled systems that are resilient, manageable, and observable. Combined with robust automation, they allow engineers to make high-impact changes frequently and predictably with minimal toil.</span><br><span class="line"></span><br><span class="line">这些技术能够构建容错性好、易于管理和便于观察的松耦合系统。结合可靠的自动化手段，云原生技术使工程师能够轻松地对系统作出频繁和可预测的重大变更。</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>总结，个人理解为，最新的概念是：<strong>以容器、服务网格、微服务、不可变基础设施和声明式API为特征的技术，助力公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用</strong>。</p>
+</li>
+</ul>
+<h2 id="什么是serverless">什么是serverless</h2>
 <ul>
-<li>判断是否成功</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~<span class="comment"># netstat -tunlp |grep 9889</span></span><br><span class="line">tcp        0      0 10.69.30.11:9889        0.0.0.0:*               LISTEN      824/python</span><br><span class="line">udp        0      0 10.69.30.11:9889        0.0.0.0:*                           824/python</span><br></pre></td></tr></table></figure>
-<h2 id="客户端操作">客户端操作</h2>
+<li>关于<code>serverless</code>的入门课程，我推荐极客时间里蒲松洋（秦粤）老师的<code>Serverless入门课</code>专栏。由浅入深的讲述了<code>severless</code>的基本概念，特征和实践过程。那么什么是<code>serverless</code>？那么既然有<code>serverless</code>，那就<code>serverfull</code>，<code>server</code>就是服务端，<code>less</code>就是较少关注，<code>full</code>就是比较关注，目的就是让大家可以较少关注服务端的运维工作，只需专注自身业务逻辑的开发。以下引用专栏里的内容。
 <ul>
-<li>如果客户端使用<code>socks5</code>方式进行科学上网，则安装<code>shadowsocks</code>服务，<code>http/https</code>科学上网方式参考下文。</li>
+<li>第一种：狭义 Serverless（最常见）= Serverless computing 架构 = FaaS 架构 = Trigger（事件驱动）+ FaaS（函数即服务）+ BaaS（后端即服务，持久化或第三方服务）= FaaS + BaaS</li>
+<li>第二种：广义 Serverless = 服务端免运维 = 具备 Serverless 特性的云服务</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install shadowsocks -y</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/05/10/e9ec692b354451bc5f86a6b177e2a5ff.jpg" alt="image"></p>
+<h2 id="serverless解决什么问题">serverless解决什么问题</h2>
 <ul>
-<li>设置ss客户端配置文件<code>/etc/shadowsocks/shadowsocks.json</code>，内容如下：</li>
+<li>那么使用<code>serverless</code>可以解决什么问题呢？相比传统的MVC架构，往往没有任何流量或者用户都需要至少占用一台服务器并且开机。而<code>serverless</code>应用可以自动扩缩容，甚至在无业务时服务器数量缩容到0，有业务时可以快速启动应用并服务。所以最核心的问题就是：<strong>省钱</strong></li>
+<li>当前<code>serverless</code>技术也在不断发展当中，它只是属于CNCF中的一部分。</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"server"</span>:<span class="string">"10.69.30.11"</span>,</span><br><span class="line">    <span class="string">"server_port"</span>:9889,</span><br><span class="line">    <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    <span class="string">"local_port"</span>:1080,</span><br><span class="line">    <span class="string">"password"</span>:<span class="string">"Bfadfx"</span>,</span><br><span class="line">    <span class="string">"timeout"</span>:300,</span><br><span class="line">    <span class="string">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">    <span class="string">"fast_open"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"workers"</span>: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="云原生技术范畴">云原生技术范畴</h2>
 <ul>
-<li>启动ss客户端</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sslocal -c /etc/shadowsocks/shadowsocks.json -d start</span><br></pre></td></tr></table></figure>
+<li>既然谈到了CNCF，我们可以先了解一下云原生的技术范畴，分别整理为如下：
 <ul>
-<li>判断是否成功</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~<span class="comment"># netstat -tunlp |grep 1080</span></span><br><span class="line">tcp        0      0 127.0.0.1:1080          0.0.0.0:*               LISTEN      1363/python</span><br><span class="line">udp        0      0 127.0.0.1:1080          0.0.0.0:*                           1363/python</span><br></pre></td></tr></table></figure>
+<li>云应用定义与开发流程
 <ul>
-<li>测试是否可以科学上网</li>
+<li>应用定义与镜像制作</li>
+<li>CI/CD</li>
+<li>消息和Streaming</li>
+<li>数据库</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#指定走socks5协议</span></span><br><span class="line">curl --socks5 127.0.0.1:1080 myip.ipip.net</span><br></pre></td></tr></table></figure>
-<h2 id="http方式">http方式</h2>
+</li>
+<li>云应用编排与管理
 <ul>
-<li>如果客户端想使用<code>http/https</code>方式进行科学上网。则需使用<strong>privoxy</strong>这个软件，把<code>socks5</code>代理转换成<code>http</code>代理。安装方式：</li>
+<li>应用编排与调度</li>
+<li>服务发现与治理</li>
+<li>远程调用</li>
+<li>API网关</li>
+<li>Service Mesh服务网格</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update &amp;&amp; apt-get install privoxy -y</span><br></pre></td></tr></table></figure>
+</li>
+<li>监控与可观测性
 <ul>
-<li>备份并新增配置文件</li>
+<li>监控</li>
+<li>日志</li>
+<li>Tracing</li>
+<li>混沌工程</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先备份原配置文件</span></span><br><span class="line">mv /etc/privoxy/config /etc/privoxy/config.bak</span><br><span class="line"><span class="comment"># 在新建一个配置文件</span></span><br><span class="line">vim /etc/privoxy/config</span><br></pre></td></tr></table></figure>
+</li>
+<li>云原生底层技术
 <ul>
-<li>添加配置内容</li>
+<li>容器运行时</li>
+<li>云原生存储技术</li>
+<li>云原生网络技术</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转发给本地sslocal监听的ip:port</span></span><br><span class="line">forward-socks5   /    127.0.0.1:1080 .</span><br><span class="line"></span><br><span class="line"><span class="comment"># privoxy服务监听地址</span></span><br><span class="line">listen-address  localhost:8118</span><br><span class="line"></span><br><span class="line"><span class="comment"># local network do not use proxy</span></span><br><span class="line">forward               192.168.*.*/     .</span><br><span class="line">forward               10.*.*.*/     .</span><br><span class="line">forward               127.*.*.*/     .</span><br></pre></td></tr></table></figure>
+</li>
+<li>云原生工具集
 <ul>
-<li>启动服务</li>
+<li>流程自动化与配置管理</li>
+<li>容器镜像仓库</li>
+<li>云原生安全技术</li>
+<li>云端密码管理</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/privoxy start 或者 systemctl start privoxy</span><br></pre></td></tr></table></figure>
+</li>
+<li>Serverless技术
 <ul>
-<li>判断是否成功</li>
+<li>Faas(Function as a service)，函数即服务(云函数)</li>
+<li>Baas(Backend as a service)，后端即服务</li>
+<li>Serverless workflow</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~<span class="comment"># netstat -tunlp |grep 8118</span></span><br><span class="line">tcp        0      0 127.0.0.1:8118          0.0.0.0:*               LISTEN      2815/privoxy</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>我们来看一张<code>CNCF</code>的全景图。</li>
+</ul>
+<p><img src="https://jimmysong.io/kubernetes-handbook/images/006tNbRwly1fxmx633ymqj31dp0u0kjn.jpg" alt="CNCF landscape"></p>
+<h2 id="总结">总结</h2>
 <ul>
-<li>测试是否可以科学上网</li>
+<li>我们先介绍了CNCF的概念，接着了解了什么是serverless以及它能解决什么问题。最后我们总结了CNCF里涉及的技术范畴以及全景图。希望你能有所收获。</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#临时命令测试https方式</span></span><br><span class="line">https_proxy=http://127.0.0.1:8118 curl https://myip.ipip.net</span><br><span class="line"></span><br><span class="line"><span class="comment">#临时命令测试http方式</span></span><br><span class="line">http_proxy=http://127.0.0.1:8118 curl http://myip.ipip.net</span><br><span class="line"></span><br><span class="line"><span class="comment">#全局代理</span></span><br><span class="line"><span class="built_in">export</span> https_proxy=http://127.0.0.1:8118</span><br><span class="line"><span class="built_in">export</span> http_proxy=http://127.0.0.1:8118</span><br></pre></td></tr></table></figure>
-<h2 id="快捷命令">快捷命令</h2>
-<ul>
-<li>设置<code>/usr/local/bin/proxy</code>文件，内容如下</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 $*</span><br></pre></td></tr></table></figure>
-<ul>
-<li>添加可执行权限</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /usr/local/bin/proxy</span><br></pre></td></tr></table></figure>
-<ul>
-<li>对想执行的命令添加<code>proxy</code>前缀即可</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy curl http://myip.ipip.net</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -298,13 +325,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/serverless简介/" data-toggle="tooltip" data-placement="top" title="serverless简介">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/2020年4月19日疫情日记/" data-toggle="tooltip" data-placement="top" title="2020年4月19日疫情日记">Next Post &rarr;</a>
+                            <a href="/article/Linux命令行下的科学上网方式/" data-toggle="tooltip" data-placement="top" title="Linux命令行下的科学上网方式">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -372,7 +395,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#linux命令行下的科学上网方式"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Linux&#x547D;&#x4EE4;&#x884C;&#x4E0B;&#x7684;&#x79D1;&#x5B66;&#x4E0A;&#x7F51;&#x65B9;&#x5F0F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#机器说明"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x673A;&#x5668;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#服务端操作"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x670D;&#x52A1;&#x7AEF;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#客户端操作"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x5BA2;&#x6237;&#x7AEF;&#x64CD;&#x4F5C;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#http方式"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">http&#x65B9;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#快捷命令"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x5FEB;&#x6377;&#x547D;&#x4EE4;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是云原生"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x4EC0;&#x4E48;&#x662F;&#x4E91;&#x539F;&#x751F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是serverless"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x4EC0;&#x4E48;&#x662F;serverless</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#serverless解决什么问题"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">serverless&#x89E3;&#x51B3;&#x4EC0;&#x4E48;&#x95EE;&#x9898;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云原生技术范畴"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x4E91;&#x539F;&#x751F;&#x6280;&#x672F;&#x8303;&#x7574;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li></ol>
         
         </div>
       </aside>
@@ -392,7 +415,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                          <a class="tag" href="/tags/#云原生" title="云原生">云原生</a>
                         
                     </div>
                 </section>
@@ -423,8 +446,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/Linux命令行下的科学上网方式/";
-    var disqus_url = "https://lyonger.cn/article/Linux命令行下的科学上网方式/";
+    var disqus_identifier = "https://lyonger.cn/article/serverless简介/";
+    var disqus_url = "https://lyonger.cn/article/serverless简介/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
