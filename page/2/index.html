@@ -211,6 +211,43 @@
 
 <div class="post-preview">
 
+    <a href="/article/Docker目录解析与清理/">
+        <h2 class="post-title">
+                                 
+            Docker目录解析与清理
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Docker目录解析与清理
+背景
+
+gitlab-runner服务提供的docker executor经常会出现docker lib目录空间占用大等问题。本文主要分享一下docker目录的解析与清理，尽量在清理后不影响原服务的情况下进行。
+
+目录解析
+
+docker的数据默认存放在/var/lib/docker下，容易导致导致根分区空间大，所以需要转移到数据盘。转移方式参考下文。
+不同存储驱......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Docker" title="Docker">Docker</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/redis集群docker化部署/">
         <h2 class="post-title">
                                  
@@ -533,38 +570,6 @@ GitLab CI/CD可以做......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/陪产的幸福体验/">
-        <h2 class="post-title">
-                                 
-            陪产的幸福体验
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-题为陪产的幸福体验，精神上是幸福的，但体力上，确实有点透支。哈哈。
-一开始觉得，对于异地的我们，能有机会互相陪同整个妊娠过程，概率非常之小。我也早已做好准备，从广州时刻赶回。但幸运的是，周五赶车回家的那晚，妻子的肚子就开始发痛，第二天痛的愈发厉害，第三天上午就顺利的生下我们的小少爷。每每想起，能有机会陪伴整个妊娠过程，都是上天的眷顾。眷顾我们异地多年，错过了太多的互相陪伴。
-半夜，妻子无法......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-21
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -610,15 +615,11 @@ GitLab CI/CD可以做......
     <div class="tags">
         
             
-            <a href="/tags/#前端" title="前端" rel="2">前端</a>
-            
-        
-            
-            <a href="/tags/#Linux" title="Linux" rel="23">Linux</a>
-            
-        
-            
             <a href="/tags/#后端" title="后端" rel="7">后端</a>
+            
+        
+            
+            <a href="/tags/#前端" title="前端" rel="2">前端</a>
             
         
             
@@ -626,7 +627,7 @@ GitLab CI/CD可以做......
             
         
             
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Linux" title="Linux" rel="23">Linux</a>
             
         
             
@@ -634,15 +635,19 @@ GitLab CI/CD可以做......
             
         
             
-            <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
+            <a href="/tags/#Gitlab" title="Gitlab" rel="4">Gitlab</a>
             
         
             
-            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
             
         
             
             <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
+            
+        
+            
+            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
@@ -715,6 +720,10 @@ GitLab CI/CD可以做......
     <ul>
       
         <li>
+          <a href="/article/部署gitlab-runner服务/">部署gitlab-runner服务</a>
+        </li>
+      
+        <li>
           <a href="/article/serverless简介/">serverless简介</a>
         </li>
       
@@ -728,10 +737,6 @@ GitLab CI/CD可以做......
       
         <li>
           <a href="/article/2020年4月9日日记/">2020年4月9日日记</a>
-        </li>
-      
-        <li>
-          <a href="/article/etcd使用最佳实践/">etcd使用最佳实践</a>
         </li>
       
     </ul>
@@ -756,7 +761,7 @@ GitLab CI/CD可以做......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>

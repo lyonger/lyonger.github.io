@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          serverless简介 - 倚楼听风雨，淡看江湖路。
+          部署gitlab-runner服务 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/serverless简介/">
+    <link rel="canonical" href="https://lyonger.cn/article/部署gitlab-runner服务/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#云原生" title="云原生">云原生</a>
+                              <a class="tag" href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
                             
                         </div>
-                        <h1>serverless简介</h1>
+                        <h1>部署gitlab-runner服务</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-05-10
+                            2020-06-18
                         </span>
                     </div>
                 
@@ -212,126 +212,75 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="什么是云原生">什么是云原生</h2>
+                <h2 id="安装gitlab-runner">安装GitLab Runner</h2>
+<ul>
+<li><code>GitLab Runner</code>支持多平台、多方式安装，包括<code>GNU/Linux, macOS, FreeBSD</code> 和<code>Windows</code>平台的安装，以及支持基于<code>docker</code>的自动扩展式安装。受限于<code>Gitlab</code>版本，<code>Gitlab-runner</code>的版本最好和<code>Gitlab</code>的版本保持一致。注意<code>gitlab-runner</code>的前身名字叫<code>gitlab-ci-multi-runner</code>，为了避免一些不必要的冲突，官方建议使用<code>gitlab-runner</code>这个工具来进行安装。</li>
+</ul>
+<h3 id="安装docker">安装docker</h3>
+<p>如果<code>runner</code>需要支持<code>docker</code>系列的执行器，也就是构建需要在容器里执行，那么需要先安装docker环境，docker安装方式建议参考官网：<a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener">https://docs.docker.com/engine/install/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.docker.com/ | sh</span><br><span class="line">/etc/init.d/docker status</span><br><span class="line">[ ok ] Docker is running.</span><br></pre></td></tr></table></figure>
+<h3 id="安装gitlab-runner">安装gitlab-runner</h3>
+<ul>
+<li>使用GitLab官方源来安装runner</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># 添加gitlab官方源</span><br><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash</span><br><span class="line"></span><br><span class="line"># 添加APT pinning配置文件</span><br><span class="line">cat &gt; /etc/apt/preferences.d/pin-gitlab-runner.pref &lt;&lt;EOF</span><br><span class="line">Explanation: Prefer GitLab provided packages over the Debian native ones</span><br><span class="line">Package: gitlab-runner</span><br><span class="line">Pin: origin packages.gitlab.com</span><br><span class="line">Pin-Priority: 1001</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"># 安装gitlab-runner</span><br><span class="line">apt-get update﻿</span><br><span class="line">apt-get install gitlab-runner==&#123;gitlab后段版本号&#125;  # 比如apt-get install gitlab-runner=11.11.4</span><br><span class="line"></span><br><span class="line"># 授权gitlab-runner用户使用docker</span><br><span class="line">usermod -aG docker gitlab-runner</span><br><span class="line"></span><br><span class="line"># 查看授权，gitlab-runner用户下执行</span><br><span class="line">docker info #查看是否有授权</span><br><span class="line"></span><br><span class="line"># 更改默认docker的文件目录，注意docker17版本以后，不支持graph参数指定目录。</span><br><span class="line">service docker stop</span><br><span class="line">cat /etc/default/docker</span><br><span class="line">DOCKER_LOGFILE=&quot;/home/gitlab-runner/var/log/docker.log&quot;</span><br><span class="line">DOCKER_OPTS=&quot;--graph=/home/gitlab-runner/var/lib/docker --log-opt max-size=500m --log-opt max-file=5&quot;</span><br><span class="line"></span><br><span class="line"># 启动docker</span><br><span class="line">service docker start</span><br></pre></td></tr></table></figure>
+<h3 id="注册runner">注册runner</h3>
+<ul>
+<li>将<code>runner</code>注册到<code>gitlab</code>服务器，注册成功会产生一个<code>runner</code>实例。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@gitlab-f1-1000:~# gitlab-runner register</span><br><span class="line">Running in system-mode.</span><br><span class="line"></span><br><span class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/):</span><br><span class="line">https://gitlab.test.com/ci # 输入需要注册到的gitlab服务器地址</span><br><span class="line">Please enter the gitlab-ci token for this runner:</span><br><span class="line">xxxxxxxxxx       # 项目Runner页面的 Runner Registration token</span><br><span class="line">Please enter the gitlab-ci description for this runner:</span><br><span class="line">[gitlab-f1-1000.i.nease.net]: mac-runner-1 # runner的名称</span><br><span class="line">Please enter the gitlab-ci tags for this runner (comma separated):</span><br><span class="line">docker   # 用于pipeline job匹配runner的tag</span><br><span class="line">Registering runner... succeeded          runner=xxxxx</span><br><span class="line">Please enter the executor: docker, shell, virtualbox, docker-ssh+machine, kubernetes, docker-ssh, parallels, ssh, docker+machine:</span><br><span class="line">docker # runner执行器</span><br><span class="line">Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这里注册了一个执行器为<code>shell</code>的<code>runner</code>到<code>https://gitlab.test.com/</code>，注册完后，可以在项目的<code>Runners</code>页面看到已经注册的<code>runner</code>。</li>
+</ul>
+<h4 id="注意">注意</h4>
+<ul>
+<li><code>couldn’t execute POST against https://gitlab.test.com/ci/api/v1/runners/register.json</code><br>
+这个是因为在注册时，<code>runner</code>所在的机器无法访问<code>gitlab</code>服务器导致。</li>
+<li>某些机器版本<code>gitlab-ci-multi-runner</code>工具注册可能有问题，返回<code>status 404</code>，此时可以使用<code>gitlab-runner</code>命令行工具来尝试注册。</li>
+</ul>
+<h3 id="配置runner">配置runner</h3>
+<h4 id="确定runner配置文件">确定runner配置文件</h4>
 <ul>
 <li>
-<p><code>Pivotal</code>是云原生应用的提出者，并推出了 <code>Pivotal Cloud Foundry</code>云原生应用平台和<code>Spring</code>开源<code>Java</code>开发框架，成为云原生应用架构中先驱者和探路者。</p>
-</li>
-<li>
-<p>最初云原生应用架构主要有下面几个特征：</p>
+<p>安装好<code>runner</code>后，即会生成一份<code>runner</code>的配置文件，不同系统平台配置文件路径为：</p>
 <ul>
-<li>符合12因素应用</li>
-<li>面向微服务架构</li>
-<li>自服务敏捷架构</li>
-<li>基于API的协作</li>
-<li>抗脆弱性</li>
+<li>以root用户安装的，且为 *nix 类系统（如Debian）配置文件路径为<code>/etc/gitlab-runner/config.toml</code></li>
+<li>以非root用户安装的，且为 *nix 类系统（如Debian）配置文件路径为<code>~/.gitlab-runner/config.toml</code></li>
+<li>其他系统 <code>./config.toml</code></li>
 </ul>
 </li>
 <li>
-<p>2015年<code>Google</code>主导成立了<code>云原生计算基金会（CNCF）</code>，起初CNCF对云原生（Cloud Native）的定义主要有下面三个方面。</p>
-<ul>
-<li>应用容器化</li>
-<li>面向微服务架构</li>
-<li>应用支持容器的编排调度</li>
-</ul>
-</li>
-<li>
-<p>随着近期云原生的不断壮大和火爆，到了2018年，很多主流的云厂商加入了CNCF，又重新定义了一版。如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Cloud native technologies empower organizations to build and run scalable applications in modern, dynamic environments such as public, private, and hybrid clouds. Containers, service meshes, microservices, immutable infrastructure, and declarative APIs exemplify this approach.</span><br><span class="line"></span><br><span class="line">云原生技术有利于各组织在公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用。云原生的代表技术包括容器、服务网格、微服务、不可变基础设施和声明式API。</span><br><span class="line"></span><br><span class="line">These techniques enable loosely coupled systems that are resilient, manageable, and observable. Combined with robust automation, they allow engineers to make high-impact changes frequently and predictably with minimal toil.</span><br><span class="line"></span><br><span class="line">这些技术能够构建容错性好、易于管理和便于观察的松耦合系统。结合可靠的自动化手段，云原生技术使工程师能够轻松地对系统作出频繁和可预测的重大变更。</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>总结，个人理解为，最新的概念是：<strong>以容器、服务网格、微服务、不可变基础设施和声明式API为特征的技术，助力公有云、私有云和混合云等新型动态环境中，构建和运行可弹性扩展的应用</strong>。</p>
+<p>修改runner配置文件时会自动更新生效，无需重启runner服务。</p>
 </li>
 </ul>
-<h2 id="什么是serverless">什么是serverless</h2>
+<h4 id="配置runner使用docker">配置runner使用docker</h4>
 <ul>
-<li>关于<code>serverless</code>的入门课程，我推荐极客时间里蒲松洋（秦粤）老师的<code>Serverless入门课</code>专栏。由浅入深的讲述了<code>severless</code>的基本概念，特征和实践过程。那么什么是<code>serverless</code>？那么既然有<code>serverless</code>，那就<code>serverfull</code>，<code>server</code>就是服务端，<code>less</code>就是较少关注，<code>full</code>就是比较关注，目的就是让大家可以较少关注服务端的运维工作，只需专注自身业务逻辑的开发。以下引用专栏里的内容。
+<li>当注册了一个<code>docker</code>类型的<code>runner</code>后，如果要在该<code>runner</code>中使用<code>docker</code>进行构建等任务，则需要增加以下配置，以支持<code>docker in docker</code>:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 挂载宿主docker.sock到容器内,修改对应runner的volumes配置</span><br><span class="line">volumes = [&quot;/cache&quot;, &quot;/var/run/docker.sock:/var/run/docker.sock&quot;]</span><br><span class="line"></span><br><span class="line"># 挂载镜像registry的认证文件到容器内,如果要拉取私有镜像，则需要在容器内部署认证配置，或者在宿主配置，然后挂入容器内。修改对应runner的volumes配置</span><br><span class="line">volumes = [&quot;/cache&quot;, &quot;/var/run/docker.sock:/var/run/docker.sock&quot;, &quot;/root/.docker/config.json:/root/.docker/config.json&quot;]</span><br></pre></td></tr></table></figure>
+<h4 id="全局配置">全局配置</h4>
 <ul>
-<li>第一种：狭义 Serverless（最常见）= Serverless computing 架构 = FaaS 架构 = Trigger（事件驱动）+ FaaS（函数即服务）+ BaaS（后端即服务，持久化或第三方服务）= FaaS + BaaS</li>
-<li>第二种：广义 Serverless = 服务端免运维 = 具备 Serverless 特性的云服务</li>
+<li>在创建好的runner的配置之前的配置为全局配置：</li>
 </ul>
-</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/05/10/e9ec692b354451bc5f86a6b177e2a5ff.jpg" alt="image"></p>
-<h2 id="serverless解决什么问题">serverless解决什么问题</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">concurrent     #全局并发设置，表示使用所有runner全局可以并行运行的构建数，注意&quot;0&quot;并不是表示没有限制</span><br><span class="line"></span><br><span class="line">check_interval # 检查新构建任务的间隔时间，单位为秒。默认为3s，如果该值被设置为小于等于0，则使用默认值</span><br><span class="line"></span><br><span class="line">log_level # 日志级别，如warning、debug等</span><br></pre></td></tr></table></figure>
+<h4 id="runner局部配置">runner局部配置</h4>
 <ul>
-<li>那么使用<code>serverless</code>可以解决什么问题呢？相比传统的MVC架构，往往没有任何流量或者用户都需要至少占用一台服务器并且开机。而<code>serverless</code>应用可以自动扩缩容，甚至在无业务时服务器数量缩容到0，有业务时可以快速启动应用并服务。所以最核心的问题就是：<strong>省钱</strong></li>
-<li>当前<code>serverless</code>技术也在不断发展当中，它只是属于CNCF中的一部分。</li>
+<li>在<code>[[runner]]</code>里的配置即为具体创建的<code>runner</code>实例的配置，具体可参考：<code>https://docs.gitlab.com/runner/configuration/advanced-configuration.html</code></li>
 </ul>
-<h2 id="云原生技术范畴">云原生技术范畴</h2>
+<h3 id="启动runner">启动runner</h3>
 <ul>
-<li>既然谈到了CNCF，我们可以先了解一下云原生的技术范畴，分别整理为如下：
-<ul>
-<li>云应用定义与开发流程
-<ul>
-<li>应用定义与镜像制作</li>
-<li>CI/CD</li>
-<li>消息和Streaming</li>
-<li>数据库</li>
+<li>注意安装了runner以后，默认会自动启动，手工启动方式为</li>
 </ul>
-</li>
-<li>云应用编排与管理
-<ul>
-<li>应用编排与调度</li>
-<li>服务发现与治理</li>
-<li>远程调用</li>
-<li>API网关</li>
-<li>Service Mesh服务网格</li>
-</ul>
-</li>
-<li>监控与可观测性
-<ul>
-<li>监控</li>
-<li>日志</li>
-<li>Tracing</li>
-<li>混沌工程</li>
-</ul>
-</li>
-<li>云原生底层技术
-<ul>
-<li>容器运行时</li>
-<li>云原生存储技术</li>
-<li>云原生网络技术</li>
-</ul>
-</li>
-<li>云原生工具集
-<ul>
-<li>流程自动化与配置管理</li>
-<li>容器镜像仓库</li>
-<li>云原生安全技术</li>
-<li>云端密码管理</li>
-</ul>
-</li>
-<li>Serverless技术
-<ul>
-<li>Faas(Function as a service)，函数即服务(云函数)</li>
-<li>Baas(Backend as a service)，后端即服务</li>
-<li>Serverless workflow</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>我们来看一张<code>CNCF</code>的全景图。</li>
-</ul>
-<p><img src="https://jimmysong.io/kubernetes-handbook/images/006tNbRwly1fxmx633ymqj31dp0u0kjn.jpg" alt="CNCF landscape"></p>
-<h2 id="总结">总结</h2>
-<ul>
-<li>我们先介绍了CNCF的概念，接着了解了什么是serverless以及它能解决什么问题。最后我们总结了CNCF里涉及的技术范畴以及全景图。希望你能有所收获。</li>
-</ul>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner start</span><br></pre></td></tr></table></figure>
                 
 
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/部署gitlab-runner服务/" data-toggle="tooltip" data-placement="top" title="部署gitlab-runner服务">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/Linux命令行下的科学上网方式/" data-toggle="tooltip" data-placement="top" title="Linux命令行下的科学上网方式">Next Post &rarr;</a>
+                            <a href="/article/serverless简介/" data-toggle="tooltip" data-placement="top" title="serverless简介">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -399,7 +348,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是云原生"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x4EC0;&#x4E48;&#x662F;&#x4E91;&#x539F;&#x751F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是serverless"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x4EC0;&#x4E48;&#x662F;serverless</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#serverless解决什么问题"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">serverless&#x89E3;&#x51B3;&#x4EC0;&#x4E48;&#x95EE;&#x9898;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云原生技术范畴"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x4E91;&#x539F;&#x751F;&#x6280;&#x672F;&#x8303;&#x7574;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#安装gitlab-runner"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;GitLab Runner</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装docker"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;docker</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装gitlab-runner"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;gitlab-runner</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#注册runner"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x6CE8;&#x518C;runner</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#注意"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x6CE8;&#x610F;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置runner"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;runner</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#确定runner配置文件"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">&#x786E;&#x5B9A;runner&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#配置runner使用docker"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;runner&#x4F7F;&#x7528;docker</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#全局配置"><span class="toc-nav-number">1.4.3.</span> <span class="toc-nav-text">&#x5168;&#x5C40;&#x914D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#runner局部配置"><span class="toc-nav-number">1.4.4.</span> <span class="toc-nav-text">runner&#x5C40;&#x90E8;&#x914D;&#x7F6E;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#启动runner"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x542F;&#x52A8;runner</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -419,7 +368,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#云原生" title="云原生">云原生</a>
+                          <a class="tag" href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
                         
                     </div>
                 </section>
@@ -450,8 +399,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/serverless简介/";
-    var disqus_url = "https://lyonger.cn/article/serverless简介/";
+    var disqus_identifier = "https://lyonger.cn/article/部署gitlab-runner服务/";
+    var disqus_url = "https://lyonger.cn/article/部署gitlab-runner服务/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
