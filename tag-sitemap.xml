@@ -58,13 +58,6 @@
     </url>
 
     <url>
-        <loc>https://lyonger.cn/tags/Gitlab/</loc>
-        <lastmod>2020-06-18T14:34:22.933Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lyonger.cn/tags/Linux/</loc>
         <lastmod>2020-06-19T04:00:52.692Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -74,6 +67,13 @@
     <url>
         <loc>https://lyonger.cn/tags/%E7%94%9F%E6%B4%BB/</loc>
         <lastmod>2020-07-05T09:15:45.505Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lyonger.cn/tags/Gitlab/</loc>
+        <lastmod>2020-07-09T14:35:50.364Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
