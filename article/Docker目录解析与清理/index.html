@@ -276,6 +276,7 @@
 <li>如果以上的深度清理后，发现<code>docker</code>常用命令使用异常，则尝试卸载docker，再进行重装。重装后之前的目录迁移可能会失效，需要重新转移目录。</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /var/lib/docker/</span><br><span class="line">apt-get remove docker-engine</span><br><span class="line">apt-get install docker-engine</span><br></pre></td></tr></table></figure>
+
                 
 
                 <hr>
