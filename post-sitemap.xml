@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>https://lyonger.cn/article/2020%E4%B8%8A%E5%8D%8A%E5%B9%B4%E5%B0%8F%E7%BB%93/</loc>
+        <lastmod>2020-10-19T15:18:10.978Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lyonger.cn/article/Docker%E7%9B%AE%E5%BD%95%E8%A7%A3%E6%9E%90%E4%B8%8E%E6%B8%85%E7%90%86/</loc>
         <lastmod>2020-08-11T15:32:14.329Z</lastmod>
         <changefreq>weekly</changefreq>
