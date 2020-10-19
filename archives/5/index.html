@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -208,6 +208,211 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/devops建设模型/">
+        <h2 class="post-title">
+                                 
+            devops建设模型
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            devops建设模型
+
+现在我们越来越多的业务开始使用gitlab的构建服务并打通docker auto deployment，而整个devops的建设需要一个成熟度模型。
+
+
+...
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#DevOps" title="DevOps">DevOps</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/可持续发展策略/">
+        <h2 class="post-title">
+                                 
+            可持续发展策略
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            可持续发展策略
+
+推荐阅读为什么我要坚持写博客2019的那些事思念在远方...
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/技术人的思考进阶/">
+        <h2 class="post-title">
+                                 
+            技术人的思考进阶
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            技术人的思考进阶
+
+互联网技术是一个很奇妙的世界，时不时探索未知领域，让你充满期待。打开你的谷歌浏览器，浏览着国外的官方英文文献，听着有旋律的键盘和鼠标声，瞬时觉得是一种美好的享受。
+我想做技术太久始终会有其瓶颈，就像瓶子里的水，始终会装满，难以突破它固有的容量。瓶子外的世界其实很广阔，有很多机会。当然，夯实的技术基础还是很必要的，所以先踏实的在大型互联网公司做几年，掌握一定的技术基础。在此......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#生活" title="生活">生活</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/搭建Samba的简要过程/">
+        <h2 class="post-title">
+                                 
+            搭建Samba的简要过程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            安装samba
+1yum install samba –y
+创建用户
+12useradd admin     #先创建系统用户smbpasswd  -a admin   #第一次加入需要-a参数，把admin用户加入到samba中。 加的用户必须是系统用户，且真实存在。
+创建共享目录
+12mkdir  /data/web/adminchown –R  admin.admin /data/we......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/磁盘数据加密/">
+        <h2 class="post-title">
+                                 
+            磁盘数据加密
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            FreeBSD
+
+使用系统自带的geli命令对/home/test加密
+要将/mnt挂载点独立一个分区出来，以免手动调整分区
+如果是aws，则把数据盘EBS挂载到/home/test
+
+首次创建加密盘
+
+aws的话先创建分区，记得先umount原来分区
+
+
+
+AWS：用gpart创建分区
+  1234# gpart create -s gpt xbd1xbd1 created# gpart ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/安装subversion1-10/">
+        <h2 class="post-title">
+                                 
+            安装subversion1-10
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            安装 apr
+1234567➜ wget -c http://mirrors.shu.edu.cn/apache//apr/apr-1.6.5.tar.gz➜ tar -zxvf apr-1.6.5.tar.gz➜ cd apr-1.6.5➜ ./configure --prefix=/usr/local/apr➜ make➜ make install
+安装 apr-util
+1234567......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -356,243 +561,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/2019年11月13日日记/">
-        <h2 class="post-title">
-                                 
-            2019年11月13日日记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-今天是2019年11月13日，双十一过去了。今天收到了期待已久的极客时间书包，同时也购买了刘超老师的《趣谈Linux操作系统》课程。趁着双十一活动，在有不少优惠力度的情况下果断买下，很开心～。
-最新手头的项目要陆续上线，时间上有点紧张。不过作为一个老司机，业务上还是比较游刃有余，而对于专业外的其他知识，就显得很薄弱了。以前总想着自己可以看完x x x书籍，会涉猎一些互联网领域外的其他书籍，......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/2019年11月10日日记/">
-        <h2 class="post-title">
-                                 
-            2019年11月10日日记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-一晃半年已过，在这半年的时间里，有来自家庭的温暖和收获，有工作上的积累和喜悦。热爱生活，就从写日记开始。
-
-
-最近看了一部电视剧《在远方》，主要讲述了快递行业的创业故事，同时夹带着爱情、友情等主题。在这个电视剧里主要有2方面内容有些感悟。
-
-
-第一点：创业真的很艰难，迈出这一步都需要很大的勇气，因为你要经历嘲笑、冷骂、背叛、孤独，甚至是1-3年没收入且家人质疑等问题，听起来是不是很惨。在......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/07-flask-请求与钩子函数/">
-        <h2 class="post-title">
-                                 
-            07-flask-请求与钩子函数
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            get请求和post请求：
-
-
-get请求：
-
-
-使用场景：如果只对服务器获取数据，并没有对服务器产生任何影响，那么这时候使用get请求。
-
-
-传参：get请求传参是放在url中，并且是通过?的形式来指定key和value的。
-
-
-
-
-post请求：
-
-
-使用场景：如果要对服务器产生影响，那么使用post请求。
-
-
-传参：post请求传参不是放在url中，是通过form data的形式发送给......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后端" title="后端">后端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/06CPU性能指标分析-Linux性能优化/">
-        <h2 class="post-title">
-                                 
-            06CPU性能指标分析-Linux性能优化
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            CPU性能指标
-
-性能工具
-
-从CPU性能指标出发，当你查看到性能指标时，可以明确知道使用哪个性能工具。
-
-
-
-如果已经安装性能工具，要知道工具可以提供哪些指标。
-
-
-快速定位CPU问题
-
-推荐阅读websocket的几种测试方式KSM应用实践supervisor的Listeners机制...
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/06-flask-session和cookie/">
-        <h2 class="post-title">
-                                 
-            06-flask-session和cookie
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            cookie
-
-
-cookie出现的原因：在网站中，http请求是无状态的。也就是说即使第一次和服务器连接后并且登录成功后，第二次请求服务器依然不能知道当前请求是哪个用户。cookie的出现就是为了解决这个问题，第一次登录后服务器返回一些数据（cookie）给浏览器，然后浏览器保存在本地，当该用户发送第二次请求的时候，就会自动的把上次请求存储的cookie数据自动的携带给服务器，服务器通过浏......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后端" title="后端">后端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/05-flask-数据库/">
-        <h2 class="post-title">
-                                 
-            05-flask-数据库
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Mac和Windows下数据库的安装
-
-
-Mysql为例
-
-
-https://dev.mysql.com/downloads/mysql/
-
-
-Mac上安装Mysql很简单，直接一顿下一步安装就可以了。
-
-
-设置初始化密码的命令是：
- 1mysqladmin -uroot password [password]
-
-
-windows:
-*. 如果没有安装.net Framework 4，就在那......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后端" title="后端">后端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -638,7 +606,11 @@ windows:
     <div class="tags">
         
             
-            <a href="/tags/#生活" title="生活" rel="18">生活</a>
+            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+            
+        
+            
+            <a href="/tags/#Linux" title="Linux" rel="23">Linux</a>
             
         
             
@@ -646,23 +618,23 @@ windows:
             
         
             
-            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+            <a href="/tags/#生活" title="生活" rel="19">生活</a>
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="22">Linux</a>
+            <a href="/tags/#工作" title="工作" rel="1">工作</a>
             
         
             
-            <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
-            
-        
-            
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Gitlab" title="Gitlab" rel="5">Gitlab</a>
             
         
             
             <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
+            
+        
+            
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
             
         
             
@@ -674,11 +646,11 @@ windows:
             
         
             
-            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
+            <a href="/tags/#云原生" title="云原生" rel="2">云原生</a>
             
         
             
-            <a href="/tags/#云原生" title="云原生" rel="1">云原生</a>
+            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
             
         
     </div>
@@ -743,23 +715,23 @@ windows:
     <ul>
       
         <li>
-          <a href="/article/2020年4月19日疫情日记/">2020年4月19日疫情日记</a>
+          <a href="/article/2020上半年小结/">2020上半年小结</a>
         </li>
       
         <li>
-          <a href="/article/2020年4月9日日记/">2020年4月9日日记</a>
+          <a href="/article/基于Gitlab的Code-Review最佳实践/">基于Gitlab的Code Review最佳实践</a>
         </li>
       
         <li>
-          <a href="/article/etcd使用最佳实践/">etcd使用最佳实践</a>
+          <a href="/article/20200705日记/">20200705日记</a>
         </li>
       
         <li>
-          <a href="/article/01-六六成长篇/">01-六六成长篇</a>
+          <a href="/article/部署gitlab-runner服务/">部署gitlab-runner服务</a>
         </li>
       
         <li>
-          <a href="/article/极客时间专栏-从0开始学架构的收获/">极客时间专栏-从0开始学架构的收获</a>
+          <a href="/article/serverless简介/">serverless简介</a>
         </li>
       
     </ul>
@@ -784,7 +756,7 @@ windows:
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>

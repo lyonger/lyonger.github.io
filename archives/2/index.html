@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -208,6 +208,224 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/极客时间专栏-从0开始学架构的收获/">
+        <h2 class="post-title">
+                                 
+            极客时间专栏-从0开始学架构的收获
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            《从0开始学架构》的收获
+
+作者是阿里的技术资深专家，文章内容简单朴实，但真的是0基础来学的话，个人感觉理解起来还是有点吃力的。
+作者的专栏主要分为了5个部分：基础架构、高性能架构模式、高可用架构模式、可扩展架构模式、架构实战。
+基础架构部分，我认为是精华，很多资料网上根本没法找，比如设计架构的三原则、架构设计的流程和方案。架构实质就是解决各种复杂度问题，那么复杂度的来源，主要是哪些呢？其实......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Docker目录解析与清理/">
+        <h2 class="post-title">
+                                 
+            Docker目录解析与清理
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Docker目录解析与清理
+背景
+
+gitlab-runner服务提供的docker executor经常会出现docker lib目录空间占用大等问题。本文主要分享一下docker目录的解析与清理，尽量在清理后不影响原服务的情况下进行。
+
+目录解析
+
+docker的数据默认存放在/var/lib/docker下，容易导致导致根分区空间大，所以需要转移到数据盘。转移方式参考下文。
+不同存储驱......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Docker" title="Docker">Docker</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/redis集群docker化部署/">
+        <h2 class="post-title">
+                                 
+            redis集群docker化部署
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            redis集群docker化部署
+
+使用场景：单台机器使用容器部署。
+
+机器环境
+1234Distributor ID:	DebianDescription:	Debian GNU/Linux 8.11 (jessie)Release:	8.11Codename:	jessie
+安装docker-compose
+123sudo curl -L &quot;https://github.com......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据库" title="数据库">数据库</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/部署openvpn服务/">
+        <h2 class="post-title">
+                                 
+            部署openvpn服务
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            openvpn安装
+
+建议安装新的稳定版本，老版本怕有安全隐患，以下为Debian8.9系统下的安装方式，其他Debian系统的安装大同小异。
+
+APT源安装
+12345aptitude install openvpnwget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -echo "deb http......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/如何对不同机器上目录进行实时同步/">
+        <h2 class="post-title">
+                                 
+            如何对不同机器上目录进行实时同步
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            背景说明
+
+在某些业务场景下，我们可能需要对位于不同机器上的某个目录进行实时同步。本文主要简要介绍debian8系统下如何使用lsyncd工具进行同步。同时附上同类型工具sersync的对比测试情况。
+
+安装lsyncd
+
+确保你的apt源可以正常使用，接着执行如下命令。
+
+1234567# apt-get install luarocks# apt-get install lua-sock......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-17
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/mysql5-0升级mysql5-7方案调研/">
+        <h2 class="post-title">
+                                 
+            mysql5.0升级mysql5.7方案调研
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            mysql5.0 upgrade mysql5.7方案调研
+背景
+
+window mysql5.0升级到centos7下的mysql5.7
+需升级的数据量：120G
+
+风险评估
+
+mysql本身就是一个跨平台的轻量级数据库，所以从Windows迁移到centos问题应该不大，但需测试。
+120G数据对一个mysql来说还不算非常大，中等的样子，所以数据量没问题，会消耗一点时间。
+
+方案调研
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇 on
+            2020-03-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据库" title="数据库">数据库</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -348,235 +566,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/DevOps之Gitlab-CICD实践篇/">
-        <h2 class="post-title">
-                                 
-            DevOps之Gitlab-CICD实践篇
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            DevOps之Gitlab-CICD实践篇
-背景
-
-随着公司项目使用gitlab越来越多，业务发布的次数越来越频繁，对于发布效率提出了更高的要求。从2012开始，Gitlab官方开始集成了Continuous Integration (CI) &amp; Continuous Delivery (CD)功能。本文主要针对该功能的实践做一个分享。
-
-基础介绍
-
-
-GitLab CI/CD可以做......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-02-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/陪产的幸福体验/">
-        <h2 class="post-title">
-                                 
-            陪产的幸福体验
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-题为陪产的幸福体验，精神上是幸福的，但体力上，确实有点透支。哈哈。
-一开始觉得，对于异地的我们，能有机会互相陪同整个妊娠过程，概率非常之小。我也早已做好准备，从广州时刻赶回。但幸运的是，周五赶车回家的那晚，妻子的肚子就开始发痛，第二天痛的愈发厉害，第三天上午就顺利的生下我们的小少爷。每每想起，能有机会陪伴整个妊娠过程，都是上天的眷顾。眷顾我们异地多年，错过了太多的互相陪伴。
-半夜，妻子无法......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-21
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/为什么我要坚持博客/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            为什么我要坚持写博客
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-你好，很高兴能遇见对面优秀的你，很开心你能看到我的博客^_^。如想进一步交流，欢迎查看我的个人信息，我们一起交流和进步[握手]。
-
-
-
-
-
-在我的博客经历4次变更以后，我决定记录一下这些变更。毕竟这都是成长和岁月的印记。
-
-第一次：2014年4月12日，在51CTO博客发布了第一篇博客，在51CTO博客里写的文章，都是大学期间的学习记录，更多是简单的理论知识。由于个人原因，在学校里面没有......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#生活" title="生活">生活</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Mysql与Mongodb你会如何选择/">
-        <h2 class="post-title">
-                                 
-            Mysql与Mongodb你会如何选择
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            概述
-背景
-
-
-数据库几乎是线上业务架构里的核心服务，在海量数据环境下，数据库的读写效率直接影响着一款产品的体验，因此从一开始就选择一款适合适的数据库就显得尤为重要。
-
-
-为了让大家在一开始选择数据库时有个参考数据，我们对MongoDB 3.0.7和MySQL 5.5.40分别在大数据（百万级～千万级）环境下的平均时延、吞吐量进行了研究对比。
-
-
-
-工具简介
-
-sysbench是一个模块化的......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#数据库" title="数据库">数据库</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/websocket的几种测试方式/">
-        <h2 class="post-title">
-                                 
-            websocket的几种测试方式
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            websocket的几种测试方式
-Chrome浏览器插件测试
-
-先下载 Simple WebSocket Client插件，打开下图界面进行测试。
-
-
-curl测试
-1curl -vk -H "host:xxx" -H "Upgrade: websocket" -H "Sec-WebSocket-Version: xx" -H "Sec-WebSocket-Key:xxx" -H "Conn......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-09
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/KSM应用实践/">
-        <h2 class="post-title">
-                                 
-            KSM应用实践
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            背景介绍
-
-业务对于服务器成本的要求越来越高。有些服务进程（如场景进程）load完整的数据需要占用900多M内存，且会运行多个实例（几十个），有时也会使用多个容器共享宿主机内存使用会进一步加剧。此时内存成为了服务器的瓶颈。
-
-KSM原理
-
-
-Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为KVM虚拟化技术开发的，但对于普通应用程序......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2020-01-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -622,7 +611,11 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
     <div class="tags">
         
             
-            <a href="/tags/#生活" title="生活" rel="18">生活</a>
+            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+            
+        
+            
+            <a href="/tags/#Linux" title="Linux" rel="23">Linux</a>
             
         
             
@@ -630,23 +623,23 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
             
         
             
-            <a href="/tags/#前端" title="前端" rel="2">前端</a>
+            <a href="/tags/#生活" title="生活" rel="19">生活</a>
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="22">Linux</a>
+            <a href="/tags/#工作" title="工作" rel="1">工作</a>
             
         
             
-            <a href="/tags/#Gitlab" title="Gitlab" rel="3">Gitlab</a>
-            
-        
-            
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Gitlab" title="Gitlab" rel="5">Gitlab</a>
             
         
             
             <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
+            
+        
+            
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
             
         
             
@@ -658,11 +651,11 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
             
         
             
-            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
+            <a href="/tags/#云原生" title="云原生" rel="2">云原生</a>
             
         
             
-            <a href="/tags/#云原生" title="云原生" rel="1">云原生</a>
+            <a href="/tags/#FreeBSD" title="FreeBSD" rel="1">FreeBSD</a>
             
         
     </div>
@@ -727,23 +720,23 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
     <ul>
       
         <li>
-          <a href="/article/2020年4月19日疫情日记/">2020年4月19日疫情日记</a>
+          <a href="/article/2020上半年小结/">2020上半年小结</a>
         </li>
       
         <li>
-          <a href="/article/2020年4月9日日记/">2020年4月9日日记</a>
+          <a href="/article/基于Gitlab的Code-Review最佳实践/">基于Gitlab的Code Review最佳实践</a>
         </li>
       
         <li>
-          <a href="/article/etcd使用最佳实践/">etcd使用最佳实践</a>
+          <a href="/article/20200705日记/">20200705日记</a>
         </li>
       
         <li>
-          <a href="/article/01-六六成长篇/">01-六六成长篇</a>
+          <a href="/article/部署gitlab-runner服务/">部署gitlab-runner服务</a>
         </li>
       
         <li>
-          <a href="/article/极客时间专栏-从0开始学架构的收获/">极客时间专栏-从0开始学架构的收获</a>
+          <a href="/article/serverless简介/">serverless简介</a>
         </li>
       
     </ul>
@@ -768,7 +761,7 @@ Kernel Samepage Merging是Linux kernel 2.6.32 引入的新特性，最初时为K
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
