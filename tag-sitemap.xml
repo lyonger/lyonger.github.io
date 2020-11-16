@@ -3,14 +3,14 @@
 
     <url>
         <loc>https://lyonger.cn/tags/%E5%89%8D%E7%AB%AF/</loc>
-        <lastmod>2019-11-30T07:49:29.483Z</lastmod>
+        <lastmod>2019-11-30T07:49:29.484Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://lyonger.cn/tags/%E5%90%8E%E7%AB%AF/</loc>
-        <lastmod>2019-11-30T08:04:55.831Z</lastmod>
+        <lastmod>2019-11-30T08:04:55.832Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -24,14 +24,14 @@
 
     <url>
         <loc>https://lyonger.cn/tags/DevOps/</loc>
-        <lastmod>2020-02-14T13:28:41.784Z</lastmod>
+        <lastmod>2020-02-14T13:28:41.785Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://lyonger.cn/tags/FreeBSD/</loc>
-        <lastmod>2020-03-03T14:10:38.233Z</lastmod>
+        <lastmod>2020-03-03T14:10:38.234Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -58,13 +58,6 @@
     </url>
 
     <url>
-        <loc>https://lyonger.cn/tags/%E7%94%9F%E6%B4%BB/</loc>
-        <lastmod>2020-07-05T09:15:45.505Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lyonger.cn/tags/Gitlab/</loc>
         <lastmod>2020-07-09T14:35:50.364Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -73,7 +66,7 @@
 
     <url>
         <loc>https://lyonger.cn/tags/Docker/</loc>
-        <lastmod>2020-08-11T15:32:14.329Z</lastmod>
+        <lastmod>2020-08-11T15:32:14.330Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -81,6 +74,13 @@
     <url>
         <loc>https://lyonger.cn/tags/%E5%B7%A5%E4%BD%9C/</loc>
         <lastmod>2020-10-19T15:26:15.129Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lyonger.cn/tags/%E7%94%9F%E6%B4%BB/</loc>
+        <lastmod>2020-11-16T15:44:47.019Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
