@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Advanced Architecting on AWS培训 - 倚楼听风雨，淡看江湖路。
+          LVS负载均衡模式详解 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/Advanced-Architecting-on-AWS培训/">
+    <link rel="canonical" href="https://lyonger.cn/article/LVS负载均衡模式详解/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#学习" title="学习">学习</a>
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
                             
                         </div>
-                        <h1>Advanced Architecting on AWS培训</h1>
+                        <h1>LVS负载均衡模式详解</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇 on
-                            2020-11-28
+                            2020-12-01
                         </span>
                     </div>
                 
@@ -212,90 +212,24 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="背景说明">背景说明</h2>
+                <h2 id="原文链接">原文链接</h2>
 <ul>
-<li>本文为参加AWS高级架构师培训课的简要笔记。</li>
+<li><a href="https://wsgzao.github.io/post/lvs-tun/" target="_blank" rel="noopener">https://wsgzao.github.io/post/lvs-tun/</a></li>
+<li><a href="https://wsgzao.github.io/post/lvs-nat/" target="_blank" rel="noopener">https://wsgzao.github.io/post/lvs-nat/</a></li>
+<li><a href="https://wsgzao.github.io/post/lvs-dr/" target="_blank" rel="noopener">https://wsgzao.github.io/post/lvs-dr/</a></li>
 </ul>
-<h2 id="云中最佳实践">云中最佳实践</h2>
+<h2 id="相关术语">相关术语</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LB (Load Balancer 负载均衡)</span><br><span class="line">HA (High Available 高可用)</span><br><span class="line">Failover (失败切换)</span><br><span class="line">Cluster (集群)</span><br><span class="line">LVS (Linux Virtual Server Linux 虚拟服务器)</span><br><span class="line">DS (Director Server)，指的是前端负载均衡器节点</span><br><span class="line">RS (Real Server)，后端真实的工作服务器</span><br><span class="line">VIP (Virtual IP)，虚拟的 IP 地址，向外部直接面向用户请求，作为用户请求的目标的 IP 地址</span><br><span class="line">DIP (Director IP)，主要用于和内部主机通讯的 IP 地址</span><br><span class="line">RIP (Real Server IP)，后端服务器的 IP 地址</span><br><span class="line">CIP (Client IP)，访问客户端的 IP 地址</span><br></pre></td></tr></table></figure>
+<h2 id="lvs负载均衡三种算法">LVS负载均衡三种算法</h2>
 <ul>
-<li>弹性伸缩</li>
-<li>自动化部署</li>
-<li>可抛弃资源(stateless)</li>
-<li>松耦合</li>
-<li>服务化，托管</li>
-<li>选择正确的数据库</li>
-<li>避免单点，高可用</li>
-<li>成本优化</li>
-<li>缓存</li>
-<li>保证基础设施安全</li>
+<li>三图胜千言，主要摘选了精华部分。</li>
 </ul>
-<h2 id="endponit分类">Endponit分类</h2>
-<ul>
-<li>Gateway Endpoint：路由表的方式，比如访问S3、DynamoDB。</li>
-<li>类似service Endpoint：privatelink。</li>
-</ul>
-<h2 id="nitro架构">Nitro架构</h2>
-<ul>
-<li>AWS自研网络优化。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/28/85d7e6a9f6eea9b1a4e6b6c47d999565.jpg" alt="image"></p>
-<h2 id="收费标准">收费标准</h2>
-<ul>
-<li>收费标准如下图：</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/28/c7367a09baf2e80d076b14ffc1dba884.jpg" alt="image"></p>
-<h2 id="高级网络">高级网络</h2>
-<ul>
-<li>Transit Gateway：针对多VPC场景，聚合带宽。</li>
-<li>DX Gateway：接入自建机房。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/28/ab95c52fee1b03712f154ee27539e206.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/28/f0f1997e8537b869ae9f3392e4e2d25e.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/28/1cefaaf17d0bf404ed1e153de82aade1.jpg" alt="image"></p>
-<h2 id="大数据架构">大数据架构</h2>
-<ul>
-<li>大数据设计的原则。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/b07dd16e4e34846d63a6029f7827e0c4.jpg" alt="image"></p>
-<ul>
-<li>批处理和流处理的区别。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/57d371f6fee3ed0e387b70e14ca2bee5.jpg" alt="image"></p>
-<ul>
-<li>AWS大数据产品全家桶。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/2ff538fa65dc8842e56c37de167e398f.jpg" alt="image"></p>
-<ul>
-<li>数据湖和数据库仓库。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/b21ea5c631a25e596b6b74750b359b09.jpg" alt="image"></p>
-<h2 id="网络安全">网络安全</h2>
-<ul>
-<li>各层攻击情况</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/d2889ed74136b60ca82017a836fa6313.jpg" alt="image"></p>
-<ul>
-<li>udp反射攻击。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/9f2752198e4af6e9d4bc147efdf6aab7.jpg" alt="image"></p>
-<ul>
-<li>Syn flood原理</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/5472555834ebf87a5edd3b62864334af.jpg" alt="image"></p>
-<ul>
-<li>七层攻击解决方案：</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/63a1f7b1900f027e75eba0826f0ac60c.jpg" alt="image"></p>
-<ul>
-<li>或者在cloudFront开启WAF使用。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/f503080bd406a0c572e49a77abb1ba12.jpg" alt="image"></p>
-<ul>
-<li>防范攻击的整个架构。</li>
-</ul>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/29/b0bdbadf177f078f0d6f16abafe99a0a.jpg" alt="image"></p>
-<h2 id="结课证书">结课证书</h2>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/11/30/e5bc403e3a588eeab81adfc3ebe0a0c0.jpg" alt="image"></p>
+<h3 id="lvs-nat模式">LVS-NAT模式</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/12/01/e7969be087c8e71993f0976703aa1845.jpg" alt="image"></p>
+<h3 id="lvs-tun模式">LVS-TUN模式</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/12/01/c33eaeb4e9214730e769ec2ee028499c.jpg" alt="image"></p>
+<h3 id="lvs-dr模式">LVS-DR模式</h3>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2020/12/01/00c237b1d1f1bf5e360d8e2b57dd04d0.jpg" alt="image"></p>
 
                 
 
@@ -303,13 +237,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/LVS负载均衡模式详解/" data-toggle="tooltip" data-placement="top" title="LVS负载均衡模式详解">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/2020年11月16日小记/" data-toggle="tooltip" data-placement="top" title="2020年11月16日小记">Next Post &rarr;</a>
+                            <a href="/article/Advanced-Architecting-on-AWS培训/" data-toggle="tooltip" data-placement="top" title="Advanced Architecting on AWS培训">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -377,7 +307,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景说明"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云中最佳实践"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x4E91;&#x4E2D;&#x6700;&#x4F73;&#x5B9E;&#x8DF5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#endponit分类"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Endponit&#x5206;&#x7C7B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#nitro架构"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Nitro&#x67B6;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#收费标准"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">&#x6536;&#x8D39;&#x6807;&#x51C6;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#高级网络"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">&#x9AD8;&#x7EA7;&#x7F51;&#x7EDC;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#大数据架构"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">&#x5927;&#x6570;&#x636E;&#x67B6;&#x6784;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#网络安全"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">&#x7F51;&#x7EDC;&#x5B89;&#x5168;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#结课证书"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">&#x7ED3;&#x8BFE;&#x8BC1;&#x4E66;</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#原文链接"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x539F;&#x6587;&#x94FE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#相关术语"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">&#x76F8;&#x5173;&#x672F;&#x8BED;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#lvs负载均衡三种算法"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">LVS&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#x4E09;&#x79CD;&#x7B97;&#x6CD5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#lvs-nat模式"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">LVS-NAT&#x6A21;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#lvs-tun模式"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">LVS-TUN&#x6A21;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#lvs-dr模式"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">LVS-DR&#x6A21;&#x5F0F;</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -397,7 +327,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#学习" title="学习">学习</a>
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
                         
                     </div>
                 </section>
@@ -428,8 +358,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/Advanced-Architecting-on-AWS培训/";
-    var disqus_url = "https://lyonger.cn/article/Advanced-Architecting-on-AWS培训/";
+    var disqus_identifier = "https://lyonger.cn/article/LVS负载均衡模式详解/";
+    var disqus_url = "https://lyonger.cn/article/LVS负载均衡模式详解/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
