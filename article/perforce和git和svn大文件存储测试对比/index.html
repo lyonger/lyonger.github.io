@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录生活中的点滴~">
+    <meta name="keyword"  content="blog">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          perforce和git和svn大文件存储测试对比 - 倚楼听风雨，淡看江湖路。
+        
+    </title>
+
+    <link rel="canonical" href="https://lyonger.cn/article/perforce和git和svn大文件存储测试对比/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                            
+                        </div>
+                        <h1>perforce和git和svn大文件存储测试对比</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 刘勇 on
+                            2021-04-30
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">刘勇的blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="perforce和git和svn大文件存储测试对比">perforce和git和svn大文件存储测试对比</h1>
+<h2 id="测评背景">测评背景</h2>
+<ul>
+<li>美术资源存在大量小文件、单个文件比较大、文件频繁更新、频繁上传下载、本地仓库损坏需全量重新下载等情况，管理比较困难。</li>
+</ul>
+<h2 id="测评总结">测评总结</h2>
+<ul>
+<li>针对美术资源管理比较困难的问题，我们对市面上的一些资产管理工具，在同一环境下使用线上的真实业务数据进行了测评对比。</li>
+</ul>
+<h3 id="综合测评结果">综合测评结果</h3>
+<ul>
+<li>针对通用代码管理的问题：<span style="color:#FF0000"><strong>Perforce工具在性能和工具体验方面显得更为专业。它能直接兼容很多美术软件，可预览和在线编辑，对美术的工作有很大帮助。除此之外，可以和海外的开发公司、外包公司进行业界统一的对接方式。建议做为首选考虑。其次如果只考虑开源工具，且大文件下载需求不多，git-lfs工具也是一个不错的选择</strong></span>。</li>
+</ul>
+<ul>
+<li>结合工具性能、操作使用成本、与外部公司对接的便捷性等因素，对工具进行了综合对比，结果可参考下表。<br>
+| 工具名称               | GIT-LFS              | SVN                  | Perforce                               |<br>
+| :--------------------- | :------------------- | :------------------- | :------------------------------------- |<br>
+| 收费                   | 否                   | 否                   | 是                                     |<br>
+| 小文件处理速度         | 快                   | 慢                   | 很快                                   |<br>
+| 大文件处理速度         | 慢                   | 慢                   | 快                                     |<br>
+| 客户端工具             | 社区提供，命令行为主 | 社区提供，命令行为主 | 官方提供                               |<br>
+| 权限控制               | repo级别             | 目录级别             | 目录级别                               |<br>
+| 元数据文件空间占用     | 是                   | 是                   | 否                                     |<br>
+| 首次是否需全部拉取     | 是                   | 是                   | 否                                     |<br>
+| 软件兼容性             | ide兼容性好          | ide兼容性好          | 美术软件兼容性好，支持预览和在线编辑。 |<br>
+| 使用难度               | 难                   | 一般                 | 比较难                                 |<br>
+| 与外部公司对接的便捷性 | 一般                 | 一般                 | 比较方便                               |</li>
+</ul>
+<h3 id="性能测评结果">性能测评结果</h3>
+<ul>
+<li>性能方面的测评结果如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1) 针对当前美术资源使用NXN维护成本高，资源上传下载经常卡顿的问题。Perforce在资源的上传下载、权限控制方面有比较好的优势。在大文件场景下perforce比svn快8%，比git-lfs快57%。在小文件场景下perforce比git-lfs快5%，比svn快55.8%。故建议采用Perforce工具，但是需要考虑到价格和上手难度等问题。</span><br><span class="line"></span><br><span class="line">2）针对当前美术资源使用NXN维护成本高，资源上传下载经常卡顿的问题，如果不考虑价格因素时，大文件场景下svn比git-lfs快49%，小文件场景下git-lfs比svn快50%。如果小文件居多建议使用git-lfs，如果大文件居多建议使用svn。</span><br><span class="line"></span><br><span class="line">3）针对本地仓库损坏需重新下载大文件问题，单从上传下载速度上svn比git-lfs快49%，git-lfs并不占优势。但git-lfs仓库的健壮性优于svn，可通过object id增量下载文件，降低了仓库损坏需全量下载的概率。当然git-lfs的这种管理相比svn会给客户端带来更多的磁盘空间消耗，需定时执行lfs命令来清理。其次在附加资料部分也提供了git-lfs的使用教程。</span><br><span class="line"></span><br><span class="line">4) 实际测试时发现客户端上传20G左右数据时会消耗8G-10G左右的内存，占满一个cpu核心。建议客户端机器至少16G内存、配置SSD固态硬盘。可提升上传与下载的体验。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>性能测试的数据结论
+<ul>
+<li>大文件上传时
+<ul>
+<li>perforce比svn快8.6%，比git-lfs快27.2%。</li>
+<li>svn比git-lfs快18.6%。</li>
+</ul>
+</li>
+<li>大文件下载时
+<ul>
+<li>perforce比svn快7.6%，比git-lfs快87.3%。</li>
+<li>svn比git-lfs快79.7%。</li>
+</ul>
+</li>
+<li>小文件上传时
+<ul>
+<li>perforce比git-lfs快5.8%，比svn快47.4%。</li>
+<li>git-lfs比svn快41.6%。</li>
+</ul>
+</li>
+<li>小文件下载时
+<ul>
+<li>perforce比git-lfs快4.3%，比svn快64.2%。</li>
+<li>git-lfs比svn快59.9%。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="测评方案">测评方案</h2>
+<ul>
+<li>基于上面的问题，<strong>对市面上已有的工具：Gitlab-LFS、SVN、Perforce， 分别进行了测评调研</strong>，内容如下。</li>
+</ul>
+<h3 id="测评说明">测评说明</h3>
+<ul>
+<li>测试使用了一台小小云机器，系统Debian9.6，使用两块SSD磁盘，一块作为服务端，安装有gitlab、svn、perforce服务端进程，一块作为客户端使用，同台机器内测试，减少网络导致的误差。测试机器配置如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">系统版本：Debian9.6</span><br><span class="line">内核版本：4.9.0-6-amd64</span><br><span class="line">CPU核数：16</span><br><span class="line">内存大小：32GB</span><br><span class="line">磁盘大小：200G SSD * 2</span><br><span class="line">IP地址：10.202.2.5</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试数据随机采样了3份，均来自线上的真实数据，里面有美术资源和非美术资源，有大文件也有小文件，详情如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">原始数据总大小(排除.git/.svn)</th>
+<th style="text-align:left">文件个数</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">数据样例1</td>
+<td style="text-align:left">6.7G</td>
+<td style="text-align:left">25217</td>
+<td style="text-align:left">大文件和小文件相对均匀</td>
+</tr>
+<tr>
+<td style="text-align:left">数据样例2</td>
+<td style="text-align:left">9.5G</td>
+<td style="text-align:left">14988</td>
+<td style="text-align:left">大文件居多</td>
+</tr>
+<tr>
+<td style="text-align:left">数据样例3</td>
+<td style="text-align:left">1.6G</td>
+<td style="text-align:left">119940</td>
+<td style="text-align:left">小文件居多</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>测试主要分2个部分：<code>空间占用</code>、<code>下载与上传速度</code>。</li>
+</ul>
+<h3 id="测评过程">测评过程</h3>
+<h5 id="空间占用测试">空间占用测试</h5>
+<ul>
+<li>数据样例1<br>
+| 工具类型 | 仓库总大小(包括.git/.svn) | .git/.svn大小 | 原始文件总大小(不包括.git/.svn) |<br>
+| :------- | :------------------------ | :------------ | :------------------------------ |<br>
+| git-lfs  | 14G                       | 6.5G          | 6.7G                            |<br>
+| svn      | 14G                       | 6.7G          | 6.7G                            |<br>
+| perforce | 6.7G                      | 无            | 6.7G                            |</li>
+</ul>
+<ul>
+<li>数据样例2<br>
+| 工具类型 | 仓库总大小(包括.git/.svn) | .git/.svn大小 | 原始文件总大小(不包括.git/.svn) |<br>
+| :------- | :------------------------ | :------------ | :------------------------------ |<br>
+| git-lfs  | 19G                       | 9.5G          | 9.5G                            |<br>
+| svn      | 19G                       | 9.5G          | 9.5G                            |<br>
+| perforce | 9.5G                      | 无            | 9.5G                            |</li>
+</ul>
+<ul>
+<li>数据样例3<br>
+| 工具类型 | 仓库总大小(包括.git/.svn) | .git/.svn大小 | 原始文件总大小(不包括.git/.svn) |<br>
+| :------- | :------------------------ | :------------ | :------------------------------ |<br>
+| git-lfs  | 1.8G                      | 0.2G          | 1.6G                            |<br>
+| svn      | 2.9G                      | 1.4G          | 1.6G                            |<br>
+| perforce | 1.6G                      | 无            | 1.6G                            |</li>
+</ul>
+<h5 id="下载与上传速度测试">下载与上传速度测试</h5>
+<ul>
+<li>数据样例1</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">工具类型</th>
+<th style="text-align:left">原始数据总大小(不包括.git/.svn)</th>
+<th style="text-align:left">上传时间</th>
+<th style="text-align:left">下载时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">git-lfs</td>
+<td style="text-align:left">6.7G</td>
+<td style="text-align:left">416秒</td>
+<td style="text-align:left">2013秒</td>
+</tr>
+<tr>
+<td style="text-align:left">svn</td>
+<td style="text-align:left">6.7G</td>
+<td style="text-align:left">642秒</td>
+<td style="text-align:left">368秒</td>
+</tr>
+<tr>
+<td style="text-align:left">perforce</td>
+<td style="text-align:left">6.7G</td>
+<td style="text-align:left">435秒</td>
+<td style="text-align:left">57秒</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>数据样例2</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">工具类型</th>
+<th style="text-align:left">原始数据总大小(不包括.git/.svn)</th>
+<th style="text-align:left">上传时间</th>
+<th style="text-align:left">下载时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">git-lfs</td>
+<td style="text-align:left">9.5G</td>
+<td style="text-align:left">1101秒</td>
+<td style="text-align:left">3867秒</td>
+</tr>
+<tr>
+<td style="text-align:left">svn</td>
+<td style="text-align:left">9.5G</td>
+<td style="text-align:left">680秒</td>
+<td style="text-align:left">407秒</td>
+</tr>
+<tr>
+<td style="text-align:left">perforce</td>
+<td style="text-align:left">9.5G</td>
+<td style="text-align:left">482秒</td>
+<td style="text-align:left">72秒</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>数据样例3</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">工具类型</th>
+<th style="text-align:left">原始数据总大小(不包括.git/.svn)</th>
+<th style="text-align:left">上传时间</th>
+<th style="text-align:left">下载时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">git-lfs</td>
+<td style="text-align:left">1.6G</td>
+<td style="text-align:left">327秒</td>
+<td style="text-align:left">24秒</td>
+</tr>
+<tr>
+<td style="text-align:left">svn</td>
+<td style="text-align:left">1.6G</td>
+<td style="text-align:left">963秒</td>
+<td style="text-align:left">121秒</td>
+</tr>
+<tr>
+<td style="text-align:left">perforce</td>
+<td style="text-align:left">1.6G</td>
+<td style="text-align:left">239秒</td>
+<td style="text-align:left">17秒</td>
+</tr>
+</tbody>
+</table>
+<h3 id="测评图表">测评图表</h3>
+<h4 id="空间大小占用">空间大小占用</h4>
+<ul>
+<li>Y轴为数据大小，单位G。</li>
+<li>X轴为指标类型：
+<ul>
+<li>仓库总大小(包括.git/.svn) <strong>total</strong></li>
+<li>.git/.svn大小<strong>metadata</strong></li>
+<li>原始文件总大小(不包括.git/.svn) <strong>raw</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/ddc40542af52c45969b46d62857d6ddd.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/f0e8bb041f9d7231f0fac295697402fc.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/ac10bc0cfb937dec4dc2e8b4467cff4c.jpg" alt="image"></p>
+<h4 id="上传与下载速度">上传与下载速度</h4>
+<ul>
+<li>Y轴为上传数据或者下载数据的时间，单位秒。</li>
+<li>X轴为工具类型即git-lfs、svn、perforce。</li>
+</ul>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/1c2bb3cd8633c122a9f6466d88b145d9.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/621517b172891e5c20e23698a02a25de.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/f5c2cbda5ab8cb3579e3b3a5e183e159.jpg" alt="image"></p>
+<h3 id="测评分析">测评分析</h3>
+<ul>
+<li>测评分析如下，下面的百分比数据为文件下载或上传占用时间百分比，比如perforce(15.6%) 代表样例3小文件上传中，perforce占用的时间百分比，即<strong>15.6%=239.0 / (327+963+239)</strong><br>
+| 评估项           | 具体分析                                                     | 分析结果                                      |<br>
+| :--------------- | :----------------------------------------------------------- | :-------------------------------------------- |<br>
+| 样例文件个数     | 样例2大文件居多、样例3小文件居多、样例1大文件小文件相对均匀  | 样例3 &gt; 样例1 &gt; 样例2                         |<br>
+| 样例原始数据大小 | 样例2大文件居多、样例3小文件居多、样例1大文件小文件相对均匀  | 样例2 &gt; 样例1 &gt; 样例3                         |<br>
+| 空间管理         | <br>  1) perforce无需存储元数据，相对节省客户端磁盘空间。<br> 2) 随着文件个数增多，svn的元数据大小明显高于git-lfs，会更多的占用客户端磁盘空间。<br> 3) 原始文件的总大小在每个工具均保持一致。 | perforce &gt; git &gt; svn                          |<br>
+| 小文件上传速度   | perforce优于svn、git-lfs，但没有明显优于git-lfs。svn的上传速度最差。 | perforce(15.6%) &gt; git-lfs(21.4%) &gt; svn(63%)   |<br>
+| 大文件上传速度   | perforce的上传速度明显优于svn和git-lfs, git-lfs的上传速度最差 | perforce(21.4%)&gt; svn(30%) &gt; git-lfs(48.6%)    |<br>
+| 小文件下载速度   | perforce的下载速度优于svn和git-lfs, svn的下载速度最差        | perforce(10.5%) &gt; git-lfs(14.8%) &gt; svn(74.7%) |<br>
+| 大文件下载速度   | perforce的下载速度明显优于svn和git-lfs, git-lfs的下载速度最差 | perforce(1.7%) &gt; svn(9.3%) &gt; git-lfs（89%)    |</li>
+</ul>
+<h3 id="测评总结">测评总结</h3>
+<ul>
+<li>
+<p>从实际的业务数据测试来看：</p>
+<ul>
+<li>perforce无需占用客户端空间，且不管大文件还是小文件场景均优于git-lfs和svn。</li>
+<li>相比svn来说，git-lfs比较适合小文件场景，无论是上传速度还是下载速度均优于svn。</li>
+<li>相比git-lfs来说，svn比较适合大文件场景，无论是上传速度还是下载速度均优于git-lfs。</li>
+</ul>
+</li>
+<li>
+<p>客户端情况</p>
+<ul>
+<li>无论是git-lfs还是svn，在下载或者上传文件时，会大量消耗客户端的内存，跑满一个cpu核心。建议客户端机器至少为16G内存并配置固态硬盘。
+<ul>
+<li>下图为Mac机器使用git客户端上传样例2数据时的截图。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/3cd0d9b03ee6d6a52efdeea33914dcc5.jpg" alt="image"></li>
+<li>下图为小小云本地机器git上传样例2数据时的截图。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/eb8a4cd1601f36f96d1b36137e137a22.jpg" alt="image">
+<ul>
+<li>下图为本地机器svn上传数据时的截图。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/d7c75d667c395ac2ce60c2fac48c6d06.jpg" alt="image"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>结论
+<ul>
+<li>大文件上传时
+<ul>
+<li>perforce比svn快8.6%，比git-lfs快27.2%。</li>
+<li>svn比git-lfs快18.6%。</li>
+</ul>
+</li>
+<li>大文件下载时
+<ul>
+<li>perforce比svn快7.6%，比git-lfs快87.3%。</li>
+<li>svn比git-lfs快79.7%。</li>
+</ul>
+</li>
+<li>小文件上传时
+<ul>
+<li>perforce比git-lfs快5.8%，比svn快47.4%。</li>
+<li>git-lfs比svn快41.6%。</li>
+</ul>
+</li>
+<li>小文件下载时
+<ul>
+<li>perforce比git-lfs快4.3%，比svn快64.2%。</li>
+<li>git-lfs比svn快59.9%。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id=""></h2>
+<ul>
+<li>当时的测试命令(备忘)。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">svnadmin create /home/svn/git_lfs</span><br><span class="line">cp /home/svn/git_lfs/conf/* /home/svn/git_lfs2/conf/</span><br><span class="line">svnserve -d -r /home/svn/</span><br><span class="line">svn add . --no-ignore --force</span><br><span class="line">svn checkout svn://127.0.0.1/git_lfs2 --username=xxx --password=xxx git_lfs2_commit</span><br><span class="line">time svn commit -m &quot;git_lfs3 production3&quot; --username=xxx --password=xxx</span><br><span class="line">time svn checkout svn://127.0.0.1/git_lfs --username=xxx --password=xxx git_lfs_checkout</span><br><span class="line">du -h --max-depth=1</span><br></pre></td></tr></table></figure>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/2021年规划/" data-toggle="tooltip" data-placement="top" title="2021年规划">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="/images/ali_pay.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="/images/wechat_pay.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#perforce和git和svn大文件存储测试对比"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">perforce&#x548C;git&#x548C;svn&#x5927;&#x6587;&#x4EF6;&#x5B58;&#x50A8;&#x6D4B;&#x8BD5;&#x5BF9;&#x6BD4;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测评背景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x80CC;&#x666F;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测评总结"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x603B;&#x7ED3;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#综合测评结果"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">&#x7EFC;&#x5408;&#x6D4B;&#x8BC4;&#x7ED3;&#x679C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#性能测评结果"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">&#x6027;&#x80FD;&#x6D4B;&#x8BC4;&#x7ED3;&#x679C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测评方案"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x65B9;&#x6848;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测评说明"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测评过程"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x8FC7;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#空间占用测试"><span class="toc-nav-number">1.3.2.0.1.</span> <span class="toc-nav-text">&#x7A7A;&#x95F4;&#x5360;&#x7528;&#x6D4B;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#下载与上传速度测试"><span class="toc-nav-number">1.3.2.0.2.</span> <span class="toc-nav-text">&#x4E0B;&#x8F7D;&#x4E0E;&#x4E0A;&#x4F20;&#x901F;&#x5EA6;&#x6D4B;&#x8BD5;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测评图表"><span class="toc-nav-number">1.3.3.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x56FE;&#x8868;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#空间大小占用"><span class="toc-nav-number">1.3.3.1.</span> <span class="toc-nav-text">&#x7A7A;&#x95F4;&#x5927;&#x5C0F;&#x5360;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#上传与下载速度"><span class="toc-nav-number">1.3.3.2.</span> <span class="toc-nav-text">&#x4E0A;&#x4F20;&#x4E0E;&#x4E0B;&#x8F7D;&#x901F;&#x5EA6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测评分析"><span class="toc-nav-number">1.3.4.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x5206;&#x6790;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测评总结"><span class="toc-nav-number">1.3.5.</span> <span class="toc-nav-text">&#x6D4B;&#x8BC4;&#x603B;&#x7ED3;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text"></span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://coolshell.cn" target="_blank">酷壳CoolShell</a></li>
+                    
+                        <li><a href="http://www.ruanyifeng.com/blog" target="_blank">阮一峰的网络日志</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "lyonger-cn";
+    var disqus_identifier = "https://lyonger.cn/article/perforce和git和svn大文件存储测试对比/";
+    var disqus_url = "https://lyonger.cn/article/perforce和git和svn大文件存储测试对比/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lyonger">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 刘勇 2021 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://lyonger.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://lyonger.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
