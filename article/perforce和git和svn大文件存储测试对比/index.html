@@ -458,17 +458,17 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/ddc40542af52c45969b46d62857d6ddd.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/f0e8bb041f9d7231f0fac295697402fc.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/ac10bc0cfb937dec4dc2e8b4467cff4c.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/ddc40542af52c45969b46d62857d6ddd.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/f0e8bb041f9d7231f0fac295697402fc.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/ac10bc0cfb937dec4dc2e8b4467cff4c.jpg" alt="image"></p>
 <h4 id="上传与下载速度">上传与下载速度</h4>
 <ul>
 <li>Y轴为上传数据或者下载数据的时间，单位秒。</li>
 <li>X轴为工具类型即git-lfs、svn、perforce。</li>
 </ul>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/1c2bb3cd8633c122a9f6466d88b145d9.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/621517b172891e5c20e23698a02a25de.jpg" alt="image"></p>
-<p><img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/f5c2cbda5ab8cb3579e3b3a5e183e159.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/1c2bb3cd8633c122a9f6466d88b145d9.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/621517b172891e5c20e23698a02a25de.jpg" alt="image"></p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/f5c2cbda5ab8cb3579e3b3a5e183e159.jpg" alt="image"></p>
 <h3 id="测评分析">测评分析</h3>
 <ul>
 <li>测评分析如下，下面的百分比数据为文件下载或上传占用时间百分比，比如perforce(15.6%) 代表样例3小文件上传中，perforce占用的时间百分比，即<strong>15.6%=239.0 / (327+963+239)</strong><br>
@@ -498,12 +498,12 @@
 <li>无论是git-lfs还是svn，在下载或者上传文件时，会大量消耗客户端的内存，跑满一个cpu核心。建议客户端机器至少为16G内存并配置固态硬盘。
 <ul>
 <li>下图为Mac机器使用git客户端上传样例2数据时的截图。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/3cd0d9b03ee6d6a52efdeea33914dcc5.jpg" alt="image"></li>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/3cd0d9b03ee6d6a52efdeea33914dcc5.jpg" alt="image"></li>
 <li>下图为小小云本地机器git上传样例2数据时的截图。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/eb8a4cd1601f36f96d1b36137e137a22.jpg" alt="image">
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/eb8a4cd1601f36f96d1b36137e137a22.jpg" alt="image">
 <ul>
 <li>下图为本地机器svn上传数据时的截图。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/04/30/d7c75d667c395ac2ce60c2fac48c6d06.jpg" alt="image"></li>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/04/30/d7c75d667c395ac2ce60c2fac48c6d06.jpg" alt="image"></li>
 </ul>
 </li>
 </ul>
@@ -546,11 +546,16 @@
 <li>当时的测试命令(备忘)。</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">svnadmin create /home/svn/git_lfs</span><br><span class="line">cp /home/svn/git_lfs/conf/* /home/svn/git_lfs2/conf/</span><br><span class="line">svnserve -d -r /home/svn/</span><br><span class="line">svn add . --no-ignore --force</span><br><span class="line">svn checkout svn://127.0.0.1/git_lfs2 --username=xxx --password=xxx git_lfs2_commit</span><br><span class="line">time svn commit -m &quot;git_lfs3 production3&quot; --username=xxx --password=xxx</span><br><span class="line">time svn checkout svn://127.0.0.1/git_lfs --username=xxx --password=xxx git_lfs_checkout</span><br><span class="line">du -h --max-depth=1</span><br></pre></td></tr></table></figure>
+
                 
 
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/eks-fargate服务最佳实践/" data-toggle="tooltip" data-placement="top" title="eks-fargate服务最佳实践">&larr; Previous Post</a>
+                        </li>
                     
                     
                         <li class="next">

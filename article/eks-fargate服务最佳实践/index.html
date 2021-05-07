@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="记录生活中的点滴~">
+    <meta name="keyword"  content="blog">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          eks-fargate服务最佳实践 - 倚楼听风雨，淡看江湖路。
+        
+    </title>
+
+    <link rel="canonical" href="https://lyonger.cn/article/eks-fargate服务最佳实践/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#云原生" title="云原生">云原生</a>
+                            
+                        </div>
+                        <h1>eks-fargate服务最佳实践</h1>
+                        <h2 class="subheading">一款客户端APP日志采集方案</h2>
+                        <span class="meta">
+                            Posted by 刘勇(小次郎) on
+                            2021-05-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">刘勇(小次郎)的blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="eks-fargate服务最佳实践">eks-fargate服务最佳实践</h1>
+<h2 id="需求来源">需求来源</h2>
+<ul>
+<li>
+<p>项目在线上运行的时候，偶尔会遇到一些难缠的客户端问题。这些问题没有<code>traceback</code>，但是业务逻辑明显不对。我们很想收集客户端的log的信息来辅助我们查找问题，但是由于没有<code>traceback</code>，所以不会触发常规的错误和日志上传。因此我们想要做一个web服务。我们可以把要收集日志的客户端设备ID登记到这台服上，然后客户端启动时会访问这个web服务，如果发现自己需要提交历史日志，则打包将日志发送到appdump上。我们将这个<code>web</code>服务取名为<code>controltower</code>。</p>
+</li>
+<li>
+<p>之所以使用一个额外的web服务来通知客户端上传日志，而不是通过服务端来通知，主要有两个原因：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 我们需要登记哪些问题或者哪些设备需要上传日志，在一个web服务上进行登记操作比在服务端上做类似的操作更简单、更安全。</span><br><span class="line">2. 客户端可能在连接服务器之前就已经报错了，独立的web服务器在这种情况下仍然可以工作。</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>controltower</code>的开发和部署有以下几个需求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 开发效率高。显然controltower不是一个游戏的业务系统，这也意味着我们不可能花很多时间在这个web服务上。因此要求有很高的开发效率。</span><br><span class="line">2. 部署效率高。同上，我们也不可能花费很多精力在这个web服务的部署和维护上，所以越简单越好。</span><br><span class="line">3. 自动扩缩容。这个web服务通常只会在客户端启动的时候访问一次。QPS比较低，但是对于维护后开服的这种特殊时段，或者某个活动开启的时段，可能有集中的大量访问，因此我们希望这个web服务能够自动扩缩容。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="技术选型">技术选型</h2>
+<ul>
+<li>
+<p>在最开始的时候我们考虑的是<code>FaaS</code>来实现。理论上只用写<code>function</code>，部署也非常简单。由于项目目前是在海外运营，所以我们首先考虑了<code>AWS lambda</code>。但是考虑到未来项目也会在国内运营，我们希望相同的服务在国内也能部署，因此最终放弃了<code>AWS lambda</code>。</p>
+</li>
+<li>
+<p>去掉<code>lambda</code>选项之后，<code>docker</code>部署成为了下一个选项。这也是我们最终选择的方案。AWS的<code>EKS+fargate</code>。具体的<code>EKS+fargate</code>方案将在后面介绍。</p>
+</li>
+<li>
+<p>在Web框架的选择上，由于项目内的语言栈主要以<code>python</code>为主，因此我们在<code>python web</code>框架中进行了选择。考虑到<code>controltower</code>是一个<code>API web</code>服务，而非<code>html web</code>服务，因此我们选择了最近风头正盛的<code>fastapi</code>框架。主要看重的是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 原生异步提供的高性能</span><br><span class="line">2. 通过type hint原生支持swagger文档，方便调试</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>数据库上我们使用了<code>mongodb</code>，这是公司内部使用比较多的数据库，无论是开发还是运维同学都比较熟悉。在<code>fastapi</code>内使用基于<code>asyncio</code>的<a href="https://motor.readthedocs.io/en/stable/index.html" target="_blank" rel="noopener">motor</a>做为<code>mongodb client</code>。</p>
+</li>
+<li>
+<p>在部署上，我们使用了<a href="http://undefined/" target="_blank" rel="noopener">uvicorn-gunicorn-fastapi-docker</a> 做为基础镜像。这个镜像内部的主要结构为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 前端使用Gunicorn接收http请求，根据pod的CPU核心数量生成对应的worker进程，默认1：1，即一个CPU核心一个worker进程</span><br><span class="line">2. Worker进程内使用[uvicorn](http://undefined/) 做为ASGI server，这个也是fastapi推荐使用的ASGI server</span><br><span class="line">3. 每个uvicorn进程里运行一个fastapi应用</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>举例来说，如果我们启动一个4核心的pod，则该pod内会启动4个uvicorn进程，和mongodb建立4个连接。由于所有的状态都在mongodb里，所以服务本身是可以轻松水平扩展的，只要最终不超过mongodb的承载能力即可。</p>
+</li>
+</ul>
+<h3 id="eks的特性说明">EKS的特性说明</h3>
+<h4 id="托管方式">托管方式</h4>
+<ul>
+<li>EKS一共有三种托管方式，产品详情可<a href="https://aws.amazon.com/cn/eks/?whats-new-cards.sort-by=item.additionalFields.postDateTime&amp;whats-new-cards.sort-order=desc&amp;eks-blogs.sort-by=item.additionalFields.createdDate&amp;eks-blogs.sort-order=desc" target="_blank" rel="noopener">查看官网</a>：
+<ul>
+<li>EKS on AWS EC2。拉起一堆EC2作为node，用户得自己维护EC2(也包括SOPT实例)。</li>
+<li>EKS on 自己的机器。支持把自己准备的机器 使用eks来做调度。</li>
+<li>EKS on AWS Fargate。控制面和NODE均托管，serverless特性的KaaS产品。</li>
+</ul>
+</li>
+</ul>
+<h4 id="收费方式">收费方式</h4>
+<ul>
+<li>控制面不收费，一个pod一个node，只按pod的资源收费。</li>
+</ul>
+<h4 id="扩缩容方式">扩缩容方式</h4>
+<ul>
+<li>EKS fargate并不支持node级别的纵向扩容,只支持pod级别的纵向扩容，pod级别的纵向扩容的方式,都需要在pod重启时完成(分为手动重启和自动重启)。</li>
+<li>EKS本身提供横向的auto scalling，当一个pod支持不住的时候会拉起一个新的pod。</li>
+</ul>
+<h2 id="部署流程">部署流程</h2>
+<h3 id="准备环境">准备环境</h3>
+<h4 id="控制机器">控制机器</h4>
+<ul>
+<li>创建一台EC2机器用作控制机，如果接入了<code>gitlab-runner</code>，其实可以省去控制机的安装，控制机器上安装的工具如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl &quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot; -o &quot;awscliv2.zip&quot;</span><br><span class="line">unzip awscliv2.zip</span><br><span class="line">sudo ./aws/install</span><br><span class="line">aws --version</span><br><span class="line">curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl</span><br><span class="line">mv kubectl /usr/local/bin/</span><br><span class="line">chmod +x /usr/local/bin/kubectl</span><br></pre></td></tr></table></figure>
+<h4 id="配置iam">配置IAM</h4>
+<ul>
+<li>参考<a href="https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/aws-load-balancer-controller.html" target="_blank" rel="noopener">参考官网</a>。</li>
+</ul>
+<h4 id="配置service-account">配置service-account</h4>
+<ul>
+<li>配置<code>aws-load-balancer-controller</code>组件所需的<code>service-account</code>，在控制机器上<code>kubectl apply</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app.kubernetes.io/component: controller</span><br><span class="line">    app.kubernetes.io/name: aws-load-balancer-controller</span><br><span class="line">  name: aws-load-balancer-controller</span><br><span class="line">  namespace: kube-system</span><br><span class="line">  annotations:</span><br><span class="line">      eks.amazonaws.com/role-arn: arn:aws:iam::478622463896:role/AmazonEKSLoadBalancerConrollerRole</span><br></pre></td></tr></table></figure>
+<h3 id="部署流程">部署流程</h3>
+<h4 id="镜像认证">镜像认证</h4>
+<ul>
+<li>创建镜像认证凭据。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry $&#123;IMAGE_PULL_SECRETS&#125; --docker-server=$&#123;仓库地址&#125; --docker-username=$&#123;仓库用户名&#125; --docker-password=$&#123;仓库密码&#125; --namespace=$&#123;NS名称&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="部署lb控制器">部署LB控制器</h4>
+<ul>
+<li>参考<a href="https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/aws-load-balancer-controller.html" target="_blank" rel="noopener">这里部署</a> 部署<code>aws-load-balancer-controller</code>，注意需安装在<code>kube-system</code>这个<code>namespace</code>下。</li>
+</ul>
+<h4 id="部署服务端">部署服务端</h4>
+<ul>
+<li>创建ns，为了适配gitlab的cicd发布，ns的名称需符合规范: <strong><span style="color:#FF0000">{project_name}-{project_id}</span></strong>，比如:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create ns mini-hunter-9391</span><br></pre></td></tr></table></figure>
+<ul>
+<li>部署<code>min-hunter-server</code>服务，其<code>deployment</code>的yaml如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: mini-hunter-server</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: mini-hunter-app</span><br><span class="line">  replicas: 1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: mini-hunter-app</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: mini-hunter-container</span><br><span class="line">          imagePullPolicy: IfNotPresent</span><br><span class="line">          image: $&#123;DOCKER_IMAGE&#125;:$&#123;IMAGE_TAG&#125;</span><br><span class="line">          env:</span><br><span class="line">            - name: HUNTERMINI_WEB_HOST</span><br><span class="line">              value: $&#123;HUNTERMINI_WEB_HOST&#125;</span><br><span class="line">            - name: HUNTERMINI_WEB_PORT</span><br><span class="line">              value: &quot;8000&quot;</span><br><span class="line">          ports:</span><br><span class="line">            - containerPort: 8000</span><br><span class="line">          resources:</span><br><span class="line">            limits:</span><br><span class="line">              cpu: 1000m</span><br><span class="line">              memory: 6144Mi</span><br><span class="line">            requests:</span><br><span class="line">              cpu: 500m</span><br><span class="line">              memory: 4096Mi</span><br><span class="line">      imagePullSecrets:</span><br><span class="line">        - name: $&#123;IMAGE_PULL_SECRETS&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过Service和Ingress暴露7层应用服务。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  name: service-8000-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">    - port: 80</span><br><span class="line">      targetPort: 8000</span><br><span class="line">      protocol: TCP</span><br><span class="line">  type: NodePort</span><br><span class="line">  selector:</span><br><span class="line">    app: mini-hunter-app</span><br><span class="line">---</span><br><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  name: ingress-8000-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  annotations:</span><br><span class="line">    kubernetes.io/ingress.class: alb</span><br><span class="line">    alb.ingress.kubernetes.io/scheme: internet-facing</span><br><span class="line">    alb.ingress.kubernetes.io/target-type: ip</span><br><span class="line">    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600</span><br><span class="line">    alb.ingress.kubernetes.io/listen-ports: &apos;[&#123;&quot;HTTP&quot;: 8000&#125;]&apos;</span><br><span class="line">    alb.ingress.kubernetes.io/tags: Project=$&#123;PROJECT&#125;,Cost Project=$&#123;COST_PROJECT&#125;</span><br><span class="line">    alb.ingress.kubernetes.io/security-groups: $&#123;SECURITY_GROUPS&#125;</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">    - http:</span><br><span class="line">        paths:</span><br><span class="line">          - path: /*</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: service-8000-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">              servicePort: 80</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过创建<code>service</code>资源暴露4层应用服务：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  name: service-20000-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  annotations:</span><br><span class="line">    service.beta.kubernetes.io/aws-load-balancer-type: nlb-ip</span><br><span class="line">    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: Project=$&#123;PROJECT&#125;, Cost Project=$&#123;PROJECT&#125;</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">    - port: 20000</span><br><span class="line">      targetPort: 20000</span><br><span class="line">      protocol: TCP</span><br><span class="line">  type: LoadBalancer</span><br><span class="line">  selector:</span><br><span class="line">    app: mini-hunter-app</span><br></pre></td></tr></table></figure>
+<h4 id="部署web控制台">部署web控制台</h4>
+<ul>
+<li>部署<code>min-hunter-web</code>服务，其<code>deployment</code>的yaml如下：</li>
+</ul>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"> apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: controltower</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: controltower</span><br><span class="line">  replicas: 1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: controltower</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">        - name: controltower-container</span><br><span class="line">          imagePullPolicy: IfNotPresent</span><br><span class="line">          image: $&#123;DOCKER_IMAGE&#125;:$&#123;IMAGE_TAG&#125;</span><br><span class="line">          ports:</span><br><span class="line">            - containerPort: 80</span><br><span class="line">          resources:</span><br><span class="line">            limits:</span><br><span class="line">              cpu: 1000m</span><br><span class="line">            requests:</span><br><span class="line">              cpu: 500m</span><br><span class="line">          env:</span><br><span class="line">            - name: MONGODB_URL</span><br><span class="line">              value: mongodb://$&#123;MONGO_USERNAME&#125;:$&#123;MONGO_PASSWORD&#125;@$&#123;MONGO_HOST&#125;/controltower</span><br><span class="line">          livenessProbe:</span><br><span class="line">            httpGet:</span><br><span class="line">              path: /health</span><br><span class="line">              port: 80</span><br><span class="line">            initialDelaySeconds: 5</span><br><span class="line">            periodSeconds: 5</span><br><span class="line">          readinessProbe:</span><br><span class="line">            httpGet:</span><br><span class="line">              path: /health</span><br><span class="line">              port: 80</span><br><span class="line">            initialDelaySeconds: 5</span><br><span class="line">            periodSeconds: 5</span><br><span class="line">          lifecycle:</span><br><span class="line">            preStop:</span><br><span class="line">              exec:</span><br><span class="line">                command: [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;touch /tmp/prestop &amp;&amp; sleep 60&quot;]</span><br><span class="line">      terminationGracePeriodSeconds: 130</span><br><span class="line">      imagePullSecrets:</span><br><span class="line">        - name: $&#123;IMAGE_PULL_SECRETS&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过Service和Ingress暴露7层应用服务。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  name: service-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">    - port: 80</span><br><span class="line">      targetPort: 80</span><br><span class="line">      protocol: TCP</span><br><span class="line">  type: NodePort</span><br><span class="line">  selector:</span><br><span class="line">    app: controltower</span><br><span class="line">---</span><br><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  namespace: $&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  name: ingress-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">  annotations:</span><br><span class="line">    kubernetes.io/ingress.class: alb</span><br><span class="line">    alb.ingress.kubernetes.io/scheme: internet-facing</span><br><span class="line">    alb.ingress.kubernetes.io/target-type: ip</span><br><span class="line">    alb.ingress.kubernetes.io/backend-protocal: HTTP</span><br><span class="line">    alb.ingress.kubernetes.io/listen-ports: &apos;[&#123;&quot;HTTPS&quot;: 443&#125;]&apos;</span><br><span class="line">    alb.ingress.kubernetes.io/certificate-arn: $&#123;ACM_CERT&#125;</span><br><span class="line">    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=600</span><br><span class="line">    alb.ingress.kubernetes.io/tags: Project=$&#123;PROJECT&#125;,Cost Project=$&#123;COST_PROJECT&#125;</span><br><span class="line">    alb.ingress.kubernetes.io/conditions.rule-path-doc: &gt;</span><br><span class="line">      $&#123;URL_FORWARD_RULES&#125;</span><br><span class="line">    alb.ingress.kubernetes.io/actions.rule-path-doc: &gt;</span><br><span class="line">      $&#123;URL_FORWARD_ACTIONS&#125;</span><br><span class="line">    alb.ingress.kubernetes.io/actions.response-403: &gt;</span><br><span class="line">      &#123;&quot;Type&quot;:&quot;fixed-response&quot;,&quot;FixedResponseConfig&quot;:&#123;&quot;ContentType&quot;:&quot;text/plain&quot;,&quot;StatusCode&quot;:&quot;403&quot;&#125;&#125;</span><br><span class="line">spec:</span><br><span class="line">  rules:</span><br><span class="line">    - http:</span><br><span class="line">        paths:</span><br><span class="line">          - path: /docs</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: rule-path-doc</span><br><span class="line">              servicePort: use-annotation</span><br><span class="line">          - path: /docs</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: response-403</span><br><span class="line">              servicePort: use-annotation</span><br><span class="line">          - path: /*</span><br><span class="line">            backend:</span><br><span class="line">              serviceName: service-$&#123;KUBE_NAMESPACE&#125;</span><br><span class="line">              servicePort: 80</span><br></pre></td></tr></table></figure>
+<h3 id="扩缩容服务">扩缩容服务</h3>
+<ul>
+<li>使用<code>horizontal-pod-autoscaler</code>组件对web平台进行水平的自动扩缩容，通过修改<code>deployment</code>的<code>replica</code>值来自动扩缩容pod个数。</li>
+</ul>
+<h4 id="部署metrics-server">部署Metrics Server</h4>
+<ul>
+<li>需要部署Metrics Server，用于采集pod的负载数据。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过如下命令查看是否成功。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deployment metrics-server -n kube-system</span><br></pre></td></tr></table></figure>
+<h4 id="部署hpa">部署HPA</h4>
+<ul>
+<li>设置web服务的hpa服务。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl autoscale deployment mini-hunter-web --cpu-percent=50 --min=1 --max=10 --namespace=mini-hunter-9391</span><br></pre></td></tr></table></figure>
+<h2 id="gitlab的cicd发布">Gitlab的CICD发布</h2>
+<ul>
+<li>
+<p>EKS默认可以集成Gitlab的<code>CICD</code>发布。关于如何集成EKS到Gitlab请参考<a href="https://docs.gitlab.com/ee/user/project/clusters/add_eks_clusters.html" target="_blank" rel="noopener">这篇文章</a>，这里主要介绍集成之后如何配置CICD。</p>
+</li>
+<li>
+<p><strong>由于Gitlab集成EKS后，会注入环境变量到gitlab的runner，所以runner可以通过kubectl命令控制EKS集群。</strong></p>
+</li>
+<li>
+<p><code>controltower</code>的<code>pipeline</code>的流水线效果如下，可自助在<code>Gitlab</code>推送代码后进行<code>CICD</code>发布。<br>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/08/ce69411811b06c86f664de528531e7f8.jpg" alt="image"></p>
+</li>
+<li>
+<p><code>mini-hunter</code>的<code>pipeline</code>的流水线效果如下，可自助在<code>Gitlab</code>推送代码后进行<code>CICD</code>发布。</p>
+<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/08/18edb4b49700f7879739bad824f2e464.jpg" alt="image"></p>
+</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/perforce和git和svn大文件存储测试对比/" data-toggle="tooltip" data-placement="top" title="perforce和git和svn大文件存储测试对比">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                    <div class="reward">
+                        <div class="reward-button">赏 <span class="reward-code"> 
+                            <span class="alipay-code"> <img class="alipay-img" src="/images/ali_pay.png"><b>支付宝打赏</b></span> 
+                            <span class="wechat-code"> <img class="wechat-img" src="/images/wechat_pay.png"><b>微信打赏</b> </span>
+                            </span></div>
+                        <p class="reward-notice">赞赏一下</p>
+                    </div>
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#eks-fargate服务最佳实践"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">eks-fargate&#x670D;&#x52A1;&#x6700;&#x4F73;&#x5B9E;&#x8DF5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#需求来源"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x9700;&#x6C42;&#x6765;&#x6E90;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#技术选型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x6280;&#x672F;&#x9009;&#x578B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#eks的特性说明"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">EKS&#x7684;&#x7279;&#x6027;&#x8BF4;&#x660E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#托管方式"><span class="toc-nav-number">1.2.1.1.</span> <span class="toc-nav-text">&#x6258;&#x7BA1;&#x65B9;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#收费方式"><span class="toc-nav-number">1.2.1.2.</span> <span class="toc-nav-text">&#x6536;&#x8D39;&#x65B9;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#扩缩容方式"><span class="toc-nav-number">1.2.1.3.</span> <span class="toc-nav-text">&#x6269;&#x7F29;&#x5BB9;&#x65B9;&#x5F0F;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署流程"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;&#x6D41;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#准备环境"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x51C6;&#x5907;&#x73AF;&#x5883;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#控制机器"><span class="toc-nav-number">1.3.1.1.</span> <span class="toc-nav-text">&#x63A7;&#x5236;&#x673A;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#配置iam"><span class="toc-nav-number">1.3.1.2.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;IAM</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#配置service-account"><span class="toc-nav-number">1.3.1.3.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;service-account</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#部署流程"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;&#x6D41;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#镜像认证"><span class="toc-nav-number">1.3.2.1.</span> <span class="toc-nav-text">&#x955C;&#x50CF;&#x8BA4;&#x8BC1;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#部署lb控制器"><span class="toc-nav-number">1.3.2.2.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;LB&#x63A7;&#x5236;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#部署服务端"><span class="toc-nav-number">1.3.2.3.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;&#x670D;&#x52A1;&#x7AEF;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#部署web控制台"><span class="toc-nav-number">1.3.2.4.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;web&#x63A7;&#x5236;&#x53F0;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#扩缩容服务"><span class="toc-nav-number">1.3.3.</span> <span class="toc-nav-text">&#x6269;&#x7F29;&#x5BB9;&#x670D;&#x52A1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#部署metrics-server"><span class="toc-nav-number">1.3.3.1.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;Metrics Server</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#部署hpa"><span class="toc-nav-number">1.3.3.2.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;HPA</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#gitlab的cicd发布"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Gitlab&#x7684;CICD&#x53D1;&#x5E03;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#云原生" title="云原生">云原生</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://coolshell.cn" target="_blank">酷壳CoolShell</a></li>
+                    
+                        <li><a href="http://www.ruanyifeng.com/blog" target="_blank">阮一峰的网络日志</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "lyonger-cn";
+    var disqus_identifier = "https://lyonger.cn/article/eks-fargate服务最佳实践/";
+    var disqus_url = "https://lyonger.cn/article/eks-fargate服务最佳实践/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                    <li>
+                        <a href="/feed.xml">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/lyonger">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 刘勇(小次郎) 2021 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://lyonger.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://lyonger.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
