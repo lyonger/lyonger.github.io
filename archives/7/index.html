@@ -86,7 +86,7 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
                     <div class="site-heading">
-                        <h1>刘勇的blog</h1>
+                        <h1>刘勇(lyonger)的blog</h1>
                         <!--<hr class="small">-->
                         <span class="subheading">倚楼听风雨，淡看江湖路。</span>
                     </div>
@@ -111,7 +111,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">刘勇的blog</a>
+            <a class="navbar-brand" href="/">刘勇(lyonger)的blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -211,6 +211,118 @@
 
 <div class="post-preview">
 
+    <a href="/article/06-flask-session和cookie/">
+        <h2 class="post-title">
+                                 
+            06-flask-session和cookie
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            cookie
+
+
+cookie出现的原因：在网站中，http请求是无状态的。也就是说即使第一次和服务器连接后并且登录成功后，第二次请求服务器依然不能知道当前请求是哪个用户。cookie的出现就是为了解决这个问题，第一次登录后服务器返回一些数据（cookie）给浏览器，然后浏览器保存在本地，当该用户发送第二次请求的时候，就会自动的把上次请求存储的cookie数据自动的携带给服务器，服务器通过浏......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后端" title="后端">后端</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/05-flask-数据库/">
+        <h2 class="post-title">
+                                 
+            05-flask-数据库
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Mac和Windows下数据库的安装
+
+
+Mysql为例
+
+
+https://dev.mysql.com/downloads/mysql/
+
+
+Mac上安装Mysql很简单，直接一顿下一步安装就可以了。
+
+
+设置初始化密码的命令是：
+ 1mysqladmin -uroot password [password]
+
+
+windows:
+*. 如果没有安装.net Framework 4，就在那......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#后端" title="后端">后端</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/04CPU使用率分析-Linux性能优化/">
+        <h2 class="post-title">
+                                 
+            04CPU使用率分析-Linux性能优化
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            节拍率
+
+为了维护CPU时间，Linux通过事先定义的节拍率(内核中表示HZ)来触发时间中断，并使用全局变量Jiffies来记录开机以后的节拍次数。每发生一次时间中断，jiffies的值就加1.
+节拍率HZ是内核的可配置参数，可以设置为100、250、1000等。而用户空间的节拍率USER_HZ固定为100，你可以通过/boot/config内核选项来查看。
+
+1grep &apos;CON......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/04-flask-模版渲染/">
         <h2 class="post-title">
                                  
@@ -236,7 +348,7 @@
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -268,7 +380,7 @@ CPU上下文切换：即把前一个任务的CPU上下文（CPU寄存器和程�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -304,7 +416,7 @@ flask程序代码的详细解释：
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -339,7 +451,7 @@ flask程序代码的详细解释：
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -377,7 +489,7 @@ URL是Uniform Resource Locator的简写，统一资源定位符。一个URL由�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -412,7 +524,7 @@ HTML文档的可见部分之间和。
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -448,147 +560,12 @@ Linux性能优化图谱
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
             
               <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/01-flask-环境准备/">
-        <h2 class="post-title">
-                                 
-            01-flask-环境准备
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            安装Python2.7
-
-Mac下使用Python2.7.
-Windows下安装Python2.7.
-
-从python官网下载python2.7的版本。
-双击python2.7，然后选择安装路径，一顿下一步就可以了。
-设置环境变量，把python的安装路径添加到PATH变量中。
-还需要设置一个环境变量，一定要设置，不然后面就不能正常安装flask了。
-
-
-
-Python虚拟环境介绍与安装
-
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#后端" title="后端">后端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/01-前端学习-学习线路/">
-        <h2 class="post-title">
-                                 
-            01-前端学习-学习线路
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            基本概念
-
-前端 = HTML + CSS + JavaScript
-其中javaScrip包括：
-
-JavaScript 基础
-Package Manager (NPM, Yarn)
-Build tools (NPM Scripts, ESLint, Webpack…)
-Frameworks (React, Vue.js, Angular)
-Testing tools (Jest …)
-
-......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#前端" title="前端">前端</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/记一次Gitlab-Runner卡顿的详情分析/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            记一次Gitlab-Runner卡顿的详情分析
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            记一次Gitlab Runner卡顿的详情分析
-
-该问题排查耗时数周，下面分享一下整体的排查过程，仅供大家参考。
-
-问题的背景
-
-
-最近Gitlab Runner服务偶尔接到用户反馈build超时和卡顿。下面是某个用户提供的问题截图。比如build超时：
-
-
-
-用户反馈卡顿，比如：
-
-
-
-
-由于该问题具有普遍性，不同的用户在不同的repo进行ci均会偶发性产生问题，于是着手做一次深入的排查。......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Gitlab" title="Gitlab">Gitlab</a>
             
         </div>
     
@@ -606,6 +583,10 @@ Testing tools (Jest …)
             <a href="/archives/6/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/archives/8/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -637,7 +618,7 @@ Testing tools (Jest …)
     <div class="tags">
         
             
-            <a href="/tags/#后端" title="后端" rel="7">后端</a>
+            <a href="/tags/#生活" title="生活" rel="22">生活</a>
             
         
             
@@ -645,11 +626,11 @@ Testing tools (Jest …)
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="24">Linux</a>
+            <a href="/tags/#Linux" title="Linux" rel="25">Linux</a>
             
         
             
-            <a href="/tags/#生活" title="生活" rel="21">生活</a>
+            <a href="/tags/#后端" title="后端" rel="7">后端</a>
             
         
             
@@ -657,11 +638,15 @@ Testing tools (Jest …)
             
         
             
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            
+        
+            
             <a href="/tags/#Gitlab" title="Gitlab" rel="5">Gitlab</a>
             
         
             
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
             
         
             
@@ -673,11 +658,7 @@ Testing tools (Jest …)
             
         
             
-            <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
-            
-        
-            
-            <a href="/tags/#云原生" title="云原生" rel="2">云原生</a>
+            <a href="/tags/#云原生" title="云原生" rel="3">云原生</a>
             
         
             
@@ -746,23 +727,23 @@ Testing tools (Jest …)
     <ul>
       
         <li>
+          <a href="/article/eks-fargate服务最佳实践/">eks-fargate服务最佳实践</a>
+        </li>
+      
+        <li>
+          <a href="/article/perforce和git和svn大文件存储测试对比/">perforce和git和svn大文件存储测试对比</a>
+        </li>
+      
+        <li>
+          <a href="/article/2021年规划/">2021年规划</a>
+        </li>
+      
+        <li>
           <a href="/article/2020年总结/">2020年总结</a>
         </li>
       
         <li>
           <a href="/article/LVS负载均衡模式详解/">LVS负载均衡模式详解</a>
-        </li>
-      
-        <li>
-          <a href="/article/2020年11月16日小记/">2020年11月16日小记</a>
-        </li>
-      
-        <li>
-          <a href="/article/2020上半年小结/">2020上半年小结</a>
-        </li>
-      
-        <li>
-          <a href="/article/基于Gitlab的Code-Review最佳实践/">基于Gitlab的Code Review最佳实践</a>
         </li>
       
     </ul>
@@ -787,7 +768,7 @@ Testing tools (Jest …)
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
@@ -842,7 +823,7 @@ Testing tools (Jest …)
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; 刘勇 2021 
+                    Copyright &copy; 刘勇(lyonger) 2021 
                     <br>
                     Theme by <a href="http://beantech.org">BeanTech</a> 
                     <span style="display: inline-block; margin: 0 5px;">

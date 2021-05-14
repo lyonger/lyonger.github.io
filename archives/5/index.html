@@ -86,7 +86,7 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
                     <div class="site-heading">
-                        <h1>刘勇的blog</h1>
+                        <h1>刘勇(lyonger)的blog</h1>
                         <!--<hr class="small">-->
                         <span class="subheading">倚楼听风雨，淡看江湖路。</span>
                     </div>
@@ -111,7 +111,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">刘勇的blog</a>
+            <a class="navbar-brand" href="/">刘勇(lyonger)的blog</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -211,6 +211,113 @@
 
 <div class="post-preview">
 
+    <a href="/article/nginx使用ip反解域名/">
+        <h2 class="post-title">
+                                 
+            nginx使用ip反解域名
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            nginx使用ip反解域名
+
+
+下载nginx源码,可以按照自己想要的版本来下载，这里以1.10来举例
+
+
+下载rdns的源码
+1git clone https://github.com/flant/nginx-http-rdns.git
+
+
+编译,安装nginx，配置参考如下，会有一些依赖包问题，根据编译提示安装依赖包，最重要的是最后的add-module=指定rdns的源码目录
+1234......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/network-flow-conversion/">
+        <h2 class="post-title">
+                                 
+            network-flow-conversion
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            B、M、G单位换算
+
+B是一个电脑存储的基本单位(字节),1个英文字符是1个字节,也就是1B，1个汉字为2个字符，也就是2B。
+K 是千的意思， KB也就是1000字节，但计算机的运算和数学有所不同，是1024字节为 1KB，所以说 1024B=1KB。
+M 是兆的意思，运算也是类似，以1024进一位，也就是说1024KB=1MB。接着G,依此类推,1024MB=1GB
+综上所述 1024B......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Kernel-Samepage-Merging探索及监控/">
+        <h2 class="post-title">
+                                 
+            Kernel-Samepage-Merging探索及监控
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            KSM介绍
+
+Kernel Samepage Merging 是Linux kernel 2.6.32 引入的新特性。原理是定期扫描内存页，将相同的内存页合并，并将其标示为 cow（当需要修改时，copy新的内存页，再做修改）。最终达到节省内存的目的。
+KSM最初是为KVM虚拟化技术开发的，对普通应用程序同样适用。可参考官方文档介绍
+KSM daemon ksmd 周期性的对内存页进行扫描，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/iptable数据流向/">
         <h2 class="post-title">
                                  
@@ -258,7 +365,7 @@ PREROUTING
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -300,7 +407,7 @@ PREROUTING
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -340,7 +447,7 @@ DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -374,7 +481,7 @@ DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -405,7 +512,7 @@ DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -437,7 +544,7 @@ DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -471,122 +578,7 @@ DNSmasq是一个轻巧的，容易使用的DNS服务工具，它可以应用在�
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/磁盘数据加密/">
-        <h2 class="post-title">
-                                 
-            磁盘数据加密
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            FreeBSD
-
-使用系统自带的geli命令对/home/test加密
-要将/mnt挂载点独立一个分区出来，以免手动调整分区
-如果是aws，则把数据盘EBS挂载到/home/test
-
-首次创建加密盘
-
-aws的话先创建分区，记得先umount原来分区
-
-
-
-AWS：用gpart创建分区
-  1234# gpart create -s gpt xbd1xbd1 created# gpart ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/安装subversion1-10/">
-        <h2 class="post-title">
-                                 
-            安装subversion1-10
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            安装 apr
-1234567➜ wget -c http://mirrors.shu.edu.cn/apache//apr/apr-1.6.5.tar.gz➜ tar -zxvf apr-1.6.5.tar.gz➜ cd apr-1.6.5➜ ./configure --prefix=/usr/local/apr➜ make➜ make install
-安装 apr-util
-1234567......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/安装kubernets集群/">
-        <h2 class="post-title">
-                                 
-            安装kubernets集群
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            准备工作(node/master机器均需操作)
-
-机器配置，4核心8G内存。
-
-1234Distributor ID:	DebianDescription:	Debian GNU/Linux 9.2 (stretch)Release:	9.2Codename:	stretch
-
-关闭swap分区
-
-1swapoff -a
-
-关闭防火墙
-
-12systemctl stop firewallds......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇 on
+            Posted by 刘勇(lyonger) on
             2019-11-30
         </p>
         <div class="tags">
@@ -644,7 +636,7 @@ AWS：用gpart创建分区
     <div class="tags">
         
             
-            <a href="/tags/#后端" title="后端" rel="7">后端</a>
+            <a href="/tags/#生活" title="生活" rel="22">生活</a>
             
         
             
@@ -652,11 +644,11 @@ AWS：用gpart创建分区
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="24">Linux</a>
+            <a href="/tags/#Linux" title="Linux" rel="25">Linux</a>
             
         
             
-            <a href="/tags/#生活" title="生活" rel="21">生活</a>
+            <a href="/tags/#后端" title="后端" rel="7">后端</a>
             
         
             
@@ -664,11 +656,15 @@ AWS：用gpart创建分区
             
         
             
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            
+        
+            
             <a href="/tags/#Gitlab" title="Gitlab" rel="5">Gitlab</a>
             
         
             
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
             
         
             
@@ -680,11 +676,7 @@ AWS：用gpart创建分区
             
         
             
-            <a href="/tags/#Docker" title="Docker" rel="1">Docker</a>
-            
-        
-            
-            <a href="/tags/#云原生" title="云原生" rel="2">云原生</a>
+            <a href="/tags/#云原生" title="云原生" rel="3">云原生</a>
             
         
             
@@ -753,23 +745,23 @@ AWS：用gpart创建分区
     <ul>
       
         <li>
+          <a href="/article/eks-fargate服务最佳实践/">eks-fargate服务最佳实践</a>
+        </li>
+      
+        <li>
+          <a href="/article/perforce和git和svn大文件存储测试对比/">perforce和git和svn大文件存储测试对比</a>
+        </li>
+      
+        <li>
+          <a href="/article/2021年规划/">2021年规划</a>
+        </li>
+      
+        <li>
           <a href="/article/2020年总结/">2020年总结</a>
         </li>
       
         <li>
           <a href="/article/LVS负载均衡模式详解/">LVS负载均衡模式详解</a>
-        </li>
-      
-        <li>
-          <a href="/article/2020年11月16日小记/">2020年11月16日小记</a>
-        </li>
-      
-        <li>
-          <a href="/article/2020上半年小结/">2020上半年小结</a>
-        </li>
-      
-        <li>
-          <a href="/article/基于Gitlab的Code-Review最佳实践/">基于Gitlab的Code Review最佳实践</a>
         </li>
       
     </ul>
@@ -794,7 +786,7 @@ AWS：用gpart创建分区
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
@@ -849,7 +841,7 @@ AWS：用gpart创建分区
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; 刘勇 2021 
+                    Copyright &copy; 刘勇(lyonger) 2021 
                     <br>
                     Theme by <a href="http://beantech.org">BeanTech</a> 
                     <span style="display: inline-block; margin: 0 5px;">
