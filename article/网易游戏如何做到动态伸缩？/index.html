@@ -230,16 +230,16 @@
 </ul>
 <ol>
 <li>玩家在线人数存在高低谷，像波峰浪谷一样此起彼伏。人数增长的时候自动扩容，人数逐渐下降的时候自动缩容，这样才能更好的发挥动态伸缩的效果。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/8bac166f026d76c27d62d33ab199b13d.jpg" alt="image"></li>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/8bac166f026d76c27d62d33ab199b13d.jpg" alt="image"></li>
 </ol>
 <ol start="2">
 <li>大世界游戏。如下图所示，大世界的游戏，玩家在服务器列表看到的区服往往是由分散在不同机器群组上的游戏服务组成，比如中心服部署在A机器群组、大厅服在B机器群组、战斗服在C机器群组、周边服在D机器群组，我们可以对某类游戏服务进行动态伸缩且玩家依旧在同一个服体验。而滚服型游戏是所有游戏服务均在同一台机器中，并不能针对单个游戏服务动态伸缩，只能针对单个游戏服伸缩，而伸缩游戏服并没有解决旧游戏服的负载问题，且不灵活。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/fafc82dd80ec772df612c2f616705bf0.jpg" alt="image"></li>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/fafc82dd80ec772df612c2f616705bf0.jpg" alt="image"></li>
 </ol>
 <h2 id="动态伸缩方案详情">动态伸缩方案详情</h2>
 <ul>
 <li>了解完什么特性的游戏适合动态伸缩后，我们看看网易动态伸缩的演进历程，又遇到了哪些问题。总体的演进历程如下图所示，经历了四大难关，下面我带你一起体验这奇妙的旅程吧。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/b6996d9372b1e42d57822e4d196a2f0b.jpg" alt="image"></li>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/b6996d9372b1e42d57822e4d196a2f0b.jpg" alt="image"></li>
 </ul>
 <h3 id="公有云的调研过程">公有云的调研过程</h3>
 <ul>
@@ -250,17 +250,17 @@
 <p>如下图所示，<code>AutoScaling Group</code>主要使用<code>EC2</code>实例的<code>CPU</code>使用率作为<code>metric</code>来设定伸缩的阈值。这会带来以下两个问题：</p>
 <ul>
 <li>缩容时会立刻把实例终止掉，玩家会立刻掉线，这种情况是不可接受的。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/a8eeb005876725bfbf623f33ba9cad76.jpg" alt="image"></li>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/a8eeb005876725bfbf623f33ba9cad76.jpg" alt="image"></li>
 <li>它只提供<code>AutoScaling Group</code>里所有<code>EC2</code>实例的<code>CPU</code>、<code>网络流量</code>这些常规指标，无法按业务指标设定阈值进行动态伸缩。</li>
 </ul>
 </li>
 <li>
 <p>关于无法按业务指标设定阈值进行动态伸缩的问题，通过再进一步调研发现<code>AutoScaling Group</code>配合<code>CloudWatch Alarm</code>使用时，支持通过日志方式采集数据，日志里出现某个关键字时可触发一个<code>alarm</code>，最后以这个<code>alarm</code>来触发<code>autoscale</code>事件，从而达到根据业务指标来动态伸缩的目的。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/4f96833809c7dc5e69a444771c705848.jpg" alt="image"></p>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/4f96833809c7dc5e69a444771c705848.jpg" alt="image"></p>
 </li>
 <li>
 <p>关于缩容时会立刻把实例终止掉的问题，云厂商提供了生命周期钩子的解决方案。钩子可以设在启动或者终止实例的时候，可以在终止实例前，调用<code>lambda</code>或者发一个<code>SNS</code>消息， 甚至调用<code>Step Funtions</code>完成一系列的任务，比如轮询游戏服的状态，看还有没有玩家在战斗，最后通过改变实例的状态，让<code>AutoScaling</code>继续终止实例。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/de0c920e2f4bb5e80f29ae910c6e6ad7.jpg" alt="image"></p>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/de0c920e2f4bb5e80f29ae910c6e6ad7.jpg" alt="image"></p>
 </li>
 <li>
 <p>通过上面的尝试后，似乎一切都很美好，但随着深入调研又遇到如下&quot;三座大山&quot;：</p>
@@ -279,7 +279,7 @@
 <ul>
 <li>
 <p>为了看到山外&quot;绚丽多彩的风景&quot;，我们研发出了网易动态伸缩v1.0版本，主要架构如下：<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/9ba4fd8ff189c601efa6d35b1f8ba8ee.jpg" alt="image"></p>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/9ba4fd8ff189c601efa6d35b1f8ba8ee.jpg" alt="image"></p>
 </li>
 <li>
 <p>主要分为策略模块、执行模块、周边平台三个部分：</p>
@@ -301,7 +301,7 @@
 <ul>
 <li>
 <p>为了解决v1.0遇到的问题，实现了v2.0版本，主要架构如下：<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/1c2fbb8561f9f5fcd793e81d1e89432c.jpg" alt="image"></p>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/1c2fbb8561f9f5fcd793e81d1e89432c.jpg" alt="image"></p>
 </li>
 <li>
 <p>在v1.0的基础上主要做了如下改善：</p>
@@ -332,7 +332,7 @@
 <ul>
 <li>
 <p>穿越了旅程中的重重荆棘，我们不仅看到了收获了&quot;旅途中的风景&quot;，更得到了公司乃至业界同仁的认可。通过游戏动态伸缩方案，最终为公司节省了不少成本。<br>
-<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/7639ec987a2ad791e16b153ac66477d4.jpg" alt="image"></p>
+<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/7639ec987a2ad791e16b153ac66477d4.jpg" alt="image"></p>
 </li>
 <li>
 <p>同时网易游戏资深运维工程师杜俊超作为主题演讲分享的重磅嘉宾，在中国区<code>Game Tech Day</code>游戏开发者大会上分享了关于网易动态伸缩方案的实现细节，感兴趣可查阅网易游戏的<a href="https://mp.weixin.qq.com/s?__biz=MzUzOTc2MjcwOQ==&amp;mid=2247484431&amp;idx=1&amp;sn=8e0f0d602335bc3ebff5649fb0148c9d&amp;chksm=fac2cd75cdb5446371a064217997a8a97e4b0eadfda6ab4d72dfddebe2c1ba6293e54ff59016&amp;scene=27#wechat_redirect" target="_blank" rel="noopener">微信公众号文章</a>。</p>

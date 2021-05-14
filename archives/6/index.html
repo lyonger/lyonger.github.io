@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -208,6 +208,40 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/搭建Samba的简要过程/">
+        <h2 class="post-title">
+                                 
+            搭建Samba的简要过程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            安装samba
+1yum install samba –y
+创建用户
+12useradd admin     #先创建系统用户smbpasswd  -a admin   #第一次加入需要-a参数，把admin用户加入到samba中。 加的用户必须是系统用户，且真实存在。
+创建共享目录
+12mkdir  /data/web/adminchown –R  admin.admin /data/we......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 刘勇(lyonger) on
+            2019-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -547,48 +581,6 @@ post请求：
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/06CPU性能指标分析-Linux性能优化/">
-        <h2 class="post-title">
-                                 
-            06CPU性能指标分析-Linux性能优化
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            CPU性能指标
-
-性能工具
-
-从CPU性能指标出发，当你查看到性能指标时，可以明确知道使用哪个性能工具。
-
-
-
-如果已经安装性能工具，要知道工具可以提供哪些指标。
-
-
-快速定位CPU问题
-
-推荐阅读websocket的几种测试方式KSM应用实践supervisor的Listeners机制...
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 刘勇(lyonger) on
-            2019-11-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -654,11 +646,11 @@ post请求：
             
         
             
-            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
+            <a href="/tags/#Gitlab" title="Gitlab" rel="5">Gitlab</a>
             
         
             
-            <a href="/tags/#Gitlab" title="Gitlab" rel="5">Gitlab</a>
+            <a href="/tags/#DevOps" title="DevOps" rel="2">DevOps</a>
             
         
             
@@ -666,11 +658,11 @@ post请求：
             
         
             
-            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
+            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
             
         
             
-            <a href="/tags/#数据库" title="数据库" rel="3">数据库</a>
+            <a href="/tags/#Windows" title="Windows" rel="1">Windows</a>
             
         
             
@@ -743,6 +735,10 @@ post请求：
     <ul>
       
         <li>
+          <a href="/article/网易游戏如何做到动态伸缩？/">网易游戏如何做到动态伸缩？</a>
+        </li>
+      
+        <li>
           <a href="/article/eks-fargate服务最佳实践/">eks-fargate服务最佳实践</a>
         </li>
       
@@ -756,10 +752,6 @@ post请求：
       
         <li>
           <a href="/article/2020年总结/">2020年总结</a>
-        </li>
-      
-        <li>
-          <a href="/article/LVS负载均衡模式详解/">LVS负载均衡模式详解</a>
         </li>
       
     </ul>
@@ -784,7 +776,7 @@ post请求：
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">37</span></li></ul>
     </div>
 
         <hr>
