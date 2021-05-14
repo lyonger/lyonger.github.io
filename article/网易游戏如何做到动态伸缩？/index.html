@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          02-前端学习-html - 倚楼听风雨，淡看江湖路。
+          网易游戏如何做到动态伸缩？ - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/02-前端学习-html/">
+    <link rel="canonical" href="https://lyonger.cn/article/网易游戏如何做到动态伸缩？/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,12 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#前端" title="前端">前端</a>
-                            
                         </div>
-                        <h1>02-前端学习-html</h1>
+                        <h1>网易游戏如何做到动态伸缩？</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇(lyonger) on
-                            2019-11-30
+                            2021-05-14
                         </span>
                     </div>
                 
@@ -212,125 +210,151 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="html文档">HTML文档</h2>
+                <h1 id="网易游戏如何做到动态伸缩">网易游戏如何做到动态伸缩？</h1>
 <ul>
-<li>所有的HTML文档必须使用文档类型声明开始：<!DOCTYPE html>。</li>
-<li>HTML文档本身开头<html>和结尾</html>。</li>
-<li>HTML文档的可见部分之间<body>和</body>。</li>
+<li>
+<p>目前网易的海外游戏大部分运行在公有云上，比如网易游戏《荒野行动》、《终结者2：审判日》、《量子特攻》等一直稳居海外畅销榜前列。同时海量公有云实例的服务器成本投入巨大，因此更灵活的计费方式、服务器的动态伸缩成为了我们急需突破的问题。</p>
+</li>
+<li>
+<p>今天由网易游戏资深运维工程师lyonger为大家带来《网易游戏如何做到动态伸缩》的分享。</p>
+</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;My First Heading&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;My first paragraph.&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="html标题">HTML标题</h3>
+<h2 id="背景介绍">背景介绍</h2>
 <ul>
-<li>HTML标题。</li>
+<li>大家知道，相比传统的计算资源，公有云最大的特性在于支持按需计费、可快速创建与销毁，网易游戏的动态伸缩方案恰好就是基于这些特性来实现的。</li>
+<li>谈到按需计费、快速创建与销毁。大家可能会联想到云原生中的<code>serverless</code>，它具备无状态(可快速创建与销毁)、无需管理服务器、自动伸缩、按需计费等特性。那它能解决游戏业务下的动态伸缩问题吗？答案是：现在来看它更适合<code>web</code>业务，对游戏业务还有些&quot;水土不服&quot;。主要原因是<code>web</code>的无状态特性具有天生优势，而游戏业务则不同。它的特性就是有状态的，比如各游戏服务之间启停有严格的先后顺序、需持久化存储、对数据库依赖重等，这导致游戏业务不能很好的&quot;享受&quot;云原生技术本身带来的自动伸缩&quot;福利&quot;。 那怎么发挥公有云的优势呢？</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;This is heading 1&lt;/h1&gt;</span><br><span class="line">&lt;h2&gt;This is heading 2&lt;/h2&gt;</span><br><span class="line">&lt;h3&gt;This is heading 3&lt;/h3&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="html段落">HTML段落</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;This is a paragraph.&lt;/p&gt;</span><br><span class="line">&lt;p&gt;This is another paragraph.&lt;/p&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="html链接">HTML链接</h3>
+<h2 id="适合动态伸缩的游戏类型">适合动态伸缩的游戏类型</h2>
 <ul>
-<li>链接的目标是在指定的href属性。</li>
+<li>那么游戏业务需具备怎样的特性才适合动态伸缩呢？从网易游戏《荒野行动》、《终结者2：审判日》的成功经历来看，主要有如下几个特性：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;https://www.w3schools.com&quot;&gt;This is a link&lt;/a&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="html图像">HTML图像</h3>
+<ol>
+<li>玩家在线人数存在高低谷，像波峰浪谷一样此起彼伏。人数增长的时候自动扩容，人数逐渐下降的时候自动缩容，这样才能更好的发挥动态伸缩的效果。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/8bac166f026d76c27d62d33ab199b13d.jpg" alt="image"></li>
+</ol>
+<ol start="2">
+<li>大世界游戏。如下图所示，大世界的游戏，玩家在服务器列表看到的区服往往是由分散在不同机器群组上的游戏服务组成，比如中心服部署在A机器群组、大厅服在B机器群组、战斗服在C机器群组、周边服在D机器群组，我们可以对某类游戏服务进行动态伸缩且玩家依旧在同一个服体验。而滚服型游戏是所有游戏服务均在同一台机器中，并不能针对单个游戏服务动态伸缩，只能针对单个游戏服伸缩，而伸缩游戏服并没有解决旧游戏服的负载问题，且不灵活。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/fafc82dd80ec772df612c2f616705bf0.jpg" alt="image"></li>
+</ol>
+<h2 id="动态伸缩方案详情">动态伸缩方案详情</h2>
 <ul>
-<li>HTML图像与定义的标签。源文件（src），可替代文本（alt）， width和height被设置为属性：</li>
+<li>了解完什么特性的游戏适合动态伸缩后，我们看看网易动态伸缩的演进历程，又遇到了哪些问题。总体的演进历程如下图所示，经历了四大难关，下面我带你一起体验这奇妙的旅程吧。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/b6996d9372b1e42d57822e4d196a2f0b.jpg" alt="image"></li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;w3schools.jpg&quot; alt=&quot;W3Schools.com&quot; width=&quot;104&quot; height=&quot;142&quot;&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="html按钮">HTML按钮</h3>
+<h3 id="公有云的调研过程">公有云的调研过程</h3>
 <ul>
-<li>HTML按钮标签：</li>
+<li>
+<p>网易游戏是在混合云下部署的，以<code>AWS</code>为例，在方案选型时，我们了解到有两个服务提供了动态伸缩的功能，分别是<code>AutoScaling</code>、<code>Gamelift</code>。前者主要基于采集的<code>metric</code>和<code>CloudWatch Alarm</code>来实现<code>EC2</code>的动态伸缩，是<code>EC2</code>的一个附加功能。后者是为游戏量身定做的一套托管、部署的解决方案，托管整个游戏的会话连接数信息，通过配套的SDK采集信息来实现<code>EC2</code>的动态伸缩。</p>
+</li>
+<li>
+<p>如下图所示，<code>AutoScaling Group</code>主要使用<code>EC2</code>实例的<code>CPU</code>使用率作为<code>metric</code>来设定伸缩的阈值。这会带来以下两个问题：</p>
+<ul>
+<li>缩容时会立刻把实例终止掉，玩家会立刻掉线，这种情况是不可接受的。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/a8eeb005876725bfbf623f33ba9cad76.jpg" alt="image"></li>
+<li>它只提供<code>AutoScaling Group</code>里所有<code>EC2</code>实例的<code>CPU</code>、<code>网络流量</code>这些常规指标，无法按业务指标设定阈值进行动态伸缩。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button&gt;Click me&lt;/button&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="html列表">HTML列表</h3>
+</li>
+<li>
+<p>关于无法按业务指标设定阈值进行动态伸缩的问题，通过再进一步调研发现<code>AutoScaling Group</code>配合<code>CloudWatch Alarm</code>使用时，支持通过日志方式采集数据，日志里出现某个关键字时可触发一个<code>alarm</code>，最后以这个<code>alarm</code>来触发<code>autoscale</code>事件，从而达到根据业务指标来动态伸缩的目的。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/4f96833809c7dc5e69a444771c705848.jpg" alt="image"></p>
+</li>
+<li>
+<p>关于缩容时会立刻把实例终止掉的问题，云厂商提供了生命周期钩子的解决方案。钩子可以设在启动或者终止实例的时候，可以在终止实例前，调用<code>lambda</code>或者发一个<code>SNS</code>消息， 甚至调用<code>Step Funtions</code>完成一系列的任务，比如轮询游戏服的状态，看还有没有玩家在战斗，最后通过改变实例的状态，让<code>AutoScaling</code>继续终止实例。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/de0c920e2f4bb5e80f29ae910c6e6ad7.jpg" alt="image"></p>
+</li>
+<li>
+<p>通过上面的尝试后，似乎一切都很美好，但随着深入调研又遇到如下&quot;三座大山&quot;：</p>
 <ul>
-<li>HTML列表与定义ul（无序/符号列表）或ol（有序/编号列表）标签，其次是li标签（列表项）：</li>
+<li>通过日志方式采集数据时，用户需在机器上安装一个<code>agent</code>，这在原来的基础上多引入了一个未知依赖，让动态伸缩策略的正确性不再变得那么可靠。</li>
+<li>使用生命周期钩子的解决方案，牵涉到的公有云服务很多，排查问题比较困难。</li>
+<li>网易游戏使用的云服务器不止一家云厂商，而是基于混合云。因此需要一套和公司平台工具适配的通用方案来实现。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;h2&gt;An Unordered HTML List&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;li&gt;Coffee&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;Tea&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;Milk&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;h2&gt;An Ordered HTML List&lt;/h2&gt;</span><br><span class="line"></span><br><span class="line">&lt;ol&gt;</span><br><span class="line">  &lt;li&gt;Coffee&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;Tea&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;Milk&lt;/li&gt;</span><br><span class="line">&lt;/ol&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="html元素">HTML元素</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#左右两边是成对标签:&lt;tagname&gt;Content goes here...&lt;/tagname&gt;</span><br><span class="line">#有些HTML标签忘记写结尾标签，不影响使用，但建议补全:&lt;p&gt;This is a paragraph</span><br><span class="line">#空HTML元素&lt;br&gt;</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="html属性">HTML属性</h2>
-<ul>
-<li>HTML属性给元素信息进行补充。</li>
-<li>属性经常写在开始的tag里, w3schools标准建议使用双引号。</li>
+</li>
+<li>
+<p>跨过上面这些&quot;大山&quot;，你就能看到山外&quot;绚丽多彩的风景&quot;。嗯，我们可是万能的SRE，冲吧。</p>
+</li>
 </ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">属性名称</th>
-<th style="text-align:left">释义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">herf</td>
-<td style="text-align:left">超链接</td>
-</tr>
-<tr>
-<td style="text-align:left">src</td>
-<td style="text-align:left">引用图像位置</td>
-</tr>
-<tr>
-<td style="text-align:left">alt</td>
-<td style="text-align:left">图像无法显示时的文字说明</td>
-</tr>
-<tr>
-<td style="text-align:left">style</td>
-<td style="text-align:left">颜色、字体大小等</td>
-</tr>
-<tr>
-<td style="text-align:left">lang</td>
-<td style="text-align:left">定义语言</td>
-</tr>
-<tr>
-<td style="text-align:left">title</td>
-<td style="text-align:left">将鼠标悬停在段落上时，title属性的值将显示为工具提示。</td>
-</tr>
-</tbody>
-</table>
+<h3 id="网易动态伸缩方案">网易动态伸缩方案</h3>
+<h4 id="网易动态伸缩方案v10">网易动态伸缩方案v1.0</h4>
 <ul>
-<li>总结一下：
+<li>
+<p>为了看到山外&quot;绚丽多彩的风景&quot;，我们研发出了网易动态伸缩v1.0版本，主要架构如下：<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/9ba4fd8ff189c601efa6d35b1f8ba8ee.jpg" alt="image"></p>
+</li>
+<li>
+<p>主要分为策略模块、执行模块、周边平台三个部分：</p>
 <ul>
-<li>All HTML elements can have attributes</li>
-<li>The title attribute provides additional “tool-tip” information</li>
-<li>The href attribute provides address information for links</li>
-<li>The width and height attributes provide size information for images</li>
-<li>The alt attribute provides text for screen readers</li>
-<li>At W3Schools we always use lowercase attribute names</li>
-<li>At W3Schools we always quote attribute values with double quotes</li>
+<li>策略模块：主要提供了类似<code>AutoScaling Group</code>和<code>CloudWatch Alarm</code>采集业务数据来设定阈值，触发动态伸缩策略的能力。</li>
+<li>执行模块：主要接收策略模块发来的指令，比如要对哪些游戏服务扩缩多少台机器。把接收的指令转化为指令流程，依次调用周边平台API。</li>
+<li>周边平台：<code>Aladdin</code>为远程服务器指令执行平台、<code>Skyline</code>为混合云管理平台、<code>ELK</code>主要提供扩缩容数据展示。</li>
+</ul>
+</li>
+<li>
+<p>随着业务的深度使用，逐渐暴露出以下2个问题：</p>
+<ul>
+<li>策略模块由游戏进程实现，未和游戏业务解藕，且需产品自己实现，接入有成本。</li>
+<li>执行模块没有鉴权功能，存在安全隐患。</li>
 </ul>
 </li>
 </ul>
-<h3 id="html元信息">html元信息</h3>
+<h4 id="网易动态伸缩方案v20">网易动态伸缩方案v2.0</h4>
 <ul>
-<li>元数据通常定义文档标题，字符集，样式，链接，脚本和其他元信息。</li>
-</ul>
-<h3 id="html样式">html样式</h3>
+<li>
+<p>为了解决v1.0遇到的问题，实现了v2.0版本，主要架构如下：<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/1c2fbb8561f9f5fcd793e81d1e89432c.jpg" alt="image"></p>
+</li>
+<li>
+<p>在v1.0的基础上主要做了如下改善：</p>
 <ul>
-<li>Use the style attribute for styling HTML elements</li>
-<li>Use background-color for background color</li>
-<li>Use color for text colors</li>
-<li>Use font-family for text fonts</li>
-<li>Use font-size for text sizes</li>
-<li>Use text-align for text alignment</li>
+<li>策略模块：与游戏进程解藕，集成在我们的扩缩容框架<code>Transformers</code>中，无需产品额外开发实现。</li>
+<li>执行模块：在前面加了一次ApiGateway，主要用于鉴权、分发任务的执行。</li>
+<li>记录模块：主要根据游戏在线人数记录扩缩容的历史图表数据。</li>
 </ul>
-<h3 id="html文本格式元素">HTML文本格式元素</h3>
-<p><img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2019/11/30/2c15cecd36c5a0fc09bd62b2eac10df3.jpg" alt="html_formatting"></p>
-<div><h2 id="推荐阅读">推荐阅读<span style="font-size:0.45em; color:gray"></span></h2><ul><li><a href="https://lyonger.cn/article/01-前端学习-学习线路/">01-前端学习-学习线路</a></li></ul></div>
+</li>
+</ul>
+<h3 id="动态伸缩的流程说明">动态伸缩的流程说明</h3>
+<ul>
+<li>网易动态伸缩方案可以适配多种不同的公有云，但不同云下的扩缩容流程大体一致，详情如下：</li>
+</ul>
+<h4 id="扩容流程说明">扩容流程说明</h4>
+<ol>
+<li>策略模块根据采集的指标，触发执行模块执行扩容指令；</li>
+<li>执行模块调用<code>skyline</code>混合云<code>api</code>对指定厂商的公有云服务器开机；</li>
+<li>执行模块调用<code>Aladdin</code>远程服务器指令执行平台对刚开机的公有云服务器上执行指令，部署游戏进程进行扩容。</li>
+</ol>
+<h4 id="缩容流程说明">缩容流程说明</h4>
+<ol>
+<li>实现策略模块根据采集的指标，触发执行模块执行缩容指令；</li>
+<li>执行模块调用Aladdin远程服务器指令执行平台对刚需缩容的公有云服务器上执行指令，关闭游戏进程进行缩容；</li>
+<li>执行模块调用skyline混合云api对指定厂商的公有云服务器关机；</li>
+</ol>
+<h2 id="总结">总结</h2>
+<ul>
+<li>
+<p>穿越了旅程中的重重荆棘，我们不仅看到了收获了&quot;旅途中的风景&quot;，更得到了公司乃至业界同仁的认可。通过游戏动态伸缩方案，最终为公司节省了不少成本。<br>
+<img src="https://res-lyonger-1258401640.cos.ap-guangzhou.myqcloud.com/images/2021/05/14/7639ec987a2ad791e16b153ac66477d4.jpg" alt="image"></p>
+</li>
+<li>
+<p>同时网易游戏资深运维工程师杜俊超作为主题演讲分享的重磅嘉宾，在中国区<code>Game Tech Day</code>游戏开发者大会上分享了关于网易动态伸缩方案的实现细节，感兴趣可查阅网易游戏的<a href="https://mp.weixin.qq.com/s?__biz=MzUzOTc2MjcwOQ==&amp;mid=2247484431&amp;idx=1&amp;sn=8e0f0d602335bc3ebff5649fb0148c9d&amp;chksm=fac2cd75cdb5446371a064217997a8a97e4b0eadfda6ab4d72dfddebe2c1ba6293e54ff59016&amp;scene=27#wechat_redirect" target="_blank" rel="noopener">微信公众号文章</a>。</p>
+</li>
+<li>
+<p>孔子曰：“学以致用，知行合一”，作为一名技术人员，从开源技术中学到技能只是&quot;基本功&quot;，最终能把技术转化成业务价值才是&quot;武世绝学&quot;。我们要学会从运维岗位中创新、突破自己，为完善业界的游戏运维方案献出绵薄之力。</p>
+</li>
+</ul>
+<h2 id="其他">其他</h2>
+<ul>
+<li>发表在网易游戏学院的原文请查看：<a href="https://mp.weixin.qq.com/s/FbrtqHnD8yUR3Zy8ipfFfA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/FbrtqHnD8yUR3Zy8ipfFfA</a></li>
+</ul>
+
                 
 
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/02-flask-认识web/" data-toggle="tooltip" data-placement="top" title="02-flask-认识web">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/01基础-Linux性能优化/" data-toggle="tooltip" data-placement="top" title="01基础-Linux性能优化">Next Post &rarr;</a>
+                            <a href="/article/eks-fargate服务最佳实践/" data-toggle="tooltip" data-placement="top" title="eks-fargate服务最佳实践">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -398,7 +422,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#html文档"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HTML&#x6587;&#x6863;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html标题"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">HTML&#x6807;&#x9898;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html段落"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HTML&#x6BB5;&#x843D;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html链接"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">HTML&#x94FE;&#x63A5;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html图像"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">HTML&#x56FE;&#x50CF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html按钮"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">HTML&#x6309;&#x94AE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html列表"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">HTML&#x5217;&#x8868;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#html元素"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HTML&#x5143;&#x7D20;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#html属性"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HTML&#x5C5E;&#x6027;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html元信息"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">html&#x5143;&#x4FE1;&#x606F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html样式"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">html&#x6837;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#html文本格式元素"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">HTML&#x6587;&#x672C;&#x683C;&#x5F0F;&#x5143;&#x7D20;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#推荐阅读"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">&#x63A8;&#x8350;&#x9605;&#x8BFB;<span style="font-size:0.45em; color:gray"></span></span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#网易游戏如何做到动态伸缩"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x6E38;&#x620F;&#x5982;&#x4F55;&#x505A;&#x5230;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#xFF1F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景介绍"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#适合动态伸缩的游戏类型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x9002;&#x5408;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x7684;&#x6E38;&#x620F;&#x7C7B;&#x578B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#动态伸缩方案详情"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;&#x8BE6;&#x60C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#公有云的调研过程"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x516C;&#x6709;&#x4E91;&#x7684;&#x8C03;&#x7814;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#网易动态伸缩方案"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#网易动态伸缩方案v10"><span class="toc-nav-number">1.3.2.1.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;v1.0</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#网易动态伸缩方案v20"><span class="toc-nav-number">1.3.2.2.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;v2.0</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态伸缩的流程说明"><span class="toc-nav-number">1.3.3.</span> <span class="toc-nav-text">&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x7684;&#x6D41;&#x7A0B;&#x8BF4;&#x660E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#扩容流程说明"><span class="toc-nav-number">1.3.3.1.</span> <span class="toc-nav-text">&#x6269;&#x5BB9;&#x6D41;&#x7A0B;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#缩容流程说明"><span class="toc-nav-number">1.3.3.2.</span> <span class="toc-nav-text">&#x7F29;&#x5BB9;&#x6D41;&#x7A0B;&#x8BF4;&#x660E;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x5176;&#x4ED6;</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -418,8 +442,6 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#前端" title="前端">前端</a>
-                        
                     </div>
                 </section>
                 
@@ -449,8 +471,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/02-前端学习-html/";
-    var disqus_url = "https://lyonger.cn/article/02-前端学习-html/";
+    var disqus_identifier = "https://lyonger.cn/article/网易游戏如何做到动态伸缩？/";
+    var disqus_url = "https://lyonger.cn/article/网易游戏如何做到动态伸缩？/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
