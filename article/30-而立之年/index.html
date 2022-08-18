@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          网易游戏如何做到动态伸缩？ - 倚楼听风雨，淡看江湖路。
+          30-而立之年 - 倚楼听风雨，淡看江湖路。
         
     </title>
 
-    <link rel="canonical" href="https://lyonger.cn/article/网易游戏如何做到动态伸缩？/">
+    <link rel="canonical" href="https://lyonger.cn/article/30-而立之年/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -89,11 +89,11 @@
                         <div class="tags">
                             
                         </div>
-                        <h1>网易游戏如何做到动态伸缩？</h1>
+                        <h1>30-而立之年</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 刘勇(lyonger) on
-                            2021-05-14
+                            2022-08-17
                         </span>
                     </div>
                 
@@ -210,140 +210,37 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="网易游戏如何做到动态伸缩">网易游戏如何做到动态伸缩？</h1>
-<ul>
+                <ul>
 <li>
-<p>目前网易的海外游戏大部分运行在公有云上，比如网易游戏《荒野行动》、《终结者2：审判日》、《量子特攻》等一直稳居海外畅销榜前列。同时海量公有云实例的服务器成本投入巨大，因此更灵活的计费方式、服务器的动态伸缩成为了我们急需突破的问题。</p>
+<p>30岁，而立之年。小的时候，对长大充满了憧憬和期待。希望长大以后，可以买自己喜欢的电子产品和零食，可以穿好看的衣服。而现在，基本的物质已经不成问题，反而对精神层面有了更多的理解。</p>
 </li>
 <li>
-<p>今天由网易游戏资深运维工程师lyonger为大家带来《网易游戏如何做到动态伸缩》的分享。</p>
-</li>
-</ul>
-<h2 id="背景介绍">背景介绍</h2>
-<ul>
-<li>大家知道，相比传统的计算资源，公有云最大的特性在于支持按需计费、可快速创建与销毁，网易游戏的动态伸缩方案恰好就是基于这些特性来实现的。</li>
-<li>谈到按需计费、快速创建与销毁。大家可能会联想到云原生中的<code>serverless</code>，它具备无状态(可快速创建与销毁)、无需管理服务器、自动伸缩、按需计费等特性。那它能解决游戏业务下的动态伸缩问题吗？答案是：现在来看它更适合<code>web</code>业务，对游戏业务还有些&quot;水土不服&quot;。主要原因是<code>web</code>的无状态特性具有天生优势，而游戏业务则不同。它的特性就是有状态的，比如各游戏服务之间启停有严格的先后顺序、需持久化存储、对数据库依赖重等，这导致游戏业务不能很好的&quot;享受&quot;云原生技术本身带来的自动伸缩&quot;福利&quot;。 那怎么发挥公有云的优势呢？</li>
-</ul>
-<h2 id="适合动态伸缩的游戏类型">适合动态伸缩的游戏类型</h2>
-<ul>
-<li>那么游戏业务需具备怎样的特性才适合动态伸缩呢？从网易游戏《荒野行动》、《终结者2：审判日》的成功经历来看，主要有如下几个特性：</li>
-</ul>
-<ol>
-<li>玩家在线人数存在高低谷，像波峰浪谷一样此起彼伏。人数增长的时候自动扩容，人数逐渐下降的时候自动缩容，这样才能更好的发挥动态伸缩的效果。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/8bac166f026d76c27d62d33ab199b13d.jpg" alt="image"></li>
-</ol>
-<ol start="2">
-<li>大世界游戏。如下图所示，大世界的游戏，玩家在服务器列表看到的区服往往是由分散在不同机器群组上的游戏服务组成，比如中心服部署在A机器群组、大厅服在B机器群组、战斗服在C机器群组、周边服在D机器群组，我们可以对某类游戏服务进行动态伸缩且玩家依旧在同一个服体验。而滚服型游戏是所有游戏服务均在同一台机器中，并不能针对单个游戏服务动态伸缩，只能针对单个游戏服伸缩，而伸缩游戏服并没有解决旧游戏服的负载问题，且不灵活。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/fafc82dd80ec772df612c2f616705bf0.jpg" alt="image"></li>
-</ol>
-<h2 id="动态伸缩方案详情">动态伸缩方案详情</h2>
-<ul>
-<li>了解完什么特性的游戏适合动态伸缩后，我们看看网易动态伸缩的演进历程，又遇到了哪些问题。总体的演进历程如下图所示，经历了四大难关，下面我带你一起体验这奇妙的旅程吧。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/b6996d9372b1e42d57822e4d196a2f0b.jpg" alt="image"></li>
-</ul>
-<h3 id="公有云的调研过程">公有云的调研过程</h3>
-<ul>
-<li>
-<p>网易游戏是在混合云下部署的，以<code>AWS</code>为例，在方案选型时，我们了解到有两个服务提供了动态伸缩的功能，分别是<code>AutoScaling</code>、<code>Gamelift</code>。前者主要基于采集的<code>metric</code>和<code>CloudWatch Alarm</code>来实现<code>EC2</code>的动态伸缩，是<code>EC2</code>的一个附加功能。后者是为游戏量身定做的一套托管、部署的解决方案，托管整个游戏的会话连接数信息，通过配套的SDK采集信息来实现<code>EC2</code>的动态伸缩。</p>
+<p>子曰：“三十而立”，到底什么才算“立”？有车有房有娃有事业，才算“立”？其实这些都不是，我的理解，这个&quot;立&quot;是精神上的独立，有独立的人格，拥有正确的三观(道德观、价值观、人生观)。懂得如何做出自己选择和判断，比如看待事物不再是非黑即白，评论一个事情不再是对与错，评价一个人不再是好与坏，做一件事情不再是有利还是有弊。每个人都有自己看待世界的标准，不要去随便评价一个人或者一件事。</p>
 </li>
 <li>
-<p>如下图所示，<code>AutoScaling Group</code>主要使用<code>EC2</code>实例的<code>CPU</code>使用率作为<code>metric</code>来设定伸缩的阈值。这会带来以下两个问题：</p>
-<ul>
-<li>缩容时会立刻把实例终止掉，玩家会立刻掉线，这种情况是不可接受的。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/a8eeb005876725bfbf623f33ba9cad76.jpg" alt="image"></li>
-<li>它只提供<code>AutoScaling Group</code>里所有<code>EC2</code>实例的<code>CPU</code>、<code>网络流量</code>这些常规指标，无法按业务指标设定阈值进行动态伸缩。</li>
-</ul>
+<p>在步入社会之前，经常发朋友圈，在QQ空间里写文章，并且还是长篇大论，还带上图片。而现在基本上不发了，喜怒哀乐都在内心之中。以前遇到一个不爽的人，硬是要怼到他不爽。遇到一个不公平的事情，硬是要追求到最终结果，哪怕在大众面前，也要表现出理直气壮，指责对方的错误。虽然事后证明你是对的，得饶人处且饶人，遇事不要斤斤计较，成年人的世界里，大家生活都不容易，不必要揭开别人的伤疤来获得自己内心的平衡。</p>
 </li>
 <li>
-<p>关于无法按业务指标设定阈值进行动态伸缩的问题，通过再进一步调研发现<code>AutoScaling Group</code>配合<code>CloudWatch Alarm</code>使用时，支持通过日志方式采集数据，日志里出现某个关键字时可触发一个<code>alarm</code>，最后以这个<code>alarm</code>来触发<code>autoscale</code>事件，从而达到根据业务指标来动态伸缩的目的。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/4f96833809c7dc5e69a444771c705848.jpg" alt="image"></p>
+<p>另外想聊聊人生观，人的一生很漫长，是一场修行。孔子提出每隔10年应该达到不同的境界(三十而立，四十不惑，五十知天命，六十而耳顺)。同样王国维先生在《<a href="https://baike.baidu.com/item/%E4%BA%BA%E9%97%B4%E8%AF%8D%E8%AF%9D/687" target="_blank" rel="noopener">人间词话</a>》也提出了三重境界：“古今之成大事业、大学问者，必经过三种之境界：‘昨夜西风凋碧树。独上高楼，望尽天涯路’。此第一境也。‘衣带渐宽终不悔，为伊消得人憔悴。’此第二境也。‘众里寻他千百度，蓦然回首，那人却在，灯火阑珊处’。此第三境也。” 从第一境界，对人生的迷茫，孤独而不知前路几何。到第二境界有了目标，在追逐的道路上，求之不得之后形容消瘦而却继续追逐，且无怨无悔。到第三境界，立志追逐，量变产生质变，不经意间已追逐成功，对别人不理解的事物突然豁然。所以不要给自己设定局限，比如我是非科班出生，肯定比不上那些985/211的科班生。我是农村的，肯定比不过城里人，他们受到了更好的教育，拥有更好的资源等等，拥有正确的人生观，做自己认为正确的事情就好。</p>
 </li>
 <li>
-<p>关于缩容时会立刻把实例终止掉的问题，云厂商提供了生命周期钩子的解决方案。钩子可以设在启动或者终止实例的时候，可以在终止实例前，调用<code>lambda</code>或者发一个<code>SNS</code>消息， 甚至调用<code>Step Funtions</code>完成一系列的任务，比如轮询游戏服的状态，看还有没有玩家在战斗，最后通过改变实例的状态，让<code>AutoScaling</code>继续终止实例。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/de0c920e2f4bb5e80f29ae910c6e6ad7.jpg" alt="image"></p>
+<p>能找到自己爱好的人，并且还能用这个爱好挣钱的人是幸运的。大部分人都不知道自己的爱好是什么，自己的优势是什么，每天刷某音，刷某圈，刷某书，天天给别人贡献流量。没有思考过是否也可以发挥自己的优势，发布原创短视频和原创文章，反思一下自己的成长，把自己打造成流量的来源。当然这只是举了一个例子，想表达的是，成年人的娱乐应该是专业的，是有经过自己的思考后选择的。而不是把生命慢慢的消耗在这些没意义的事情上。</p>
 </li>
 <li>
-<p>通过上面的尝试后，似乎一切都很美好，但随着深入调研又遇到如下&quot;三座大山&quot;：</p>
-<ul>
-<li>通过日志方式采集数据时，用户需在机器上安装一个<code>agent</code>，这在原来的基础上多引入了一个未知依赖，让动态伸缩策略的正确性不再变得那么可靠。</li>
-<li>使用生命周期钩子的解决方案，牵涉到的公有云服务很多，排查问题比较困难。</li>
-<li>网易游戏使用的云服务器不止一家云厂商，而是基于混合云。因此需要一套和公司平台工具适配的通用方案来实现。</li>
-</ul>
+<p>再聊聊工作上的事情，首先是沟通方面，在工作中几乎每天都需要和人打交道，在没有充分的了解某个事实之前，不要随意评价任何一件事或者一个人。就算你了解全面了，也不要在他人面前甚至是大众面前直接脱口而出，是否私底下交流，应该取决于对方的价值观。其次和他人交流的时候，尽量用事实来描述，去掉主观感受类的词语，这个在《非暴力沟通》这本书里有很多的例子，建议大家有兴趣可以看看。其次是不要太张扬，注意这里不是指不去争取合适机会，适当的表现自己。而是指你在负责核心业务或者重要case时不要流露出自己高高在上，显得自己很牛逼的样子。马云曾说，人生有两大悲剧：“一是万念俱灰，二是踌躇满志”。你会发现，越牛逼的人越谦虚，越是表现出波澜不惊，大智若愚，大道至简。最后是学会处理上下级关系，这个太重要了，有能力不要表现的太显眼，尤其是不要在自己领导的领导面前积极表现，学会在重要的关键节点请示领导，就算这个事情你自己完全知道如何正确的去做，并且拿到好的结果。也不能省去这个请示领导的流程，等拿到好的结果和领导汇报的时候，必须提上：“由衷感谢我的领导xxx，在关键节点给项目指导了正确的方向，让这个项目才可以如此顺利的成功”。另外管理下级，不要只是把别人当作自己升职加薪的工具，需要考虑下级的成长，领导是真正需要为团队服务的。</p>
 </li>
 <li>
-<p>跨过上面这些&quot;大山&quot;，你就能看到山外&quot;绚丽多彩的风景&quot;。嗯，我们可是万能的SRE，冲吧。</p>
-</li>
-</ul>
-<h3 id="网易动态伸缩方案">网易动态伸缩方案</h3>
-<h4 id="网易动态伸缩方案v10">网易动态伸缩方案v1.0</h4>
-<ul>
-<li>
-<p>为了看到山外&quot;绚丽多彩的风景&quot;，我们研发出了网易动态伸缩v1.0版本，主要架构如下：<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/9ba4fd8ff189c601efa6d35b1f8ba8ee.jpg" alt="image"></p>
+<p>再聊聊自律这件事情，因为存在一些年轻人，在一天辛勤的工作以后，就想放纵不羁，他们奉行“人生苦短，及时行乐”的原则，放任自己大吃大喝、通宵游戏、KTV狂欢。表面上以为这是放松，实际上是没有自律的表现。其实“越自律，越自由”。自律，是一个人最好的修养。在喧闹的人群中，与人保持友好边界，学会享受独处的时光。</p>
 </li>
 <li>
-<p>主要分为策略模块、执行模块、周边平台三个部分：</p>
-<ul>
-<li>策略模块：主要提供了类似<code>AutoScaling Group</code>和<code>CloudWatch Alarm</code>采集业务数据来设定阈值，触发动态伸缩策略的能力。</li>
-<li>执行模块：主要接收策略模块发来的指令，比如要对哪些游戏服务扩缩多少台机器。把接收的指令转化为指令流程，依次调用周边平台API。</li>
-<li>周边平台：<code>Aladdin</code>为远程服务器指令执行平台、<code>Skyline</code>为混合云管理平台、<code>ELK</code>主要提供扩缩容数据展示。</li>
-</ul>
+<p>再聊聊家庭，我们常说“家和万事兴”，一个充满正能量，充满感恩，充满爱的家庭是人生遇到任何外界挫折时的东山再起的底气和“财富”，做一个对家庭有责任，有担当的人，家庭里的欢笑越多，幸福感才会越强。我很庆幸，自己拥有一个幸福的小家庭。</p>
 </li>
 <li>
-<p>随着业务的深度使用，逐渐暴露出以下2个问题：</p>
-<ul>
-<li>策略模块由游戏进程实现，未和游戏业务解藕，且需产品自己实现，接入有成本。</li>
-<li>执行模块没有鉴权功能，存在安全隐患。</li>
-</ul>
-</li>
-</ul>
-<h4 id="网易动态伸缩方案v20">网易动态伸缩方案v2.0</h4>
-<ul>
-<li>
-<p>为了解决v1.0遇到的问题，实现了v2.0版本，主要架构如下：<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/1c2fbb8561f9f5fcd793e81d1e89432c.jpg" alt="image"></p>
+<p>最后，想引用王树国校长在西安交大校毕业典礼上的一段话来结束。“有底气的人都是有能力的人、有底气的人都是有贡献的人、有底气的人都是有作为的人，无论他在什么岗位上，哪怕他是一个小小的职员、一个普通的工人、一个农民，只要他有理想、信念、追求，他在岗位所作的贡献一定是大贡献。”</p>
 </li>
 <li>
-<p>在v1.0的基础上主要做了如下改善：</p>
-<ul>
-<li>策略模块：与游戏进程解藕，集成在我们的扩缩容框架<code>Transformers</code>中，无需产品额外开发实现。</li>
-<li>执行模块：在前面加了一次ApiGateway，主要用于鉴权、分发任务的执行。</li>
-<li>记录模块：主要根据游戏在线人数记录扩缩容的历史图表数据。</li>
-</ul>
+<p>倚楼听风雨，淡看江湖路…</p>
 </li>
-</ul>
-<h3 id="动态伸缩的流程说明">动态伸缩的流程说明</h3>
-<ul>
-<li>网易动态伸缩方案可以适配多种不同的公有云，但不同云下的扩缩容流程大体一致，详情如下：</li>
-</ul>
-<h4 id="扩容流程说明">扩容流程说明</h4>
-<ol>
-<li>策略模块根据采集的指标，触发执行模块执行扩容指令；</li>
-<li>执行模块调用<code>skyline</code>混合云<code>api</code>对指定厂商的公有云服务器开机；</li>
-<li>执行模块调用<code>Aladdin</code>远程服务器指令执行平台对刚开机的公有云服务器上执行指令，部署游戏进程进行扩容。</li>
-</ol>
-<h4 id="缩容流程说明">缩容流程说明</h4>
-<ol>
-<li>实现策略模块根据采集的指标，触发执行模块执行缩容指令；</li>
-<li>执行模块调用Aladdin远程服务器指令执行平台对刚需缩容的公有云服务器上执行指令，关闭游戏进程进行缩容；</li>
-<li>执行模块调用skyline混合云api对指定厂商的公有云服务器关机；</li>
-</ol>
-<h2 id="总结">总结</h2>
-<ul>
-<li>
-<p>穿越了旅程中的重重荆棘，我们不仅看到了收获了&quot;旅途中的风景&quot;，更得到了公司乃至业界同仁的认可。通过游戏动态伸缩方案，最终为公司节省了不少成本。<br>
-<img src="https://res-lyonger-1258401640.file.myqcloud.com/images/2021/05/14/7639ec987a2ad791e16b153ac66477d4.jpg" alt="image"></p>
-</li>
-<li>
-<p>同时网易游戏资深运维工程师杜俊超作为主题演讲分享的重磅嘉宾，在中国区<code>Game Tech Day</code>游戏开发者大会上分享了关于网易动态伸缩方案的实现细节，感兴趣可查阅网易游戏的<a href="https://mp.weixin.qq.com/s?__biz=MzUzOTc2MjcwOQ==&amp;mid=2247484431&amp;idx=1&amp;sn=8e0f0d602335bc3ebff5649fb0148c9d&amp;chksm=fac2cd75cdb5446371a064217997a8a97e4b0eadfda6ab4d72dfddebe2c1ba6293e54ff59016&amp;scene=27#wechat_redirect" target="_blank" rel="noopener">微信公众号文章</a>。</p>
-</li>
-<li>
-<p>孔子曰：“学以致用，知行合一”，作为一名技术人员，从开源技术中学到技能只是&quot;基本功&quot;，最终能把技术转化成业务价值才是&quot;武世绝学&quot;。我们要学会从运维岗位中创新、突破自己，为完善业界的游戏运维方案献出绵薄之力。</p>
-</li>
-</ul>
-<h2 id="其他">其他</h2>
-<ul>
-<li>发表在网易游戏学院的原文请查看：<a href="https://mp.weixin.qq.com/s/FbrtqHnD8yUR3Zy8ipfFfA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/FbrtqHnD8yUR3Zy8ipfFfA</a></li>
 </ul>
 
                 
@@ -352,13 +249,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/30-而立之年/" data-toggle="tooltip" data-placement="top" title="30-而立之年">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/eks-fargate服务最佳实践/" data-toggle="tooltip" data-placement="top" title="eks-fargate服务最佳实践">Next Post &rarr;</a>
+                            <a href="/article/网易游戏如何做到动态伸缩？/" data-toggle="tooltip" data-placement="top" title="网易游戏如何做到动态伸缩？">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -426,7 +319,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#网易游戏如何做到动态伸缩"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x6E38;&#x620F;&#x5982;&#x4F55;&#x505A;&#x5230;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#xFF1F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#背景介绍"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x80CC;&#x666F;&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#适合动态伸缩的游戏类型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x9002;&#x5408;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x7684;&#x6E38;&#x620F;&#x7C7B;&#x578B;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#动态伸缩方案详情"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;&#x8BE6;&#x60C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#公有云的调研过程"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x516C;&#x6709;&#x4E91;&#x7684;&#x8C03;&#x7814;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#网易动态伸缩方案"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#网易动态伸缩方案v10"><span class="toc-nav-number">1.3.2.1.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;v1.0</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#网易动态伸缩方案v20"><span class="toc-nav-number">1.3.2.2.</span> <span class="toc-nav-text">&#x7F51;&#x6613;&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x65B9;&#x6848;v2.0</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#动态伸缩的流程说明"><span class="toc-nav-number">1.3.3.</span> <span class="toc-nav-text">&#x52A8;&#x6001;&#x4F38;&#x7F29;&#x7684;&#x6D41;&#x7A0B;&#x8BF4;&#x660E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#扩容流程说明"><span class="toc-nav-number">1.3.3.1.</span> <span class="toc-nav-text">&#x6269;&#x5BB9;&#x6D41;&#x7A0B;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#缩容流程说明"><span class="toc-nav-number">1.3.3.2.</span> <span class="toc-nav-text">&#x7F29;&#x5BB9;&#x6D41;&#x7A0B;&#x8BF4;&#x660E;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x603B;&#x7ED3;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x5176;&#x4ED6;</span></a></li></ol></li></ol>
+          <ol class="nav">none</ol>
         
         </div>
       </aside>
@@ -475,8 +368,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "lyonger-cn";
-    var disqus_identifier = "https://lyonger.cn/article/网易游戏如何做到动态伸缩？/";
-    var disqus_url = "https://lyonger.cn/article/网易游戏如何做到动态伸缩？/";
+    var disqus_identifier = "https://lyonger.cn/article/30-而立之年/";
+    var disqus_url = "https://lyonger.cn/article/30-而立之年/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
